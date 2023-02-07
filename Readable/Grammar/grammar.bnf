@@ -85,6 +85,17 @@ functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" ":" block QU
 
 lambdaInitialization ::= IDENTIFIER "=" "(" paramList? ")" "=>" expression
 
+// LOOPS
+
+loopStatement ::= whileLoop | forEachLoop
+
+whileLoop ::= "while" expression ":" block
+
+forEachLoop ::= "foreach" IDENTIFIER "in" iterable
+
+iterable ::= arr | NUMBER | range
+
+range ::= NUMBER".."NUMBER
 
 // CONDITIONALS
 conditionalStatement ::= ifBlock elifBlock* elseBlock?
