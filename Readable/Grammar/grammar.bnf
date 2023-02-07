@@ -85,7 +85,7 @@ functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" ":" block QU
 
 lambdaInitialization ::= IDENTIFIER "=" "(" paramList? ")" "=>" expression
 
- 
+
 // CONDITIONALS
 conditionalStatement ::= ifBlock elifBlock* elseBlock?
 
