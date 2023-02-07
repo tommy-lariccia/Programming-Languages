@@ -1,0 +1,100 @@
+program ::= statementList?
+
+statementList ::= statement+
+
+statement ::= progStatement comment? lineEndChar
+            | comment lineEndChar
+            | commentBlock lineEndChar
+
+progStatement ::= functionDefinition
+                | functionCall
+                | variableInitializationAssignment
+                | conditionalStatement
+                | loopStatement
+
+lineEndChar ::= "\n" | "\r"
+
+
+// COMMENTS
+
+comment ::= "//" (!"\n")*  // anything but newline character
+
+commentBlock ::= "/*" (!"*\\")* "*\\"
+
+// TYPES
+booleanOpts ::= "true" | "false"
+
+typing ::= typingKeywords | typingArr
+
+typingArr ::= typingKeywords"[]"
+
+typingKeywords ::= "int" | "str" | "bool" | "float"
+
+
+// VARIABLES
+
+variableInitializationAssignment ::= dynamicAssignment | staticAssignment | arrSlotAssign
+
+dynamicAssignment ::= IDENTIFIER "=" expression
+
+staticAssignment ::= typing IDENTIFIER "=" expression
+
+arrSlotAssign ::= typingArr IDENTIFIER"["NUMBER"]" "=" expression
+
+arr ::= "[" exprList? "]"
+
+arrAccess ::= IDENTIFIER"["NUMBER"]"
+
+exprList ::= expression
+            | expression "," exprList
+
+
+// EXPRESSIONS
+expression ::= binaryExpression
+             | unaryExpression
+
+binaryExpression ::= unaryExpression binaryOp binaryExpression
+                   | unaryExpression
+
+binaryOp ::= '*' | '/' | '+' | '-' | "and" | "or" | "==" | ">" | "<" | ">=" | "<="
+
+unaryExpression ::= unaryOperator unaryExpression  // note: !-!--!expr is syntactically possible
+                    | terminalExpression
+
+unaryOperator ::= "-" | "!"
+
+parenExpression ::= "(" expression ")"
+
+terminalExpression ::= functionCall | NUMBER | IDENTIFIER | STRING | parenExpression | booleanOpts | arr | arrAccess
+
+
+// FUNCTIONS
+functionCall ::= IDENTIFIER "(" argList? ")"
+
+argList ::= expression
+              | expression "," argList
+
+paramList ::= parameter
+            | parameter "," paramList
+
+parameter ::= typing? IDENTIFIER
+
+returnStatement ::= "return" expression
+
+functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" ":" block QUADSPACE returnStatement
+
+lambdaInitialization ::= IDENTIFIER "=" "(" paramList? ")" "=>" expression
+
+
+// CONDITIONALS
+conditionalStatement ::= ifBlock elifBlock* elseBlock?
+
+ifBlock ::= "if" expression ":" block
+
+elifBlock ::= "else" "if" expression ":" block
+
+elseBlock ::= "else" expression ":" block
+
+
+// BLOCKS
+block ::= (QUADSPACE statement)
