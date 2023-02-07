@@ -33,14 +33,22 @@ its type.
 
 The initialization and reassignment of a dynamic variable are the same; for example:
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 x = 2
 x = 'test'
 ```
 
 The initialization and reassignment of a static variable is likewise the same:
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 int x = 2
 int x = 'test'
 ```
@@ -134,7 +142,11 @@ The last line (and only the last line) must be a return statement.
 
 A dynamic function is as follows:
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 
 func my_function(param1, int param2):
     param1 = param2
@@ -144,7 +156,11 @@ func my_function(param1, int param2):
 
 A static function is as follows:
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 
 func int my_function(int param1, int param2):
     return param1 + param2
@@ -176,7 +192,11 @@ There are two accepted loops: The while loop and the foreach loop.
 
 The while loop is written like this:
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 num = 1
 while num < 3:
     print(num)
@@ -187,7 +207,11 @@ The foreach loop requires a variable for each value to be carried by, as well as
 
 The following would print out all numbers one to ten. Note that number is a newly defined variable.
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 foreach number in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
     print(number)
 ```
@@ -195,7 +219,11 @@ foreach number in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
 The following would print out all numbers zero to nine. All integers n iterated through in a foreach loop are treated as
 an array of all numbers 0 to n-1, inclusive.
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 foreach number in 10:
     print(number)
 ```
@@ -205,7 +233,11 @@ foreach number in 10:
 Conditionals take only booleans or expressions evaluating booleans ("if 2" is meaningless and invalid). The if-statement
 is supported, along with "else if" and "else" blocks. The else statement does not take a condition. For instance:
 
+<<<<<<< HEAD
 ```python
+=======
+```
+>>>>>>> 607f5a67713349b666b81798c44d92c4c7599ecd
 if option == 1:  // is option 1
     print("Option 1")
 else if option == 2:  // is option 2
