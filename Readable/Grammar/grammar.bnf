@@ -1,3 +1,7 @@
+// GRAMMAR - Tommy Lariccia
+// https://github.com/tommy-lariccia/Programming-Languages/tree/main/Readable
+
+
 program ::= statementList?
 
 statementList ::= statement+
