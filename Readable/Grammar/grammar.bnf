@@ -11,6 +11,7 @@ progStatement ::= functionDefinition
                 | variableInitializationAssignment
                 | conditionalStatement
                 | loopStatement
+                | lambdaInitialization
 
 lineEndChar ::= "\n" | "\r"
 
@@ -72,8 +73,12 @@ terminalExpression ::= functionCall | NUMBER | IDENTIFIER | STRING | parenExpres
 
 
 // BLOCKS
-block ::= QUADSPACE statement
-        | QUADSPACE statement lineEndChar block
+block ::= blockStart blockSpace
+
+blockStart ::= ":" lineEndChar
+
+blockSpace ::= QUADSPACE statement
+        | QUADSPACE statement lineEndChar blockSpace
 
 
 // FUNCTIONS
@@ -89,7 +94,7 @@ parameter ::= typing? IDENTIFIER
 
 returnStatement ::= "return" expression
 
-functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" ":" lineEndChar block QUADSPACE returnStatement
+functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" block QUADSPACE returnStatement
 
 lambdaInitialization ::= IDENTIFIER "=" "(" paramList? ")" "=>" expression
 
@@ -97,9 +102,9 @@ lambdaInitialization ::= IDENTIFIER "=" "(" paramList? ")" "=>" expression
 // LOOPS
 loopStatement ::= whileLoop | forEachLoop
 
-whileLoop ::= "while" expression ":" lineEndChar block
+whileLoop ::= "while" expression block
 
-forEachLoop ::= "foreach" IDENTIFIER "in" iterable ":" lineEndChar block
+forEachLoop ::= "foreach" IDENTIFIER "in" iterable block
 
 iterable ::= arr | NUMBER | range
 
@@ -109,8 +114,8 @@ range ::= NUMBER".."NUMBER
 // CONDITIONALS
 conditionalStatement ::= ifBlock elifBlock* elseBlock?
 
-ifBlock ::= "if" expression ":" lineEndChar block
+ifBlock ::= "if" expression block
 
-elifBlock ::= lineEndChar "else" "if" expression ":" lineEndChar block
+elifBlock ::= lineEndChar "else" "if" expression block
 
-elseBlock ::= lineEndChar "else" expression ":" lineEndChar block
+elseBlock ::= lineEndChar "else" expression block
