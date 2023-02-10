@@ -50,6 +50,17 @@ dynamic language).
 
 A static variable can not be set equal to the value contained in a dynamic variable, or the value returned by a normal
 function.
+
+# Global vs Local
+
+A variable name defined in an outer scope and reused in an inner scope will always be treated as referencing the 
+variable of the outer scope, rather than defining a new variable in the inner scope. In order to use an identical 
+variable name in an inner scope, one of two things must be done:
+- For static variables, the local variable may be re-initialized (e.g. `int i = 0`)
+- For dynamic variables, the `local` keyword (e.g. `local i = 0`) should be used to clarify that all other references to that variable in the scope or a deeper scope are local
+
+Parameters are interpreted as local to the function - as is the variable initialized in a foreach loop (seen as local
+to the loop block).
 # Types 
 
 There are four primitive types (integers, floats, strings, boolean) and one collection-type (dynamic array), technically
@@ -71,13 +82,13 @@ Order of operations is equivalent to math. Parenthesis are supported.
 
 Note integers and floats may be used with each other, but all integers will be converted to floats.
 
-| Operator   | Types Defined To          | Example Code                | Nary   | Notes                                                              |
-|------------|---------------------------|-----------------------------|--------|--------------------------------------------------------------------|
-| Add ("+")  | Integers, Floats, Strings | 1 + 2, 'cat' + 'dog'        | N-ary  | Adding strings is concatenation.                                   |
-| Mult ("*") | Integers, Floats          | 2 * 3, 4 * 4.0, -7 * baddum | N-ary  |                                                                    |
-| Div ("/")  | Integers, Floats          | 3 / 2, 3.1 / 2              | Binary | Integer division converts to floats first--so no integer division. |
-| Sub ("-")  | Integers, Floats          | 2 - var                     | N-ary  |                                                                    |
-| Neg ("-")  | Integers, Floats          | -1, -cat                    | Unary  |                                                                    |
+| Operator   | Types Defined To          | Example Code                | Nary  | Notes                                                              |
+|------------|---------------------------|-----------------------------|-------|--------------------------------------------------------------------|
+| Add ("+")  | Integers, Floats, Strings | 1 + 2, 'cat' + 'dog'        | N-ary | Adding strings is concatenation.                                   |
+| Mult ("*") | Integers, Floats          | 2 * 3, 4 * 4.0, -7 * baddum | N-ary |                                                                    |
+| Div ("/")  | Integers, Floats          | 3 / 2, 3.1 / 2              | N-ary | Integer division converts to floats first--so no integer division. |
+| Sub ("-")  | Integers, Floats          | 2 - var                     | N-ary |                                                                    |
+| Neg ("-")  | Integers, Floats          | -1, -cat                    | Unary |                                                                    |
 
 # Comparators
 
@@ -130,7 +141,7 @@ Functions begin with the keyword "func", followed by an optional type (for "stat
 static parameters), following by the name with parentheses and parameters inside. Parameters can be static and are 
 optional. Dynamic functions may have one or more static parameters; static functions must have only static parameters. 
 
-The last line (and only the last line) must be a return statement.
+The last line (and only the last line) must be a return statement. They may return `null`.
 
 A dynamic function is as follows:
 
@@ -155,8 +166,8 @@ functions:
 # Lambda Functions
 
 Lamdba functions must be assigned to _dynamic_ variables. They are modeled off of Javascript's syntax, however, they may
-only support one line, which must be an evaluate-able to a value (i.e. no return statement). An example of a 
-parameter-free lambda function is as follows:
+only support one line, which will be returned if it is evaluatable to a non-null expression (i.e. no return statement). 
+An example of a parameter-free lambda function is as follows:
 
 `my_func = () => print('cat')`
 
@@ -179,7 +190,8 @@ while num < 3:
     num = num + 1
 ```
 
-The foreach loop requires a variable for each value to be carried by, as well as an array or integer to iterate through.
+The foreach loop requires a variable for each value to be carried by, as well as an array, integer, or "range" to 
+iterate through.
 
 The following would print out all numbers one to ten. Note that number is a newly defined variable.
 
@@ -193,6 +205,15 @@ an array of all numbers 0 to n-1, inclusive.
 
 ```
 foreach number in 10:
+    print(number)
+```
+
+Ranges are expressed similar as [number]..[number], e.g. `2..4`, inclusive on the left operand and exclusive on the 
+right, allowing the larger number in front. For example, the following would print all numbers 10 to 1, decreasing,
+and inclusive:
+
+```
+foreach number in 10..0:
     print(number)
 ```
 
@@ -210,16 +231,21 @@ else:  // option is any other number
     print("A different option.")
 ```
 
+The operators 'and', 'or', and not (expressed as '!') are all supported. 
+
 # Built-in Functions
 
 The following are built-in functions. Note all are dynamic but enforce typing through the "type" function; the "type"
-function does not require this, as it is written in Java. Also note all seem to support multiple arguments. This is not
-supported for user-defined functions, rather, it is an interpreter-trick (e.g. add(1, 2, 3) becomes add(1, add(2, 3))). 
+function does not require this, as it is written in Java. Also note arithmetic built-ins seem to support multiple 
+arguments. This is not supported for user-defined functions, rather, it is an interpreter-trick (e.g. add(1, 2, 3) 
+becomes add(1, add(2, 3))). 
 
 | Function | Output Type                                              | Explanation                                                |
 |----------|----------------------------------------------------------|------------------------------------------------------------|
-| print    | No output (Null does not exist; error is instead thrown) | Prints data                                                |
+| print    | No output (Null does not exist; error is instead thrown) | Prints data, with newline                                  |
 | type     | string                                                   | Returns type of the object provided; type(2) returns "int" |
+| len      | integer                                                  | Returns length of array or string                          |
+| divmod   | static int[] array of length two                         | Returns integer quotient and remainder, alternative to `%` |
 | add      | integer, float, or string                                |                                                            |
 | sub      | integer or float                                         |                                                            |
 | div      | integer or float                                         |                                                            |
@@ -236,6 +262,7 @@ The following keywords and operators are taken.
 | float            | Initialization of float type                                |
 | bool             | Initialization of boolean type                              |
 | str              | Initialization of string type                               |
+| null             | The null-type singleton.                                    |
 | =                | Assignment Operator                                         |
 | +                | Addition Operator                                           |
 | -                | Subtraction Operator or Negation Operator (when unary)      |
@@ -244,6 +271,10 @@ The following keywords and operators are taken.
 | ==               | Equal comparator                                            |
 | >                | Greater than comparator                                     |
 | <                | Less than comparator                                        |
+| >=               | Greater than or equal to comparator                         |
+| <=               | Less than or equal to comparator                            |
+| ++               | Increment integer                                           |
+| --               | Decrement integer                                           |
 | func             | Begins function definition                                  |
 | return           | returns data in a function                                  |
 | while            | Begins while loops                                          |
@@ -251,3 +282,8 @@ The following keywords and operators are taken.
 | in               | Use in separation of variable and iterable in foreach loops |
 | if               | Use to begin if and else if blocks                          |
 | else             | Use to begin else and else if blocks                        |
+| and              | Both operands evaluate to `true`.                           |
+| or               | One or both operands evaluate to `true`.                    |
+| !                | `true` becomes false, and vice versa.                       |
+| ..               | Range binary operator.                                      |
+| local            | Restricts variable initialization to local scope            |

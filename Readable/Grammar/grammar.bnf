@@ -16,10 +16,10 @@ lineEndChar ::= "\n" | "\r"
 
 
 // COMMENTS
-
 comment ::= "//" (!"\n")*  // anything but newline character
 
 commentBlock ::= "/*" (!"*\\")* "*\\"
+
 
 // TYPES
 booleanOpts ::= "true" | "false"
@@ -32,14 +32,13 @@ typingKeywords ::= "int" | "str" | "bool" | "float"
 
 
 // VARIABLES
+variableInitializationAssignment ::= assignment | arrSlotAssign
 
-variableInitializationAssignment ::= dynamicAssignment | staticAssignment | arrSlotAssign
+assignment ::= assignmentPrefix? IDENTIFIER "=" expression
 
-dynamicAssignment ::= IDENTIFIER "=" expression
+assignmentPrefix ::= "local" | typing  // mutually exclusive, local only for dynamic variables
 
-staticAssignment ::= typing IDENTIFIER "=" expression
-
-arrSlotAssign ::= typingArr IDENTIFIER"["NUMBER"]" "=" expression
+arrSlotAssign ::= typingArr? IDENTIFIER"["NUMBER"]" "=" expression
 
 arr ::= "[" exprList? "]"
 
@@ -51,28 +50,37 @@ exprList ::= expression
 
 // EXPRESSIONS
 expression ::= binaryExpression
-             | unaryExpression
 
 binaryExpression ::= unaryExpression binaryOp binaryExpression
                    | unaryExpression
 
 binaryOp ::= '*' | '/' | '+' | '-' | "and" | "or" | "==" | ">" | "<" | ">=" | "<="
 
-unaryExpression ::= unaryOperator unaryExpression  // note: !-!--!expr is syntactically possible
-                    | terminalExpression
+unaryExpression ::= frontUnaryExpression | backUnaryExpression | terminalExpression  // no use for combining unaries
 
-unaryOperator ::= "-" | "!"
+frontUnaryExpression ::= frontUnaryOperator terminalExpression
+
+backUnaryExpression ::= terminalExpression backUnaryOperator
+
+frontUnaryOperator ::= "-" | "!"
+
+backUnaryOperator ::= "++" | "--"
 
 parenExpression ::= "(" expression ")"
 
 terminalExpression ::= functionCall | NUMBER | IDENTIFIER | STRING | parenExpression | booleanOpts | arr | arrAccess
 
 
+// BLOCKS
+block ::= QUADSPACE statement
+        | QUADSPACE statement lineEndChar block
+
+
 // FUNCTIONS
 functionCall ::= IDENTIFIER "(" argList? ")"
 
 argList ::= expression
-              | expression "," argList
+          | expression "," argList
 
 paramList ::= parameter
             | parameter "," paramList
@@ -81,31 +89,28 @@ parameter ::= typing? IDENTIFIER
 
 returnStatement ::= "return" expression
 
-functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" ":" block QUADSPACE returnStatement
+functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" ":" lineEndChar block QUADSPACE returnStatement
 
 lambdaInitialization ::= IDENTIFIER "=" "(" paramList? ")" "=>" expression
 
-// LOOPS
 
+// LOOPS
 loopStatement ::= whileLoop | forEachLoop
 
-whileLoop ::= "while" expression ":" block
+whileLoop ::= "while" expression ":" lineEndChar block
 
-forEachLoop ::= "foreach" IDENTIFIER "in" iterable
+forEachLoop ::= "foreach" IDENTIFIER "in" iterable ":" lineEndChar block
 
 iterable ::= arr | NUMBER | range
 
 range ::= NUMBER".."NUMBER
 
+
 // CONDITIONALS
 conditionalStatement ::= ifBlock elifBlock* elseBlock?
 
-ifBlock ::= "if" expression ":" block
+ifBlock ::= "if" expression ":" lineEndChar block
 
-elifBlock ::= "else" "if" expression ":" block
+elifBlock ::= lineEndChar "else" "if" expression ":" lineEndChar block
 
-elseBlock ::= "else" expression ":" block
-
-
-// BLOCKS
-block ::= (QUADSPACE statement)
+elseBlock ::= lineEndChar "else" expression ":" lineEndChar block
