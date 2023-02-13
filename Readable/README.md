@@ -92,14 +92,18 @@ Note integers and floats may be used with each other, but all integers will be c
 
 # Comparators
 
-The following are the supported operators. Equality checks are allowed for any same types (excepting int and float); 
-i.e. they will return false if comparing unlike types. All other comparators are restricted to integers and floats.
+The following are the supported comparative operators. Equality checks are allowed for any same types (excepting int and 
+float); i.e. they will return false if comparing unlike types. All other comparators are restricted to integers, 
+strings, and floats.
 
-| Operator           | Example Code                                           |
-|--------------------|--------------------------------------------------------|
-| Equality ("==")    | 2 == 3 // false, 2 == 2.0 // true, 2 == "cat" // false |
-| Greater than (">") | 2 > 3 // false, 2 > "cat" // error                     |
-| Less than ("<")    | 2 < 3 // true,  2 > "cat" // error                     |
+| Operator                        | Example Code                                           |
+|---------------------------------|--------------------------------------------------------|
+| Equality ("==")                 | 2 == 3 // false, 2 == 2.0 // true, 2 == "cat" // error |
+| Inequality ("!=")               | 2 != 3 // true, 2 != 2.0 // false, 2 != "cat" // error |
+| Greater than (">")              | 2 > 3 // false, 2 > "cat" // error                     |
+| Less than ("<")                 | 2 < 3 // true,  2 > "cat" // error                     |
+| Greater than or equal to (">=") | 2 >= 3 // false, 2 >= "cat" // error                   |
+| Less than or equal to ("<=")    | 2 <= 3 // true,  2 <= "cat" // error                   |
 
 # Arrays
 
@@ -269,6 +273,7 @@ The following keywords and operators are taken.
 | *                | Multiplication Operator                                     |
 | /                | Division Operator                                           |
 | ==               | Equal comparator                                            |
+| !=               | Equal comparator                                            |
 | >                | Greater than comparator                                     |
 | <                | Less than comparator                                        |
 | >=               | Greater than or equal to comparator                         |
