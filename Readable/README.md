@@ -93,7 +93,7 @@ Note integers and floats may be used with each other, but all integers will be c
 # Comparators
 
 The following are the supported comparative operators. Equality checks are allowed for any same types (excepting int and 
-float); i.e. they will return false if comparing unlike types. All other comparators are restricted to integers, 
+float); i.e. they will error if comparing unlike types. All other comparators are restricted to integers, 
 strings, and floats.
 
 | Operator                        | Example Code                                           |
