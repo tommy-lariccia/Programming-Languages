@@ -9,6 +9,8 @@ it uses whitespace instead of brackets, as well as English-language operators (e
 Readable does not support the return statement everywhere in a function (the last value is returned, 
 ensuring one-input-one-output), and allows for optional type enforcement. 
 
+The Cross-Type Operator Specification is found [here.](https://docs.google.com/spreadsheets/d/16pL6AbSjgbPTst_2zs8T8gJsx3temBiaAq3BABHyDWU/edit?usp=sharing)
+
 # Blocks and New Statements
 
 New statements are deliminated by the newline ("\n") character. Every line in a single block (i.e. in functions, loops, 
