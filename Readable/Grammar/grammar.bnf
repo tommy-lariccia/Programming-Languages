@@ -74,6 +74,7 @@ backUnaryOperator ::= "++" | "--"
 parenExpression ::= "(" expression ")"
 
 terminalExpression ::= functionCall | NUMBER | IDENTIFIER | STRING | parenExpression | booleanOpts | arr | arrAccess
+                     | "null"
 
 
 // BLOCKS

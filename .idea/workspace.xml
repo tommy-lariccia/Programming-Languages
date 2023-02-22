@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f7a633-c6a3-45da-98e3-2110f91d1f32" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Programming-Languages.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Programming-Languages.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/LexicalAnalysis/Lexeme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/LexicalAnalysis/Lexeme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/LexicalAnalysis/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/LexicalAnalysis/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/LexicalAnalysis/Types.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/LexicalAnalysis/Types.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/testInput/conditionals.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/conditionals.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/Grammar/grammar.bnf" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/Grammar/grammar.bnf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
