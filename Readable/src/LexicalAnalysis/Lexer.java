@@ -186,13 +186,15 @@ public class Lexer {
         }
 
         String numString = source.substring(startOfCurrLex, currentPosition);
-        if (isInteger) return new Lexeme(INTEGER, currLineNumber, Integer.parseInt(numString));
-        else return new Lexeme(FLOAT, currLineNumber, Double.parseDouble(numString));
+        if (isInteger) return new Lexeme(INT_LIT, currLineNumber, Integer.parseInt(numString));
+        else return new Lexeme(FLOAT_LIT, currLineNumber, Double.parseDouble(numString));
     }
 
     public Lexeme lexString() {
-        while (peek() != '"' || peekPrevious() == '\\') advance();
-        String realStr = source.substring(startOfCurrLex, currentPosition);
+        while ((peek() != '"' || peekPrevious() == '\\') && !isAtEnd()) advance();
+        String realStr = source.substring(startOfCurrLex + 1, currentPosition);
+        if (isAtEnd()) {error("Unterminated String (line " + currLineNumber + ")"); return null;}
+        else {advance();}
         return new Lexeme(STRING_LIT, currLineNumber, realStr);
     }
 
@@ -213,9 +215,10 @@ public class Lexer {
 
     public Lexeme handleMultiLineComment() {
         advance();
-        while (peek() != '*' || peekNext() != '/') {
+        while ((peek() != '*' || peekNext() != '/') && !isAtEnd()) {
             advance();
         }
+        if (isAtEnd()) {error("Unterminated Multi-line Comment (line " + currLineNumber + ")"); return null;}
         advance(); advance();
         return null;
     }
@@ -225,7 +228,6 @@ public class Lexer {
         while (peek() != '\n' && peek() != '\r') {
             advance();
         }
-        advance();
         return null;
     }
 

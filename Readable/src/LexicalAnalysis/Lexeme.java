@@ -66,8 +66,11 @@ public class Lexeme {
             case FLOAT_LIT -> {
                 return getFloat();
             }
-            case STRING_LIT, IDENTIFIER -> {
-                return getString();
+            case STRING_LIT -> {
+                return "'" + getString() + "'";
+            }
+            case IDENTIFIER -> {
+                return "(name: " + getString() + ")";
             }
             case ARRAY -> {
                 return getArr();
@@ -91,9 +94,9 @@ public class Lexeme {
     public String toString() {
         Object value = getValue();
         if (value != null) {
-            return getType().toString() + " Lexene with value " + value + " at line " + getLine() + ".";
+            return getType().toString() + ": " + value + " at line " + getLine();
         }
-        return getType().toString() + " Lexene at line " + getLine() + ".";
+        return getType().toString() + " Lexene at line " + getLine();
     }
 
 }

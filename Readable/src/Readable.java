@@ -16,7 +16,7 @@ public class Readable {
     private static final ArrayList<String> syntaxErrorMessages = new ArrayList<>();
     private static final ArrayList<String> runtimeErrorMessages = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {  // TODO: Move back to IOException
+    public static void main(String[] args) throws IOException {
         try {
             if (args.length == 1) runFile(args[0]);
             else {
@@ -41,7 +41,9 @@ public class Readable {
         // Lexing
         Lexer lexer = new Lexer(source);
         ArrayList<Lexeme> lexemes = lexer.lex();
-        System.out.println(lexemes);
+        for (Lexeme lexeme : lexemes) {
+            System.out.println(lexeme);
+        }
 
     }
 
