@@ -3,6 +3,8 @@
 
 package src.LexicalAnalysis;
 
+import src.Readable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -95,7 +97,7 @@ public class Lexer {
 
     // ------------ Lexing ------------
 
-    public ArrayList<Lexeme> lex() throws Exception {
+    public ArrayList<Lexeme> lex() {
         while (!isAtEnd()) {
             startOfCurrLex = currentPosition;
             Lexeme nextLex = getNextLexeme();
@@ -105,7 +107,7 @@ public class Lexer {
         return lexemes;
     }
 
-    private Lexeme getNextLexeme() throws Exception {
+    private Lexeme getNextLexeme() {
         char c = advance();
 
         switch (c) {
@@ -136,7 +138,7 @@ public class Lexer {
 
             case '.':
                 if (match('.')) return new Lexeme(RANGE, currLineNumber);
-                else throw new Exception("Missing Second '.' to Form Range Operator");  // TODO: custom erroring
+                else error("Missing Second '.' to Form Range Operator");
 
 
             // One or Two Character Tokens
@@ -168,16 +170,16 @@ public class Lexer {
                 if (isDigit(c)) return lexNumber();
                 else if (c == ' ') return lexWhitespace();
                 else if (isAlpha(c)) return lexIdentifierOrKeyword();
-                else throw new Exception("Unknown Character at line " + currLineNumber);  // TODO: custom erroring
+                else error("Unknown Character: " + c); return null;
         }
     }
 
-    public Lexeme lexNumber() throws Exception {
+    public Lexeme lexNumber() {
         boolean isInteger = true;
         while (isDigit(peek())) advance();
 
         if (peek() == '.') {
-            if (!isDigit(peekNext())) throw new Exception("Malformed Float (Ends in Decimal Point) at Line " + currLineNumber);  // TODO: custom erroring
+            if (!isDigit(peekNext())) error("Malformed Float (Ends in Decimal Point)");
             isInteger = false;
             advance();
             while (isDigit(peek())) advance();
@@ -226,4 +228,11 @@ public class Lexer {
         advance();
         return null;
     }
+
+    // ------------ Error Reporting ------------
+
+    private void error(String message) {
+        Readable.syntaxError(message, currLineNumber);
+    }
+
 }
