@@ -3,8 +3,6 @@
 
 package src.Readable.LexicalAnalysis;
 
-import src.Readable.LexicalAnalysis.Types;
-
 import java.util.ArrayList;
 
 public class Lexeme {
@@ -25,6 +23,11 @@ public class Lexeme {
     public Lexeme(Types tokenType, int line) {
         type = tokenType;
         lineNumber = line;
+    }
+
+    public Lexeme(Types tokenType) {
+        type = tokenType;
+        lineNumber = -1;
     }
 
     public Lexeme(Types tokenType, int line, int intVal) {
