@@ -1,7 +1,9 @@
 // Written by Tommy Lariccia at the Westminster Schools
 // Code instruction provided by Mr (Mitchell) Griest and Mr (Jonathan) Lusth.
 
-package src.LexicalAnalysis;
+package src.Readable.LexicalAnalysis;
+
+import src.Readable.LexicalAnalysis.Types;
 
 import java.util.ArrayList;
 
@@ -104,10 +106,6 @@ public class Lexeme {
 
     public void setLine(int line) {
         lineNumber = line;
-    }
-
-    public void setType(Types t) {
-        type = t;
     }
 
     public void setValue(int num) {

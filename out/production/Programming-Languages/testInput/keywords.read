@@ -1,3 +1,9 @@
-return func while foreach wejwbhwbhw foeach in if else local and or true false True FALSE int bool float str null
-floatstr
+// REAL
+
+return func while foreach in if else local and or true false int bool float str null
+
+// FAKE
 "return"
+floatstr
+wejwbhwbhw foeach
+True FALSE

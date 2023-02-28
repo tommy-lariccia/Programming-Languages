@@ -1,10 +1,10 @@
 // Written by Tommy Lariccia at the Westminster Schools
 // Code instruction provided by Mr (Mitchell) Griest and Mr (Jonathan) Lusth.
 
-package src;
+package src.Readable;
 
-import src.LexicalAnalysis.Lexeme;
-import src.LexicalAnalysis.Lexer;
+import src.Readable.LexicalAnalysis.Lexeme;
+import src.Readable.LexicalAnalysis.Lexer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

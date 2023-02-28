@@ -1,14 +1,13 @@
 // Written by Tommy Lariccia at the Westminster Schools
 // Code instruction provided by Mr (Mitchell) Griest and Mr (Jonathan) Lusth.
 
-package src.LexicalAnalysis;
+package src.Readable.LexicalAnalysis;
 
-import src.Readable;
+import src.Readable.Readable;
+import static src.Readable.LexicalAnalysis.Types.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static src.LexicalAnalysis.Types.*;
 
 public class Lexer {
     // ------------ Instance Variables ------------
