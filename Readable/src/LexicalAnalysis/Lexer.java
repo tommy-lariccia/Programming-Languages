@@ -21,6 +21,7 @@ public class Lexer {
 
 
     private static final HashMap<String, Types> closedKeywords = new HashMap<>();
+
     static {
         // Structural
         closedKeywords.put("return", RETURN);
@@ -49,26 +50,36 @@ public class Lexer {
     }
 
     // ------------ Constructor ------------
-    
-    public Lexer(String sourceCode) { source = sourceCode; }
+
+    public Lexer(String sourceCode) {
+        source = sourceCode;
+    }
 
 
     // ------------ Helpers ------------
 
-    private boolean isAtEnd() { return currentPosition >= source.length(); }
+    private boolean isAtEnd() {
+        return currentPosition >= source.length();
+    }
 
     private char peekPrevious() {
-        if (currentPosition <= 0) { return '\0'; }
-        return source.charAt(currentPosition  - 1);
+        if (currentPosition <= 0) {
+            return '\0';
+        }
+        return source.charAt(currentPosition - 1);
     }
 
     private char peek() {
-        if (isAtEnd()) { return '\0'; }
+        if (isAtEnd()) {
+            return '\0';
+        }
         return source.charAt(currentPosition);
     }
 
     private char peekNext() {
-        if (currentPosition + 1 >= source.length()) { return '\0'; }
+        if (currentPosition + 1 >= source.length()) {
+            return '\0';
+        }
         return source.charAt(currentPosition + 1);
     }
 
@@ -88,11 +99,19 @@ public class Lexer {
 
     // ------------ Character Classification ------------
 
-    private boolean isDigit(char c) { return c >= '0' && c <= '9'; }
+    private boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
+    }
 
-    private boolean isAlpha(char c) { return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'; }
+    private boolean isAlpha(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
 
-    private boolean isAlphaNumeric(char c) { return isAlpha(c) || isDigit(c); };
+    private boolean isAlphaNumeric(char c) {
+        return isAlpha(c) || isDigit(c);
+    }
+
+    ;
 
 
     // ------------ Lexing ------------
@@ -141,7 +160,7 @@ public class Lexer {
                 else error("Missing Second '.' to Form Range Operator");
 
 
-            // One or Two Character Tokens
+                // One or Two Character Tokens
 
             case '-':
                 return new Lexeme(match('-') ? MINUS_MINUS : MINUS, currLineNumber);
@@ -170,7 +189,8 @@ public class Lexer {
                 if (isDigit(c)) return lexNumber();
                 else if (c == ' ') return lexWhitespace();
                 else if (isAlpha(c)) return lexIdentifierOrKeyword();
-                else error("Unknown Character: " + c); return null;
+                else error("Unknown Character: " + c);
+                return null;
         }
     }
 
@@ -193,13 +213,17 @@ public class Lexer {
     public Lexeme lexString() {
         while ((peek() != '"' || peekPrevious() == '\\') && !isAtEnd()) advance();
         String realStr = source.substring(startOfCurrLex + 1, currentPosition);
-        if (isAtEnd()) {error("Unterminated String (line " + currLineNumber + ")"); return null;}
-        else {advance();}
+        if (isAtEnd()) {
+            error("Unterminated String (line " + currLineNumber + ")");
+            return null;
+        } else {
+            advance();
+        }
         return new Lexeme(STRING_LIT, currLineNumber, realStr);
     }
 
     public Lexeme lexWhitespace() {
-        while(peek() == ' ') advance();
+        while (peek() == ' ') advance();
         if ((currentPosition - startOfCurrLex) == 4) return new Lexeme(QUAD_SPACE, currLineNumber);
         else return null;
     }
@@ -218,8 +242,12 @@ public class Lexer {
         while ((peek() != '*' || peekNext() != '/') && !isAtEnd()) {
             advance();
         }
-        if (isAtEnd()) {error("Unterminated Multi-line Comment (line " + currLineNumber + ")"); return null;}
-        advance(); advance();
+        if (isAtEnd()) {
+            error("Unterminated Multi-line Comment (line " + currLineNumber + ")");
+            return null;
+        }
+        advance();
+        advance();
         return null;
     }
 

@@ -20,43 +20,49 @@ public class Lexeme {
 
     // ------------ Constructors ------------
 
-    public void main_consc(Types tokenType, int line) {
+    public Lexeme(Types tokenType, int line) {
         type = tokenType;
         lineNumber = line;
     }
 
-    public Lexeme(Types tokenType, int line) {main_consc(tokenType, line);}
-
     public Lexeme(Types tokenType, int line, int intVal) {
+        this(tokenType, line);
         integerValue = intVal;
-        main_consc(tokenType, line);
     }
 
     public Lexeme(Types tokenType, int line, double decVal) {
+        this(tokenType, line);
         decValue = decVal;
-        main_consc(tokenType, line);
     }
 
     public Lexeme(Types tokenType, int line, String strVal) {
+        this(tokenType, line);
         stringValue = strVal;
-        main_consc(tokenType, line);
     }
 
     public Lexeme(Types tokenType, int line, ArrayList<Lexeme> arr) {
+        this(tokenType, line);
         arrVal = arr;
-        main_consc(tokenType, line);
     }
 
 
     // ------------ Values ------------
 
-    private int getInt() { return integerValue; }
+    private int getInt() {
+        return integerValue;
+    }
 
-    private double getFloat() { return decValue; }
+    private double getFloat() {
+        return decValue;
+    }
 
-    private String getString() { return stringValue; }
+    private String getString() {
+        return stringValue;
+    }
 
-    private ArrayList<Lexeme> getArr() { return arrVal; }
+    private ArrayList<Lexeme> getArr() {
+        return arrVal;
+    }
 
     private Object determineVal() {
         switch (type) {
@@ -75,19 +81,50 @@ public class Lexeme {
             case ARRAY -> {
                 return getArr();
             }
-            default -> { return null; }
+            default -> {
+                return null;
+            }
         }
     }
 
 
     // ------------ Getters & Setters ------------
 
-    public Object getValue() { return determineVal(); }
+    public Object getValue() {
+        return determineVal();
+    }
 
-    public Types getType() { return type; }
+    public Types getType() {
+        return type;
+    }
 
-    public int getLine() { return lineNumber; }
+    public int getLine() {
+        return lineNumber;
+    }
 
+    public void setLine(int line) {
+        lineNumber = line;
+    }
+
+    public void setType(Types t) {
+        type = t;
+    }
+
+    public void setValue(int num) {
+        integerValue = num;
+    }
+
+    public void setValue(double num) {
+        decValue = num;
+    }
+
+    public void setValue(String str) {
+        stringValue = str;
+    }
+
+    public void setValue(ArrayList<Lexeme> arr) {
+        arrVal = arr;
+    }
 
     // ------------ toString ------------
 
@@ -96,7 +133,7 @@ public class Lexeme {
         if (value != null) {
             return getType().toString() + ": " + value + " at line " + getLine();
         }
-        return getType().toString() + " Lexene at line " + getLine();
+        return getType().toString() + " Lexeme at line " + getLine();
     }
 
 }
