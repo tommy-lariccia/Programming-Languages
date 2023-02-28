@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Lexeme {
     // ------------ Instance Variables ------------
     // All lexemes have both of these initialized:
-    private Types type;
+    private final Types type;
     private int lineNumber;
 
     // Type-Value Lexemes (e.g. of type NUMBER) have one of these
