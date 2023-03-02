@@ -2,9 +2,7 @@
 // https://github.com/tommy-lariccia/Programming-Languages/tree/main/Readable
 
 
-program ::= statementList?
-
-statementList ::= statement+
+program ::= statement*
 
 statement ::= progStatement comment? lineEndChar
             | comment lineEndChar
@@ -43,11 +41,11 @@ assignment ::= assignmentPrefix? IDENTIFIER "=" expression
 
 assignmentPrefix ::= "local" | typing  // mutually exclusive, local only for dynamic variables
 
-arrSlotAssign ::= typingArr? IDENTIFIER"["NUMBER"]" "=" expression
+arrSlotAssign ::= typingArr? IDENTIFIER"["expression"]" "=" expression
 
 arr ::= "[" exprList? "]"
 
-arrAccess ::= IDENTIFIER"["NUMBER"]"
+arrAccess ::= IDENTIFIER"["expression"]"
 
 exprList ::= expression
             | expression "," exprList

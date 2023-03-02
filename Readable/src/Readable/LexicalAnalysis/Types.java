@@ -31,5 +31,5 @@ public enum Types {
     STRING_LIT, INT_LIT, FLOAT_LIT, TRUE, FALSE,
 
     // ------------ Misc ------------
-    ASSIGN, RANGE, IDENTIFIER, EOF
+    ASSIGN, RANGE, IDENTIFIER, EOF, ERROR
 }
