@@ -1,10 +1,10 @@
 // Written by Tommy Lariccia at the Westminster Schools
-// Code instruction provided by Mr (Mitchell) Griest and Mr (Jonathan) Lusth.
+// Code instruction provided by Mr (Mitchell) Griest and Dr (Jonathan) Lusth.
 
-package src.Readable.LexicalAnalysis;
+package Readable.LexicalAnalysis;
 
-import src.Readable.Readable;
-import static src.Readable.LexicalAnalysis.Types.*;
+import Readable.Readable;
+import static Readable.LexicalAnalysis.Types.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ public class Lexer {
         closedKeywords.put("if", IF);
         closedKeywords.put("else", ELSE);
         closedKeywords.put("local", LOCAL);
+        closedKeywords.put("lambda", LAMBDA);
 
         // Boolean
         closedKeywords.put("and", AND);
@@ -109,8 +110,6 @@ public class Lexer {
     private boolean isAlphaNumeric(char c) {
         return isAlpha(c) || isDigit(c);
     }
-
-    ;
 
 
     // ------------ Lexing ------------

@@ -1,10 +1,11 @@
 // Written by Tommy Lariccia at the Westminster Schools
 // Code instruction provided by Mr (Mitchell) Griest and Mr (Jonathan) Lusth.
 
-package src.Readable;
+package Readable;
 
-import src.Readable.LexicalAnalysis.Lexeme;
-import src.Readable.LexicalAnalysis.Lexer;
+import Readable.LexicalAnalysis.Lexeme;
+import Readable.LexicalAnalysis.Lexer;
+import Readable.Recognizing.Recognizer;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -41,10 +42,10 @@ public class Readable {
         // Lexing
         Lexer lexer = new Lexer(source);
         ArrayList<Lexeme> lexemes = lexer.lex();
-        for (Lexeme lexeme : lexemes) {
-            System.out.println(lexeme);
-        }
 
+        // Recognizing
+        Recognizer recognizing = new Recognizer(lexemes);
+        recognizing.program();
     }
 
     // ------------ Errors ------------

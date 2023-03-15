@@ -1,7 +1,7 @@
 // Written by Tommy Lariccia at the Westminster Schools
 // Code instruction provided by Mr (Mitchell) Griest and Mr (Jonathan) Lusth.
 
-package src.Readable.LexicalAnalysis;
+package Readable.LexicalAnalysis;
 
 public enum Types {
     // ------------ Structural Characters ------------
@@ -21,7 +21,7 @@ public enum Types {
     PLUS_PLUS, MINUS_MINUS,
 
     // ------------ Keywords ------------
-    FUNC, RETURN, WHILE, FOREACH, IN, IF, ELSE, LOCAL,
+    FUNC, RETURN, WHILE, FOREACH, IN, IF, ELSE, LOCAL, LAMBDA,
 
     // ------------ Boolean ------------
     AND, OR, NOT,

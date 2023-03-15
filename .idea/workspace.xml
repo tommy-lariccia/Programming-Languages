@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f7a633-c6a3-45da-98e3-2110f91d1f32" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Readable/src/Readable/Recognizing/Recognizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Programming-Languages.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Programming-Languages.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/Grammar/grammar.bnf" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/Grammar/grammar.bnf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexeme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexeme.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Recognizing/Recognizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Recognizing/Recognizer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,9 +48,9 @@
   </component>
   <component name="RunManager">
     <configuration name="Readable" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="src.Readable.Readable" />
+      <option name="MAIN_CLASS_NAME" value="Readable.Readable" />
       <module name="Programming-Languages" />
-      <option name="PROGRAM_PARAMETERS" value="./testInput/scratchFile.read" />
+      <option name="PROGRAM_PARAMETERS" value="./testInput/conditionals.read" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Readable" />
       <method v="2">
         <option name="Make" enabled="true" />

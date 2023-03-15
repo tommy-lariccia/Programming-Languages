@@ -1,7 +1,7 @@
 // Written by Tommy Lariccia at the Westminster Schools
 // Code instruction provided by Mr (Mitchell) Griest and Mr (Jonathan) Lusth.
 
-package src.Readable.LexicalAnalysis;
+package Readable.LexicalAnalysis;
 
 import java.util.ArrayList;
 

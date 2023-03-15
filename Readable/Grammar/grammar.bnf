@@ -27,7 +27,7 @@ commentBlock ::= "/*" (!"*\\")* "*\\"
 // TYPES
 booleanOpts ::= "true" | "false"
 
-typing ::= typingKeywords | typingArr
+typing ::= typingArr | typingKeywords
 
 typingArr ::= typingKeywords"[]"
 
@@ -37,15 +37,17 @@ typingKeywords ::= "int" | "str" | "bool" | "float"
 // VARIABLES
 variableInitializationAssignment ::= assignment | arrSlotAssign
 
+arrSlotBegin ::= typingKeywords"["
+
 assignment ::= assignmentPrefix? IDENTIFIER "=" expression
 
 assignmentPrefix ::= "local" | typing  // mutually exclusive, local only for dynamic variables
 
-arrSlotAssign ::= typingArr? IDENTIFIER"["expression"]" "=" expression
+arrSlotAssign ::= arrSlotBegin expression "]" "=" expression  // TODO: Typing required?
 
 arr ::= "[" exprList? "]"
 
-arrAccess ::= IDENTIFIER"["expression"]"
+arrAccess ::= arrSlotBegin expression "]"
 
 exprList ::= expression
             | expression "," exprList
@@ -71,8 +73,8 @@ backUnaryOperator ::= "++" | "--"
 
 parenExpression ::= "(" expression ")"
 
-terminalExpression ::= functionCall | NUMBER | IDENTIFIER | STRING | parenExpression | booleanOpts | arr | arrAccess
-                     | "null"
+terminalExpression ::= functionCall | INT_LIT | FLOAT_LIT | IDENTIFIER | STRING_LIT | parenExpression | booleanOpts |
+                       arr | arrAccess | "null"
 
 
 // BLOCKS
@@ -99,7 +101,7 @@ returnStatement ::= "return" expression
 
 functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" block QUADSPACE returnStatement
 
-lambdaInitialization ::= IDENTIFIER "=" "(" paramList? ")" "=>" expression
+lambdaInitialization ::= "lambda" IDENTIFIER "=" "(" paramList? ")" "=>" expression
 
 
 // LOOPS
@@ -109,9 +111,9 @@ whileLoop ::= "while" expression block
 
 forEachLoop ::= "foreach" IDENTIFIER "in" iterable block
 
-iterable ::= arr | NUMBER | range
+iterable ::= arr | INT_LIT | range
 
-range ::= NUMBER".."NUMBER
+range ::= INT_LIT".."INT_LIT
 
 
 // CONDITIONALS
