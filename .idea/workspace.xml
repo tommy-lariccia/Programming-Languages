@@ -2,14 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f7a633-c6a3-45da-98e3-2110f91d1f32" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Programming-Languages.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Programming-Languages.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Recognizing/expressions.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Recognizing/functions.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Recognizing/lambdas.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Recognizing/var.read" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/Grammar/grammar.bnf" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/Grammar/grammar.bnf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexeme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexeme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Recognizing/Recognizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Recognizing/Recognizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/comments.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/comments.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/conditionals.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Recognizing/conditionals.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/identifiers.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/identifiers.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/integers.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/integers.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/keywords.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/keywords.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/realNumbers.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/realNumbers.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/scratchFile.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/scratchFile.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/strings.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/strings.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/symbols.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/symbols.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/whitespace.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Lexing/whitespace.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexeme.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexeme.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Types.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Types.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Readable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Readable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Recognizing/Recognizer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Recognizing/Recognizer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +44,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -42,6 +69,10 @@
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Readable/testInput/Recognizing" />
+      <recent name="$PROJECT_DIR$/Readable/testInput/lexing" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="src" />
     </key>
@@ -50,7 +81,7 @@
     <configuration name="Readable" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Readable.Readable" />
       <module name="Programming-Languages" />
-      <option name="PROGRAM_PARAMETERS" value="./testInput/conditionals.read" />
+      <option name="PROGRAM_PARAMETERS" value="./testInput/Recognizing/active.read" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Readable" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -78,5 +109,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Readable/src/Readable/Recognizing/Recognizer.java</url>
+          <line>151</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

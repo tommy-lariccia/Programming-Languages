@@ -147,7 +147,8 @@ Functions begin with the keyword "func", followed by an optional type (for "stat
 static parameters), following by the name with parentheses and parameters inside. Parameters can be static and are 
 optional. Dynamic functions may have one or more static parameters; static functions must have only static parameters. 
 
-The last line (and only the last line) must be a return statement. They may return `null`.
+The last line (and only the last line) may be a return statement. They may return `null`, explicitly or implicitly (via
+no return statement).
 
 A dynamic function is as follows:
 
@@ -167,7 +168,7 @@ func int my_function(int param1, int param2):
 Functions (including lambda functions) may be called as follows. Note type-acknowledgement is required in static 
 functions:
 
-`a = my_func(parem1, parem2)`
+`lambda a = my_func(parem1, parem2)`
 
 # Lambda Functions
 
@@ -280,9 +281,8 @@ The following keywords and operators are taken.
 | <                | Less than comparator                                        |
 | >=               | Greater than or equal to comparator                         |
 | <=               | Less than or equal to comparator                            |
-| ++               | Increment integer                                           |
-| --               | Decrement integer                                           |
 | func             | Begins function definition                                  |
+| lambda           | Begins lambda function definition                           |
 | return           | returns data in a function                                  |
 | while            | Begins while loops                                          |
 | foreach          | Begins foreach loops                                        |

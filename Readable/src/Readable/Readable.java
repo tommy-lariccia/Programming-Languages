@@ -5,6 +5,7 @@ package Readable;
 
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Lexer;
+import Readable.LexicalAnalysis.Types;
 import Readable.Recognizing.Recognizer;
 
 import java.io.IOException;

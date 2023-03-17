@@ -58,22 +58,31 @@ public class Recognizer {
 
     // ------------ Consumption Functions ------------
     public void program() {
-        while (statementPending()) {
-            statement();
+        while(!check(EOF)) {
+            if (check(NEW_LINE)) advance();
+            else if (statementPending()) statement();
+            else {
+                error("A statement should be either start a block (conditional, function, loop), call a function, or " +
+                        "initialize a variable or lambda function. Likely an expression.");
+                while (!check(NEW_LINE) && !check(EOF)) advance();  // So works for whole line.
+            }
         }
     }
 
     private void statement() {
         progStatement();
-        consume(NEW_LINE);
+        if (check(NEW_LINE)) consume(NEW_LINE);
+        else if (!check(EOF)) error("Statement must end with NEW_LINE or EOF.");
     }
 
     private void progStatement() {
         if (functionDefinitionPending()) {
             functionDefinition();
+        } else if (check(RETURN)) {
+            returnStatement();
         } else if (check(IDENTIFIER)) {
             if (checkNext(OPAREN)) functionCall();
-            else variableInitializationAssignmentPending();
+            else variableInitializationAssignment();
         } else if (variableInitializationAssignmentPending()) {
             variableInitializationAssignment();
         } else if (conditionalStatementPending()) {
@@ -86,6 +95,17 @@ public class Recognizer {
             error("A statement should be either start a block (conditional, function, loop), call a function, or " +
                     "initialize a variable or lambda function.");
         }
+    }
+
+    private void blockStatement() {
+        blockProgStatement();
+        if (check(NEW_LINE)) consume(NEW_LINE);
+        else if (!check(EOF)) error("Statement must end with NEW_LINE or EOF.");
+    }
+
+    private void blockProgStatement() {
+        if (functionDefinitionPending()) error("Function definitions not allowed within blocks.");
+        else progStatement();
     }
 
     private void booleanOpts() {
@@ -110,7 +130,7 @@ public class Recognizer {
         consume(CSQUARE);
     }
 
-    private void typingKeywords() {  // TODO: Grouped-type enumeration
+    private void typingKeywords() {
         if (check(INTEGER)) consume(INTEGER);
         else if (check(STRING)) consume(STRING);
         else if (check(BOOL)) consume(BOOL);
@@ -162,7 +182,7 @@ public class Recognizer {
 
     private void exprList() {
         expression();
-        if (check(COMMA)) exprList();
+        if (check(COMMA)) {consume(COMMA); exprList();}
     }
 
     private void expression() {
@@ -189,9 +209,6 @@ public class Recognizer {
             frontUnaryExpression();
         } else if (terminalExpressionPending()) {
             terminalExpression();
-            if (backUnaryOperatorPending()) {
-                backUnaryOperator();
-            }
         } else {
             error("Expected terminal or terminal with unary operator, but did not receive either.");
         }
@@ -202,20 +219,11 @@ public class Recognizer {
         terminalExpression();
     }
 
-
     private void frontUnaryOperator() {
         ArrayList<Types> ops = new ArrayList<>();
         ops.addAll(List.of(new Types[]{MINUS, NOT}));
         if (ops.contains(peek())) consume(peek());
         else error("Expected '-' or '!' but did not receive either.");
-    }
-
-
-    private void backUnaryOperator() {
-        ArrayList<Types> ops = new ArrayList<>();
-        ops.addAll(List.of(new Types[]{MINUS_MINUS, PLUS_PLUS}));
-        if (ops.contains(peek())) consume(peek());
-        else error("Expected '++' or '--' but did not receive either.");
     }
 
     private void parenExpression() {
@@ -260,10 +268,25 @@ public class Recognizer {
 
     private void blockSpace() {
         consume(QUAD_SPACE);
-        statement();
-        if (check(NEW_LINE)) {
-            consume(NEW_LINE);
+        blockStatement();
+        if (check(QUAD_SPACE)) {
             blockSpace();
+        }
+    }
+
+    private void funcBlock() {
+        blockStart();
+        funcBlockSpace();
+    }
+
+    private void funcBlockSpace() {
+        consume(QUAD_SPACE);
+        if (check(RETURN)) {returnStatement();}
+        else {
+            blockStatement();
+            if (check(QUAD_SPACE)) {
+                funcBlockSpace();
+            }
         }
     }
 
@@ -315,9 +338,7 @@ public class Recognizer {
             paramList();
         }
         consume(CPAREN);
-        block();
-        consume(QUAD_SPACE);
-        returnStatement();
+        funcBlock();
     }
 
     private void lambdaInitialization() {
@@ -391,7 +412,6 @@ public class Recognizer {
     }
 
     private void elifBlock() {
-        consume(NEW_LINE);
         consume(ELSE);
         consume(IF);
         expression();
@@ -399,9 +419,7 @@ public class Recognizer {
     }
 
     private void elseBlock() {
-        consume(NEW_LINE);
         consume(ELSE);
-        expression();
         block();
     }
 
@@ -450,15 +468,17 @@ public class Recognizer {
     }
 
     private boolean assignmentPending() {
-        return (assignmentPrefixPending()) || (check(IDENTIFIER) && checkNext(ASSIGN));  // NOTE: this works *only* in the contexts of all usages
+        return (assignmentPrefixPending()) || (check(IDENTIFIER) && checkNext(ASSIGN));
     }
 
     private boolean typingPending() {
         return typingKeywordsPending();
     }
 
-    private boolean arrSlotAssignPending() {
-        return check(IDENTIFIER) && checkNext(OSQUARE) && !checkNextNext(CSQUARE);  // NOTE: this works *only* in the contexts of all usages
+    private boolean arrSlotAssignPending() {  // only necessarily ugly function
+        return (check(IDENTIFIER) && checkNext(OSQUARE) && !checkNextNext(CSQUARE)) ||
+                (typingArrPending() && checkNextNext(CSQUARE) && lexemes.get(nextLexemeIndex + 2).getType() == IDENTIFIER
+                        && lexemes.get(nextLexemeIndex + 3).getType() == OSQUARE && lexemes.get(nextLexemeIndex + 4).getType() != CSQUARE);
     }
 
     private boolean assignmentPrefixPending() {
@@ -486,13 +506,9 @@ public class Recognizer {
         return check(MINUS) || check(NOT);
     }
 
-    private boolean backUnaryOperatorPending() {
-        return check(MINUS_MINUS) || check(PLUS_PLUS);
-    }
-
     private boolean terminalExpressionPending() {
         return check(IDENTIFIER) || check(INT_LIT) || check(FLOAT_LIT) || check(STRING_LIT) || check(TRUE)
-                || check(FALSE) || check(OPAREN) || check(NULL);
+                || check(FALSE) || check(OPAREN) || check(NULL) || arrPending();
     }
 
     private boolean parenExpressionPending() {
@@ -514,10 +530,6 @@ public class Recognizer {
     private boolean elseBlockPending() {
         return check(ELSE);
     }
-
-
-    // ------------ Grouped-Type Enumeration ------------
-
 
     // ------------ Error Reporting ------------
     private Lexeme error(String message) {

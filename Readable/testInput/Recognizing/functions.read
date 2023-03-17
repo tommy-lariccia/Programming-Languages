@@ -1,0 +1,38 @@
+// WORKS
+
+func my_function(param1, int param2):
+    param1 = param2
+    x = 2
+    return param1
+
+func int my_function(int param1, int param2):
+    return param1 + param2
+
+
+// ERRORING. These propagate error, which works fine, but can be most accurately tested individually.
+
+my_function(param1, int param2):
+    param1 = param2
+    x = 2
+    return param1
+
+func my_function(param1, int param2):
+     param1 = param2
+     x = 2
+
+func my_function(param1, int param2):
+  param1 = param2
+  x = 2
+  return param1
+
+func my_function(param1, , int param2):
+    param1 = param2
+    x = 2
+    return param1
+
+func my_function(param1, int param2):
+    func other_func(param1, int param2):
+        return param1
+    param1 = param2
+    x = 2
+    return param1

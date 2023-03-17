@@ -1,0 +1,26 @@
+// WORKING
+
+str yellow_cat000 = "nwnsnsn"
+yellow = 3
+_dog = yellow * 3
+local yellow = 5
+
+int[] xenon = [22, 1, 2]
+xenon[1] = 4
+xenon = [1]
+
+int[] acrobat[allsy[(3 + 2) * 5]] = 4 * 2 - 2.2
+
+
+// ERRORING
+
+xenon[0]  // failed because base expressions are simply not allowed
+0
+forty
+01around = 7
+xe[3 = 2
+xenon = [2,, 4]
+local int crackow = 4
+int[] acrobat[allsy[(3
+function(3n)
+

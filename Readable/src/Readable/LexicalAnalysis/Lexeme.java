@@ -106,6 +106,7 @@ public class Lexeme {
     }
 
     public int getLine() {
+        if (getType() == Types.NEW_LINE) return lineNumber - 1;
         return lineNumber;
     }
 

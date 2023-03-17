@@ -1,0 +1,10 @@
+if x > 3:
+    x = 2
+    y0 = 4 + 3
+else if x < 2:
+    a[2] = [3, 4]
+else
+    return true
+y = x + 3
+
+// Relevant possible errors handled in functions.read

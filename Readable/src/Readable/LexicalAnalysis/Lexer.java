@@ -135,6 +135,10 @@ public class Lexer {
             // single-character tokens
             case ':':
                 return new Lexeme(COLON, currLineNumber);
+            case '-':
+                return new Lexeme(MINUS, currLineNumber);
+            case '+':
+                return new Lexeme(PLUS, currLineNumber);
             case '[':
                 return new Lexeme(OSQUARE, currLineNumber);
             case ']':
@@ -160,10 +164,6 @@ public class Lexer {
 
                 // One or Two Character Tokens
 
-            case '-':
-                return new Lexeme(match('-') ? MINUS_MINUS : MINUS, currLineNumber);
-            case '+':
-                return new Lexeme(match('+') ? PLUS_PLUS : PLUS, currLineNumber);
             case '>':
                 return new Lexeme(match('=') ? GREATER_OR_EQUAL_COMP : GREATER_THAN_COMP, currLineNumber);
             case '<':
@@ -250,8 +250,8 @@ public class Lexer {
     }
 
     public Lexeme handleSingleLineComment() {
-        advance();
-        while (peek() != '\n' && peek() != '\r') {
+        if (isAtEnd()) return null;
+        while (!isAtEnd() && peek() != '\n' && peek() != '\r') {
             advance();
         }
         return null;

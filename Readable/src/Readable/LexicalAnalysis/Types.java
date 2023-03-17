@@ -18,8 +18,6 @@ public enum Types {
     LESS_THAN_COMP, GREATER_OR_EQUAL_COMP,
     LESS_OR_EQUAL_COMP,
 
-    PLUS_PLUS, MINUS_MINUS,
-
     // ------------ Keywords ------------
     FUNC, RETURN, WHILE, FOREACH, IN, IF, ELSE, LOCAL, LAMBDA,
 

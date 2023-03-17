@@ -1,9 +1,0 @@
-if (x + 2 == 4):
-    local gone = 4
-    int upon = 2
-    take(x, upon, gone)
-else if ("Apple" >= real_string):
-    print("Grossout " + real_string)
-    gone++
-else:
-    new_func = (num1, num2) => num1 - num2

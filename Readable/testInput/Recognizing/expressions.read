@@ -1,0 +1,17 @@
+// WORKS
+
+x = (read * "sjwnw" + function(nd * 3)) + 4 / 5 - 2 + (-3 * 7 and true or (false > true))
+x = -4
+function(ejej)
+x = ["w", 3, -4.4, 4 + (4 * e)] + [2] + function(3*n)
+arr[6*(7+13)] = 3.2 + x
+
+
+// ERRORING
+x = (read * "sjwnw" + 4 / 5 - 2 + (-3 * 7 and true or (false * true))
+
+x = (read * "sjwnw") + + 4 / 5 - 2 + (-3 * 7 and true or (false * true))
+
+x = --4
+
+x = ["w", 3, -4.4, 4 + (4 * e)] + [2] + function(3n)

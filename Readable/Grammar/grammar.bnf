@@ -4,18 +4,30 @@
 
 program ::= statement*
 
-statement ::= progStatement comment? lineEndChar
-            | comment lineEndChar
-            | commentBlock lineEndChar
+statement ::= progStatement comment?
+            | comment
+            | commentBlock
 
-progStatement ::= functionDefinition
-                | functionCall
-                | variableInitializationAssignment
+progStatement ::= functionDefinition lineEndChar
+                | functionCall lineEndChar
+                | variableInitializationAssignment lineEndChar
                 | conditionalStatement
-                | loopStatement
-                | lambdaInitialization
+                | loopStatement lineEndChar
+                | lambdaInitialization lineEndChar
+                | returnStatement lineEndChar
 
-lineEndChar ::= "\n" | "\r"
+blockStatement ::= blockProgStatement comment? lineEndChar
+                 | comment lineEndChar
+                 | commentBlock lineEndChar
+
+blockProgStatement ::= functionCall lineEndChar
+                     | variableInitializationAssignment lineEndChar
+                     | conditionalStatement
+                     | loopStatement lineEndChar
+                     | lambdaInitialization lineEndChar
+                     | returnStatement lineEndChar
+
+lineEndChar ::= "\n" | "\r" | EOF
 
 
 // COMMENTS
@@ -37,17 +49,15 @@ typingKeywords ::= "int" | "str" | "bool" | "float"
 // VARIABLES
 variableInitializationAssignment ::= assignment | arrSlotAssign
 
-arrSlotBegin ::= typingKeywords"["
-
 assignment ::= assignmentPrefix? IDENTIFIER "=" expression
 
 assignmentPrefix ::= "local" | typing  // mutually exclusive, local only for dynamic variables
 
-arrSlotAssign ::= arrSlotBegin expression "]" "=" expression  // TODO: Typing required?
+arrSlotAssign ::= typingArr? arrAccess "=" expression  // TODO: Typing required?
 
 arr ::= "[" exprList? "]"
 
-arrAccess ::= arrSlotBegin expression "]"
+arrAccess ::= IDENTIFIER "[" expression "]"
 
 exprList ::= expression
             | expression "," exprList
@@ -61,15 +71,11 @@ binaryExpression ::= unaryExpression binaryOp binaryExpression
 
 binaryOp ::= '*' | '/' | '+' | '-' | "and" | "or" | "==" | ">" | "<" | ">=" | "<="
 
-unaryExpression ::= frontUnaryExpression | backUnaryExpression | terminalExpression  // no use for combining unaries
+unaryExpression ::= frontUnaryExpression | terminalExpression  // no use for combining unaries
 
 frontUnaryExpression ::= frontUnaryOperator terminalExpression
 
-backUnaryExpression ::= terminalExpression backUnaryOperator
-
 frontUnaryOperator ::= "-" | "!"
-
-backUnaryOperator ::= "++" | "--"
 
 parenExpression ::= "(" expression ")"
 
@@ -82,9 +88,8 @@ block ::= blockStart blockSpace
 
 blockStart ::= ":" lineEndChar
 
-blockSpace ::= QUADSPACE statement
-        | QUADSPACE statement lineEndChar blockSpace
-
+blockSpace ::= QUADSPACE blockStatement
+        | QUADSPACE blockStatement lineEndChar blockSpace
 
 // FUNCTIONS
 functionCall ::= IDENTIFIER "(" argList? ")"
@@ -99,7 +104,7 @@ parameter ::= typing? IDENTIFIER
 
 returnStatement ::= "return" expression
 
-functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" block QUADSPACE returnStatement
+functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" block
 
 lambdaInitialization ::= "lambda" IDENTIFIER "=" "(" paramList? ")" "=>" expression
 
@@ -121,6 +126,6 @@ conditionalStatement ::= ifBlock elifBlock* elseBlock?
 
 ifBlock ::= "if" expression block
 
-elifBlock ::= lineEndChar "else" "if" expression block
+elifBlock ::= "else" "if" expression block
 
-elseBlock ::= lineEndChar "else" expression block
+elseBlock ::= "else" expression block
