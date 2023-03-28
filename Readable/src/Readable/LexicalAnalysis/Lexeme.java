@@ -100,6 +100,18 @@ public class Lexeme {
 
     // ------------ Getters & Setters ------------
 
+    public int getIntValue() {
+        return integerValue;
+    }
+
+    public double getDecValue() {
+        return decValue;
+    }
+
+    public String getStringValue() {
+        return stringValue;
+    }
+
     public Object getValue() {
         return determineVal();
     }
@@ -149,6 +161,10 @@ public class Lexeme {
         copy.stringValue = this.stringValue;
         copy.arrVal = this.arrVal;
         return copy;
+    }
+
+    public String toValueOnlyString() {
+        return String.valueOf(getValue());
     }
 
     // ------------ toString ------------
