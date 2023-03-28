@@ -19,6 +19,9 @@ public class Lexeme {
     private String stringValue;
     private ArrayList<Lexeme> arrVal;
 
+    // Children
+    private ArrayList<Lexeme> children = new ArrayList<>();
+
 
     // ------------ Constructors ------------
 
@@ -130,6 +133,24 @@ public class Lexeme {
         arrVal = arr;
     }
 
+    public void addChild(Lexeme lex) {children.add(lex); simpleElevation(lex);}
+
+    public void addAllChildren(ArrayList<Lexeme> newChildren) {children.addAll(newChildren);}
+
+    public Lexeme getChild(int i) {return children.get(i);}
+
+    public ArrayList<Lexeme> getChildren() {return children;}
+
+    public Lexeme copy() {  // a copy without any children
+        Lexeme copy = new Lexeme(this.type);
+        copy.lineNumber = this.lineNumber;
+        copy.integerValue = this.integerValue;
+        copy.decValue = this.decValue;
+        copy.stringValue = this.stringValue;
+        copy.arrVal = this.arrVal;
+        return copy;
+    }
+
     // ------------ toString ------------
 
     public String toString() {
@@ -140,4 +161,35 @@ public class Lexeme {
         return getType().toString() + " Lexeme at line " + getLine();
     }
 
+    // --------------- Printing Lexemes as Parse Trees ---------------
+
+    public void printAsParseTree() {
+        System.out.println(getPrintableTree(this, 0));
+    }
+
+    private static String getPrintableTree(Lexeme root, int level) {
+        if (root == null) return "(Empty ParseTree)";
+        StringBuilder treeString = new StringBuilder(root.toString());
+        StringBuilder spacer = new StringBuilder("\n");
+        spacer.append("\t".repeat(level));
+        int numChildren = root.children.size();
+        if (numChildren > 0) {
+            treeString.append(" (with ").append(numChildren).append(numChildren == 1 ? " child):" : " children):");
+            for (int i = 0; i < numChildren; i++) {
+                Lexeme child = root.getChild(i);
+                treeString.append(spacer).append("(").append(i + 1).append(") ").append(getPrintableTree(child, level + 1));
+            }
+        }
+        return treeString.toString();
+    }
+
+    // ------------ Misc ------------
+
+    private void simpleElevation(Lexeme justAdded) {
+        if ((this.getType() == Types.TIMES || this.getType() == Types.PLUS) && justAdded.getType() == this.getType()) {
+            children.remove(children.size() - 1);
+            children.addAll(justAdded.getChildren());
+        }
+        return;
+    }
 }

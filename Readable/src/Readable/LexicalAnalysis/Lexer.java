@@ -221,7 +221,7 @@ public class Lexer {
     }
 
     public Lexeme lexWhitespace() {
-        while (peek() == ' ') advance();
+        while (peek() == ' ' && (currentPosition - startOfCurrLex) < 4) advance();
         if ((currentPosition - startOfCurrLex) == 4) return new Lexeme(QUAD_SPACE, currLineNumber);
         else return null;
     }

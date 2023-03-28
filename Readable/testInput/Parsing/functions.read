@@ -36,3 +36,6 @@ func my_function(param1, int param2):
     param1 = param2
     x = 2
     return param1
+
+x = 2
+    x = 2

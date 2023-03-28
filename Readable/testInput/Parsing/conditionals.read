@@ -3,7 +3,7 @@ if x > 3:
     y0 = 4 + 3
 else if x < 2:
     a[2] = [3, 4]
-else
+else:
     return true
 y = x + 3
 

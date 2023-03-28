@@ -29,5 +29,9 @@ public enum Types {
     STRING_LIT, INT_LIT, FLOAT_LIT, TRUE, FALSE,
 
     // ------------ Misc ------------
-    ASSIGN, RANGE, IDENTIFIER, EOF, ERROR
+    ASSIGN, RANGE, IDENTIFIER, EOF,
+
+    // ------------ Parse Structures ------------
+    ERROR, ELSE_IF, COND_SEC, EMPTY_LIST, ANY_TYPE, PARAM, PARAM_LIST, ARG_LIST, FUNC_CALL, EXPR_LIST, ARR_ACC, ARR,
+    ARR_ASS, ASS, TYPING_ARR, STATEMENT_LIST, PROG, EOL
 }

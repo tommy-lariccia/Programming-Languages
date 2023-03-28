@@ -5,8 +5,7 @@ package Readable;
 
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Lexer;
-import Readable.LexicalAnalysis.Types;
-import Readable.Recognizing.Recognizer;
+import Readable.Parsing.Parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -44,9 +43,12 @@ public class Readable {
         Lexer lexer = new Lexer(source);
         ArrayList<Lexeme> lexemes = lexer.lex();
 
-        // Recognizing
-        Recognizer recognizing = new Recognizer(lexemes);
-        recognizing.program();
+//        for (Lexeme lex : lexemes) System.out.println(lex);
+
+//      Recognizing
+        Parser parsing = new Parser(lexemes);
+        Lexeme parseTree = parsing.program();
+        parseTree.printAsParseTree();
     }
 
     // ------------ Errors ------------

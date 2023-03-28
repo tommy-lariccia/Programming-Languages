@@ -1,0 +1,12 @@
+x = 2
+x = 3
+while x == 2:
+    x = 4
+    x = 5
+x = 2
+while x == 2:
+    foreach z in [2, 3]:
+        x = 5
+    x = 4
+    x = 5
+lambda z = (y, x) => y + x

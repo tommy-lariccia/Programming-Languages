@@ -1,5 +1,0 @@
-lambda lamb = () => 3
-
-lambda lamb = (x, y) => x + y
-
-(x, y) => x + y  // Broken

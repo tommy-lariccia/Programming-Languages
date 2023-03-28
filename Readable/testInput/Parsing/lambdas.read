@@ -1,0 +1,6 @@
+lambda lamb = () => 3
+
+lambda lamb = (int[] x, y) => x + y
+
+(x, y) => x + y  // Broken
+lambda lamb = (int[] x, y + 2) => x + y  // Broken

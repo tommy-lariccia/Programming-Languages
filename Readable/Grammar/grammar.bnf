@@ -53,14 +53,13 @@ assignment ::= assignmentPrefix? IDENTIFIER "=" expression
 
 assignmentPrefix ::= "local" | typing  // mutually exclusive, local only for dynamic variables
 
-arrSlotAssign ::= typingArr? arrAccess "=" expression  // TODO: Typing required?
+arrSlotAssign ::= typingArr? arrAccess "=" expression
 
 arr ::= "[" exprList? "]"
 
 arrAccess ::= IDENTIFIER "[" expression "]"
 
-exprList ::= expression
-            | expression "," exprList
+exprList ::= argList
 
 
 // EXPRESSIONS
