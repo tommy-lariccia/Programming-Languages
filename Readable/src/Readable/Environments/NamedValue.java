@@ -6,24 +6,22 @@ import Readable.LexicalAnalysis.Types;
 public class NamedValue {
     // ------------ Instance Variables ------------
     private final Types type;
-    private final boolean isLocal;
     private final Lexeme name;
 
     private Lexeme value;
 
     // ------------ Constructors ------------
-    public NamedValue(Lexeme name, Types type, boolean isLocal) {
+    public NamedValue(Lexeme name, Types type) {
         this.name = name;
         this.type = type;
-        this.isLocal = isLocal;
         this.value = new Lexeme(Types.NULL);
     }
 
     // ------------ Getters and Setters ------------
 
-    public Types getType() {return type;}
+    public Types getType() {
+        return type;}
 
-    public boolean isLocal() {return isLocal;}
 
     public Lexeme getName() {return name;}
 

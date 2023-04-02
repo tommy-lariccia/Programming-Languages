@@ -3,6 +3,9 @@
 
 package Readable;
 
+import Readable.Environments.Environment;
+import Readable.Environments.TestEnvironment;
+import Readable.Evaluating.Evaluator;
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Lexer;
 import Readable.Parsing.Parser;
@@ -18,16 +21,17 @@ public class Readable {
     private static final ArrayList<String> runtimeErrorMessages = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        try {
-            if (args.length == 1) runFile(args[0]);
-            else {
-                System.out.println("Usage: Readable [path to .read file]");
-                System.exit(64);
-            }
-        } catch (IOException exception) {
-            throw new IOException(exception.toString());
-        }
-        printErrors();
+        TestEnvironment.main();
+//        try {
+//            if (args.length == 1) runFile(args[0]);
+//            else {
+//                System.out.println("Usage: Readable [path to .read file]");
+//                System.exit(64);
+//            }
+//        } catch (IOException exception) {
+//            throw new IOException(exception.toString());
+//        }
+//        printErrors();
     }
 
     private static String getSourceCodeFromFile(String path) throws IOException {
@@ -43,12 +47,17 @@ public class Readable {
         Lexer lexer = new Lexer(source);
         ArrayList<Lexeme> lexemes = lexer.lex();
 
-//        for (Lexeme lex : lexemes) System.out.println(lex);
-
-//      Recognizing
+        // Recognizing
         Parser parsing = new Parser(lexemes);
         Lexeme parseTree = parsing.program();
         parseTree.printAsParseTree();
+
+        // Environments
+        Environment globalEnvironment = new Environment();
+
+        // Evaluation
+        Evaluator evaluator = new Evaluator();
+//        evaluator.eval(parseTree, globalEnvironment);
     }
 
     // ------------ Errors ------------

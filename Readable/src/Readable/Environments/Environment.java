@@ -13,6 +13,11 @@ public class Environment {
     private final ArrayList<NamedValue> entries;
 
     // ------------ Constructors ------------
+    public Environment() {
+        this.parent = null;
+        this.entries = new ArrayList<>();
+    }
+
     public Environment(Environment parent) {
         this.parent = parent;
         this.entries = new ArrayList<>();
@@ -39,18 +44,18 @@ public class Environment {
         return value;
     }
 
-    public void add(Types type, Lexeme identifier, Lexeme value, boolean isLocal) {
+    public void add(Types type, Lexeme identifier, Lexeme value) {
         if (softLookup(identifier) != null) {
-            error("A variable with the name '" + identifier.getValue() + "' is already defined and cannot" +
-                    "be re-declared.", value.getLine());
+            error("A variable with name '" + identifier.getStringValue() + "' is already defined and cannot be " +
+                    "re-declared.", identifier.getLine());
         } else {
-            entries.add(new NamedValue(identifier, type, isLocal));
+            entries.add(new NamedValue(identifier, type));
             if (value != null) update(identifier, value);
         }
     }
 
-    public void add(Types type, Lexeme identifier, boolean isLocal) {
-        add(type, identifier, null, isLocal);
+    public void add(Types type, Lexeme identifier) {
+        add(type, identifier, null);
     }
 
     public void update(Lexeme identifier, Lexeme newValue) {
@@ -74,6 +79,8 @@ public class Environment {
     }
 
     private Lexeme typeElevate(Lexeme value, Types type) {
+        System.out.println(type);
+        System.out.println(value.getType());
         if (value.getType() == Types.INT_LIT && type == Types.FLOAT_LIT) {
             return new Lexeme(Types.FLOAT_LIT, value.getLine(), (double) value.getIntValue());
         } else if ((value.getType() == Types.INT_LIT || value.getType() == Types.FLOAT_LIT) && type == Types.STRING_LIT) {
