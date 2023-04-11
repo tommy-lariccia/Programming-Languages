@@ -88,7 +88,7 @@ public class Lexeme {
             case IDENTIFIER -> {
                 return "(name: " + getString() + ")";
             }
-            case ARRAY -> {
+            case ARR -> {
                 return getArr();
             }
             default -> {
@@ -145,7 +145,10 @@ public class Lexeme {
         arrVal = arr;
     }
 
-    public void addChild(Lexeme lex) {children.add(lex); simpleElevation(lex);}
+    public void addChild(Lexeme lex) {
+        children.add(lex);
+//        simpleElevation(lex);
+    }
 
     public void addAllChildren(ArrayList<Lexeme> newChildren) {children.addAll(newChildren);}
 

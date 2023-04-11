@@ -9,7 +9,7 @@ public enum Types {
     RARROW, NEW_LINE, COMMA,
 
     // ------------ Data Types ------------
-    INTEGER, FLOAT, BOOL, STRING, NULL, ARRAY,
+    INTEGER, FLOAT, BOOL, STRING, NULL,
 
     // ------------ Operators ------------
     PLUS, MINUS, TIMES, DIVIDE,

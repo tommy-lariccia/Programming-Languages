@@ -358,6 +358,11 @@ public class LineParser {
 
     private Lexeme forEachLoop() {
         Lexeme root = consume(FOREACH);
+        if (typingPending()) {
+            root.addChild(typing());
+        } else {
+            root.addChild(new Lexeme(ANY_TYPE));
+        }
         root.addChild(consume(IDENTIFIER));
         consume(IN);
         root.addChild(iterable());

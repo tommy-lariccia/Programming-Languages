@@ -21,17 +21,16 @@ public class Readable {
     private static final ArrayList<String> runtimeErrorMessages = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        TestEnvironment.main();
-//        try {
-//            if (args.length == 1) runFile(args[0]);
-//            else {
-//                System.out.println("Usage: Readable [path to .read file]");
-//                System.exit(64);
-//            }
-//        } catch (IOException exception) {
-//            throw new IOException(exception.toString());
-//        }
-//        printErrors();
+        try {
+            if (args.length == 1) runFile(args[0]);
+            else {
+                System.out.println("Usage: Readable [path to .read file]");
+                System.exit(64);
+            }
+        } catch (IOException exception) {
+            throw new IOException(exception.toString());
+        }
+        printErrors();
     }
 
     private static String getSourceCodeFromFile(String path) throws IOException {
@@ -57,7 +56,8 @@ public class Readable {
 
         // Evaluation
         Evaluator evaluator = new Evaluator();
-//        evaluator.eval(parseTree, globalEnvironment);
+        evaluator.eval(parseTree, globalEnvironment);
+        System.out.println(globalEnvironment);
     }
 
     // ------------ Errors ------------
