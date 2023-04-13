@@ -196,7 +196,7 @@ public class Lexer {
         boolean isInteger = true;
         while (isDigit(peek())) advance();
 
-        if (peek() == '.') {
+        if (peek() == '.' && !(peekNext() == '.')) {
             if (!isDigit(peekNext())) error("Malformed Float (Ends in Decimal Point)");
             isInteger = false;
             advance();

@@ -45,7 +45,7 @@ public class Readable {
         // Lexing
         Lexer lexer = new Lexer(source);
         ArrayList<Lexeme> lexemes = lexer.lex();
-
+        
         // Recognizing
         Parser parsing = new Parser(lexemes);
         Lexeme parseTree = parsing.program();
@@ -54,10 +54,10 @@ public class Readable {
         // Environments
         Environment globalEnvironment = new Environment();
 
-        // Evaluation
-        Evaluator evaluator = new Evaluator();
-        evaluator.eval(parseTree, globalEnvironment);
-        System.out.println(globalEnvironment);
+//        // Evaluation
+//        Evaluator evaluator = new Evaluator();
+//        evaluator.eval(parseTree, globalEnvironment);
+//        System.out.println(globalEnvironment);
     }
 
     // ------------ Errors ------------

@@ -3,6 +3,8 @@
 
 package Readable.LexicalAnalysis;
 
+import Readable.Environments.Environment;
+
 import java.util.ArrayList;
 
 public class Lexeme {
@@ -21,6 +23,9 @@ public class Lexeme {
 
     // Children
     private ArrayList<Lexeme> children = new ArrayList<>();
+
+    // For Closures
+    private Environment definingEnv;
 
 
     // ------------ Constructors ------------
@@ -147,10 +152,11 @@ public class Lexeme {
 
     public void addChild(Lexeme lex) {
         children.add(lex);
-//        simpleElevation(lex);
     }
 
     public void addAllChildren(ArrayList<Lexeme> newChildren) {children.addAll(newChildren);}
+
+    public void setDefiningEnv(Environment newEnv) {definingEnv = newEnv;}
 
     public Lexeme getChild(int i) {return children.get(i);}
 
@@ -200,15 +206,5 @@ public class Lexeme {
             }
         }
         return treeString.toString();
-    }
-
-    // ------------ Misc ------------
-
-    private void simpleElevation(Lexeme justAdded) {
-        if ((this.getType() == Types.TIMES || this.getType() == Types.PLUS) && justAdded.getType() == this.getType()) {
-            children.remove(children.size() - 1);
-            children.addAll(justAdded.getChildren());
-        }
-        return;
     }
 }

@@ -419,7 +419,7 @@ public class LineParser {
     private boolean progStatementPending() {
         return functionDefinitionPending() || functionCallPending() || variableInitializationAssignmentPending()
                 || conditionalStatementPending() || loopStatementPending() || lambdaInitializationPending()
-                || elseBlockPending();
+                || elseBlockPending() || check(RETURN);
     }
 
     private boolean functionDefinitionPending() {

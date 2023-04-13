@@ -18,7 +18,7 @@ public class Evaluator {
             case ASS -> evalAss(tree, env);
             case PLUS, MINUS, TIMES, DIVIDE -> evalExpr(tree, env);
             case FOREACH -> evalForeach(tree, env);
-
+            case FUNC -> evalFunctionDefinition(tree, env);
 
             default -> error("Cannot evaluate " + tree, tree.getLine());
         };
@@ -98,6 +98,18 @@ public class Evaluator {
             return arr;
         }
         return new Lexeme(Types.NULL);
+    }
+
+    private Lexeme evalFunctionDefinition(Lexeme tree, Environment env) {
+        tree.setDefiningEnv(env);
+        Lexeme functionName = tree.getChild(0);
+        env.add(tree.getType(), functionName, tree);
+        return functionName;
+    }
+
+    private Lexeme evalFunctionCall(Lexeme tree, Environment env) {
+        Lexeme functionName = tree.getChild(0);
+        return functionName;
     }
 
     // ----------- Cross-Type Operations -----------
