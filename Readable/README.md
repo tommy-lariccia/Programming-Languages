@@ -128,7 +128,9 @@ int[] arr[4] = a
 
 Functions begin with the keyword "func", followed by an optional type (for "static" functions, which must have only 
 static parameters), following by the name with parentheses and parameters inside. Parameters can be static and are 
-optional. Dynamic functions may have one or more static parameters; static functions must have only static parameters. 
+optional. Dynamic functions may have one or more static parameters; static functions must have only static parameters.
+
+Any function's local scope cannot access variables in the global scope, except variables referencing other functions. 
 
 The last line (and only the last line) may be a return statement. They may return `null`, explicitly or implicitly (via
 no return statement).

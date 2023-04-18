@@ -19,7 +19,6 @@ public class Lexeme {
     private int integerValue;
     private double decValue;
     private String stringValue;
-    private ArrayList<Lexeme> arrVal;
 
     // Children
     private ArrayList<Lexeme> children = new ArrayList<>();
@@ -55,11 +54,6 @@ public class Lexeme {
         stringValue = strVal;
     }
 
-    public Lexeme(Types tokenType, int line, ArrayList<Lexeme> arr) {
-        this(tokenType, line);
-        arrVal = arr;
-    }
-
 
     // ------------ Values ------------
 
@@ -76,7 +70,7 @@ public class Lexeme {
     }
 
     private ArrayList<Lexeme> getArr() {
-        return arrVal;
+        return getChild(0).getChildren();
     }
 
     private Object determineVal() {
@@ -156,10 +150,6 @@ public class Lexeme {
         stringValue = str;
     }
 
-    public void setValue(ArrayList<Lexeme> arr) {
-        arrVal = arr;
-    }
-
     public void addChild(Lexeme lex) {
         children.add(lex);
     }
@@ -178,7 +168,6 @@ public class Lexeme {
         copy.integerValue = this.integerValue;
         copy.decValue = this.decValue;
         copy.stringValue = this.stringValue;
-        copy.arrVal = this.arrVal;
         return copy;
     }
 

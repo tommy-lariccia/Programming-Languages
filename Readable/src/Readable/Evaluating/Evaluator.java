@@ -1,6 +1,7 @@
 package Readable.Evaluating;
 
 import Readable.Environments.Environment;
+import Readable.Environments.NamedValue;
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Types;
 
@@ -25,6 +26,8 @@ public class Evaluator {
             case FUNC -> evalFunctionDefinition(tree, env);
             case FUNC_CALL -> evalFunctionCall(tree, env);
             case WHILE -> evalWhileLoop(tree, env);
+            case ARR -> evalArr(tree, env);
+            case LAMBDA -> evalLambdaInitialization(tree, env);
 
             default -> error("Cannot evaluate " + tree, tree.getLine());
         };
@@ -108,10 +111,37 @@ public class Evaluator {
     }
 
     private Lexeme evalFunctionDefinition(Lexeme tree, Environment env) {
-        tree.setDefiningEnv(env);
+        Environment newEnv = getFunctionEnv(env);
+        tree.setDefiningEnv(newEnv);
         Lexeme functionName = tree.getChild(1);
         env.add(tree.getType(), functionName, tree);
+        newEnv.add(tree.getType(), functionName, tree);
         return functionName;
+    }
+
+    private Lexeme evalLambdaInitialization(Lexeme tree, Environment env) {
+        Lexeme functionName = tree.getChild(0);
+        Lexeme paramList = tree.getChild(1);
+        Lexeme returnExpr = tree.getChild(2);
+        Lexeme newFunc = new Lexeme(FUNC);
+        Lexeme returnStatement = new Lexeme(RETURN);
+        returnStatement.addChild(returnExpr);
+        newFunc.addChild(new Lexeme(ANY_TYPE));
+        newFunc.addChild(functionName);
+        newFunc.addChild(paramList);
+        newFunc.addChild(returnStatement);
+        evalFunctionDefinition(tree, env);
+        return functionName;
+    }
+
+    private Environment getFunctionEnv(Environment env) {
+        Environment newEnv = new Environment();  // never runs into issues because every function call will define another scope under this one
+        if (env.isGlobal()) {
+            for (NamedValue v : env.seeEntries()) {
+                if (v.getType() == FUNC) newEnv.add(v.getType(), v.getName(), v.getValue());
+            }
+        } else {newEnv = env;}
+        return newEnv;
     }
 
     private Lexeme evalFunctionCall(Lexeme tree, Environment env) {
@@ -133,7 +163,7 @@ public class Evaluator {
     }
 
     private Lexeme evalArgList(Lexeme params, Environment env) {
-        Lexeme root = new Lexeme(PARAM_LIST);
+        Lexeme root = new Lexeme(ARG_LIST);
         for (Lexeme param : params.getChildren()) {
             root.addChild(eval(param, env));
         }
@@ -160,6 +190,14 @@ public class Evaluator {
 
             default -> {return new Lexeme(Types.NULL);}
         }
+    }
+
+    private Lexeme evalArr(Lexeme tree, Environment env) {
+        Lexeme newArr = new Lexeme(ARR);
+        Lexeme newExprList = new Lexeme(EXPR_LIST);
+        for (Lexeme expr : tree.getChild(0).getChildren()) newExprList.addChild(eval(expr, env));
+        newArr.addChild(newExprList);
+        return newArr;
     }
 
     // ----------- Error Reporting -----------

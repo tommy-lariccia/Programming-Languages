@@ -133,7 +133,14 @@ public class Environment {
         }
     }
 
-    // ------------ toString ------------
+    // ------------ Misc ------------
+    public boolean isGlobal() {
+        return this.parent == null;
+    }
+
+    public ArrayList<NamedValue> seeEntries() {
+        return (ArrayList<NamedValue>) entries.clone();
+    }
 
     public String toString() {
         String str = "Environment " + this.hashCode();
