@@ -46,26 +46,6 @@ The initialization and reassignment of a static variable does not require a type
 x = 2
 ```
 
-# Global vs Local
-
-A variable name defined in an outer scope and reused in an inner scope will always be treated as referencing the 
-variable of the outer scope, rather than defining a new variable in the inner scope. In order to use an identical 
-variable name in an inner scope, one of two things must be done:
-- For static variables, the local variable may be re-initialized (e.g. `int i = 0`)
-- For dynamic variables, the `local` keyword (e.g. `local i = 0`) should be used to clarify that all other references to that variable in the scope or a deeper scope are local
-
-Parameters are interpreted as local to the function - as is the variable initialized in a foreach loop (seen as local
-to the loop block).
-
-Be careful! The following is an infinite loop:
-```
-int i = 0
-sum = 0
-while i < 10:
-    sum = sum + i
-    int i = i + 1
-```
-
 # Types 
 
 There are four primitive types (integers, floats, strings, boolean) and one collection-type (dynamic array), technically

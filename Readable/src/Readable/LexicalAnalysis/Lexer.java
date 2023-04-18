@@ -30,7 +30,6 @@ public class Lexer {
         closedKeywords.put("in", IN);
         closedKeywords.put("if", IF);
         closedKeywords.put("else", ELSE);
-        closedKeywords.put("local", LOCAL);
         closedKeywords.put("lambda", LAMBDA);
 
         // Boolean

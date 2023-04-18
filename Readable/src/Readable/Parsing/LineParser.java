@@ -137,17 +137,12 @@ public class LineParser {
 
     private Lexeme assignment() {
         Lexeme root = new Lexeme(ASS);
-        if (assignmentPrefixPending()) root.addChild(assignmentPrefix());
+        if (typingPending()) root.addChild(typing());
         else root.addChild(new Lexeme(ANY_TYPE));
         root.addChild(consume(IDENTIFIER));
         consume(ASSIGN);
         root.addChild(expression());
         return root;
-    }
-
-    private Lexeme assignmentPrefix() {
-        if (check(LOCAL)) return consume(LOCAL);
-        else return typing();
     }
 
     private Lexeme arrSlotAssign() {
@@ -457,7 +452,7 @@ public class LineParser {
     }
 
     private boolean assignmentPending() {
-        return (assignmentPrefixPending()) || (check(IDENTIFIER) && checkNext(ASSIGN));
+        return (typingPending()) || (check(IDENTIFIER) && checkNext(ASSIGN));
     }
 
     private boolean typingPending() {
@@ -468,10 +463,6 @@ public class LineParser {
         return (check(IDENTIFIER) && checkNext(OSQUARE) && !checkNextNext(CSQUARE)) ||
                 (typingArrPending() && checkNextNext(CSQUARE) && lexemes.get(nextLexemeIndex + 2).getType() == IDENTIFIER
                         && lexemes.get(nextLexemeIndex + 3).getType() == OSQUARE && lexemes.get(nextLexemeIndex + 4).getType() != CSQUARE);
-    }
-
-    private boolean assignmentPrefixPending() {
-        return typingPending() || check(LOCAL);
     }
 
     private boolean exprListPending() {

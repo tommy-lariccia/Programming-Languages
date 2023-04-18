@@ -125,10 +125,7 @@ public class Environment {
 
     public void addOrUpdate(Types type, Lexeme identifier, Lexeme value) {
         if (type != Types.ANY_TYPE) {
-            if (softLookup(identifier) != null)
-                error("Variable '" + identifier.getStringValue() + "' has already been declared within the local " +
-                        "scope.", identifier.getLine());
-            unrestrainedAdd(type, identifier, value);
+            add(type, identifier, value);
         } else if (scaleLookup(identifier) != null) {
             update(identifier, value);
         } else {

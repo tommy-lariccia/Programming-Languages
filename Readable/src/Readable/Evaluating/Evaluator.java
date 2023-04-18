@@ -42,11 +42,7 @@ public class Evaluator {
         Lexeme expr = eval(tree.getChild(2), env);
         Types type = tree.getChild(0).getType();
         Lexeme name = tree.getChild(1);
-        if (type == Types.LOCAL) {
-            env.localAdd(Types.ANY_TYPE, name, expr);
-        } else {
-            env.addOrUpdate(type, name, expr);
-        }
+        env.addOrUpdate(type, name, expr);
         return new Lexeme(null);
     }
 

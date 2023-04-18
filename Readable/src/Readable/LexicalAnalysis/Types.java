@@ -19,7 +19,7 @@ public enum Types {
     LESS_OR_EQUAL_COMP,
 
     // ------------ Keywords ------------
-    FUNC, RETURN, WHILE, FOREACH, IN, IF, ELSE, LOCAL, LAMBDA,
+    FUNC, RETURN, WHILE, FOREACH, IN, IF, ELSE, LAMBDA,
 
     // ------------ Boolean ------------
     AND, OR, NOT,
