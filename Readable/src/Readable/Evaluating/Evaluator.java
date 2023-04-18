@@ -35,13 +35,12 @@ public class Evaluator {
     private Lexeme evalAss(Lexeme tree, Environment env) {
         Lexeme expr = eval(tree.getChild(2), env);
         Types type = tree.getChild(0).getType();
-        if (type == Types.INTEGER)
-            type = Types.INT_LIT;
-        if (type == Types.FLOAT)
-            type = Types.FLOAT_LIT;
-        if (type == Types.STRING)
-            type = Types.STRING_LIT;
-        env.doInAss(type, tree.getChild(1), expr);
+        Lexeme name = tree.getChild(1);
+        if (type == Types.LOCAL) {
+            env.localAdd(Types.ANY_TYPE, name, expr);
+        } else {
+            env.addOrUpdate(type, name, expr);
+        }
         return new Lexeme(null);
     }
 
@@ -109,6 +108,9 @@ public class Evaluator {
 
     private Lexeme evalFunctionCall(Lexeme tree, Environment env) {
         Lexeme functionName = tree.getChild(0);
+        Lexeme funcDefTree = env.lookup(functionName);
+        Lexeme paramList = funcDefTree.getChild(1);
+        Lexeme argList = tree.getChild(1);
         return functionName;
     }
 

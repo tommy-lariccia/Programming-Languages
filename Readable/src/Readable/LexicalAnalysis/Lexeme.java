@@ -176,6 +176,12 @@ public class Lexeme {
         return String.valueOf(getValue());
     }
 
+    // ------------ Override(s) ------------
+
+    public boolean equals(Object other) {
+        return (other instanceof Lexeme) && (((Lexeme) other).getStringValue() == this.getStringValue());
+    }
+
     // ------------ toString ------------
 
     public String toString() {

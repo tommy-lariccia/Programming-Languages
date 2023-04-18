@@ -14,13 +14,34 @@ public class Environment {
 
     // ------------ Constructors ------------
     public Environment() {
-        this.parent = null;
-        this.entries = new ArrayList<>();
+        this(null);
     }
 
     public Environment(Environment parent) {
         this.parent = parent;
         this.entries = new ArrayList<>();
+    }
+
+    // ------------ Typing ------------
+
+    private Lexeme typeElevate(Lexeme value, Types type) {
+        if ((value.getType() == Types.INT_LIT || value.getType() == Types.INTEGER) && (type == Types.FLOAT_LIT || type == Types.FLOAT)) {
+            return new Lexeme(Types.FLOAT_LIT, value.getLine(), (double) value.getIntValue());
+        } else if ((value.getType() == Types.INT_LIT || value.getType() == Types.INTEGER || value.getType() == Types.FLOAT_LIT || type == Types.FLOAT) && (type == Types.STRING_LIT || type == Types.STRING)) {
+            return new Lexeme(Types.STRING_LIT, value.getLine(), String.valueOf(value.getValue()));
+        }
+        return null;
+    }
+
+    private boolean compare(Types first, Types second) {
+        return first == second || second == Types.NULL || first == Types.ANY_TYPE || subCompare(first, second)
+                || subCompare(second, first);
+    }
+
+    private boolean subCompare(Types first, Types second) {
+        return (first == Types.BOOL && second == Types.TRUE) || (first == Types.BOOL && second == Types.FALSE) ||
+                (first == Types.STRING && second == Types.STRING_LIT) || (first == Types.INTEGER && second == Types.INT_LIT)
+                || (first == Types.FLOAT && second == Types.FLOAT_LIT);
     }
 
     // ------------ Core Environment Functions ------------
@@ -49,22 +70,31 @@ public class Environment {
         return value;
     }
 
+    private void unrestrainedAdd(Types type, Lexeme identifier, Lexeme value) {
+        entries.add(new NamedValue(identifier, type));
+        if (value != null) update(type, identifier, value);
+    }
+
     public void add(Types type, Lexeme identifier, Lexeme value) {
         if (scaleLookup(identifier) != null) {
             error("A variable with name '" + identifier.getStringValue() + "' is already defined and cannot be " +
                     "re-declared.", identifier.getLine());
         } else {
-            localAdd(type, identifier, value);
+           unrestrainedAdd(type, identifier, value);
+        }
+    }
+
+    public void localAdd(Types type, Lexeme identifier, Lexeme value) {
+        if (softLookup(identifier) != null) {
+            error("A variable with name '" + identifier.getStringValue() + "' is already defined and cannot be " +
+                    "re-declared.", identifier.getLine());
+        } else {
+            unrestrainedAdd(type, identifier, value);
         }
     }
 
     public void add(Types type, Lexeme identifier) {
         add(type, identifier, null);
-    }
-
-    private void localAdd(Types type, Lexeme identifier, Lexeme value) {
-        entries.add(new NamedValue(identifier, type));
-        if (value != null) update(null, identifier, value);
     }
 
     public void update(Types type, Lexeme identifier, Lexeme newValue) {
@@ -74,47 +104,39 @@ public class Environment {
             if (namedValue.getName().getStringValue().equals(identifier.getStringValue())) {
                 Types declaredType = namedValue.getType();
                 Types providedType = newValue.getType();
-                if ((declaredType != Types.ANY_TYPE) && type != declaredType && (type != null)) {
-                    error("Cannot acknowledge type " + type + " when identifier's type set to " + declaredType, identifier.getLine());
-                    return;
-                }
-                if ((providedType != declaredType) && !(declaredType == Types.ANY_TYPE))
+                Types checkType = type;
+
+                if (!compare(declaredType, checkType))
+                    error("Acknowledged type " + checkType.toString() + " does not match expected type " + declaredType.toString(), identifier.getLine());
+
+                if (!compare(declaredType, providedType)) {
                     newValue = typeElevate(newValue, declaredType);
+                }
+
                 if (newValue == null)
                     error("Variable '" + identifier.getValue() + "' has been declared as type " +
-                            declaredType + " and cannot be assigned a value of type " + providedType,
+                                    declaredType + " and cannot be assigned a value of type " + providedType,
                             identifier.getLine());
+
                 namedValue.setValue(newValue);
                 return;
             }
         }
-        parent.update(type, identifier, newValue);
+        if (parent != null) {
+            parent.update(type, identifier, newValue);
+        }
     }
 
     public void update(Lexeme identifier, Lexeme newValue) {
-        update(null, identifier, newValue);
+        update(Types.ANY_TYPE, identifier, newValue);
     }
 
-    private Lexeme typeElevate(Lexeme value, Types type) {
-        if (value.getType() == Types.INT_LIT && type == Types.FLOAT_LIT) {
-            return new Lexeme(Types.FLOAT_LIT, value.getLine(), (double) value.getIntValue());
-        } else if ((value.getType() == Types.INT_LIT || value.getType() == Types.FLOAT_LIT) && type == Types.STRING_LIT) {
-            return new Lexeme(Types.STRING_LIT, value.getLine(), String.valueOf(value.getValue()));
-        }
-        return null;
-    }
-
-    public void doInAss(Types type, Lexeme identifier, Lexeme value) {
-        if (type == Types.LOCAL) {
-            if (softLookup(identifier) != null) {
-                error("Identifier " + identifier.getStringValue() + " already" +
-                    "used in local scope. Cannot declare.", identifier.getLine()); return;
-            }
-            localAdd(Types.ANY_TYPE, identifier, value);
-        } else if (scaleLookup(identifier) == null) {  // initialization
-            add(type, identifier, value);
-        } else {
+    public void addOrUpdate(Types type, Lexeme identifier, Lexeme value) {
+        System.out.println(identifier);
+        if (softLookup(identifier) != null) {
             update(type, identifier, value);
+        } else {
+            unrestrainedAdd(type, identifier, value);
         }
     }
 
@@ -135,9 +157,9 @@ public class Environment {
         return str;
     }
 
-
     // ------------ Error Reporting ------------
     private void error(String message, int line) {
         Readable.runtimeError(message, line);
     }
+
 }

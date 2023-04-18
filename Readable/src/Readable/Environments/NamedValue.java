@@ -20,7 +20,8 @@ public class NamedValue {
     // ------------ Getters and Setters ------------
 
     public Types getType() {
-        return type;}
+        return type;
+    }
 
 
     public Lexeme getName() {return name;}
