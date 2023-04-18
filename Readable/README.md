@@ -40,18 +40,11 @@ x = 2
 x = 'test'
 ```
 
-The initialization and reassignment of a static variable is likewise the same:
+The initialization and reassignment of a static variable does not require a type-acknowledgement:
 
 ```
-int x = 2
-int x = 'test'
+x = 2
 ```
-
-Reassignment requires the type so as to force the programmer and reader to be aware of the type require (in an otherwise 
-dynamic language). 
-
-A static variable can not be set equal to the value contained in a dynamic variable, or the value returned by a normal
-function.
 
 # Global vs Local
 
@@ -63,6 +56,16 @@ variable name in an inner scope, one of two things must be done:
 
 Parameters are interpreted as local to the function - as is the variable initialized in a foreach loop (seen as local
 to the loop block).
+
+Be careful! The following is an infinite loop:
+```
+int i = 0
+sum = 0
+while i < 10:
+    sum = sum + i
+    int i = i + 1
+```
+
 # Types 
 
 There are four primitive types (integers, floats, strings, boolean) and one collection-type (dynamic array), technically

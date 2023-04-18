@@ -72,7 +72,7 @@ public class Environment {
 
     private void unrestrainedAdd(Types type, Lexeme identifier, Lexeme value) {
         entries.add(new NamedValue(identifier, type));
-        if (value != null) update(type, identifier, value);
+        if (value != null) update(identifier, value);
     }
 
     public void add(Types type, Lexeme identifier, Lexeme value) {
@@ -97,17 +97,13 @@ public class Environment {
         add(type, identifier, null);
     }
 
-    public void update(Types type, Lexeme identifier, Lexeme newValue) {
+    public void update(Lexeme identifier, Lexeme newValue) {
         lookup(identifier);  // raises error if undefined
 
         for (NamedValue namedValue : entries) {
             if (namedValue.getName().getStringValue().equals(identifier.getStringValue())) {
                 Types declaredType = namedValue.getType();
                 Types providedType = newValue.getType();
-                Types checkType = type;
-
-                if (!compare(declaredType, checkType))
-                    error("Acknowledged type " + checkType.toString() + " does not match expected type " + declaredType.toString(), identifier.getLine());
 
                 if (!compare(declaredType, providedType)) {
                     newValue = typeElevate(newValue, declaredType);
@@ -123,17 +119,18 @@ public class Environment {
             }
         }
         if (parent != null) {
-            parent.update(type, identifier, newValue);
+            parent.update(identifier, newValue);
         }
     }
 
-    public void update(Lexeme identifier, Lexeme newValue) {
-        update(Types.ANY_TYPE, identifier, newValue);
-    }
-
     public void addOrUpdate(Types type, Lexeme identifier, Lexeme value) {
-        if (softLookup(identifier) != null) {
-            update(type, identifier, value);
+        if (type != Types.ANY_TYPE) {
+            if (softLookup(identifier) != null)
+                error("Variable '" + identifier.getStringValue() + "' has already been declared within the local " +
+                        "scope.", identifier.getLine());
+            unrestrainedAdd(type, identifier, value);
+        } else if (scaleLookup(identifier) != null) {
+            update(identifier, value);
         } else {
             unrestrainedAdd(type, identifier, value);
         }

@@ -2,25 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f7a633-c6a3-45da-98e3-2110f91d1f32" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/CrossTypeOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Environments/Environment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Environments/Environment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Environments/NamedValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Environments/NamedValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Evaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexeme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Lexeme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Parsing/LineParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Parsing/LineParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Parsing/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Parsing/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/testInput/Parsing/active.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Parsing/active.read" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Environments/Environment.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Environments/Environment.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Environments/NamedValue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Environments/NamedValue.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Evaluator$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Evaluator$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Evaluator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Evaluator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexeme$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexeme$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexeme.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Lexeme.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Types.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/LexicalAnalysis/Types.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Parsing/LineParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Parsing/LineParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Parsing/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Parsing/Parser.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

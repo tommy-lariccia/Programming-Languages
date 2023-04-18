@@ -39,25 +39,29 @@ public class Readable {
     }
 
     private static void runFile(String path) throws IOException {
-        System.out.println("Running " + path + "...");
-        String source = getSourceCodeFromFile(path);
-
-        // Lexing
-        Lexer lexer = new Lexer(source);
-        ArrayList<Lexeme> lexemes = lexer.lex();
-        
-        // Recognizing
-        Parser parsing = new Parser(lexemes);
-        Lexeme parseTree = parsing.program();
-//        parseTree.printAsParseTree();
-
-        // Environments
-        Environment globalEnvironment = new Environment();
-
-        // Evaluation
-        Evaluator evaluator = new Evaluator();
-        evaluator.eval(parseTree, globalEnvironment);
-        System.out.println(globalEnvironment);
+        int i = 0;
+        while (i < 10) {
+            i++;
+        }
+//        System.out.println("Running " + path + "...");
+//        String source = getSourceCodeFromFile(path);
+//
+//        // Lexing
+//        Lexer lexer = new Lexer(source);
+//        ArrayList<Lexeme> lexemes = lexer.lex();
+//
+//        // Recognizing
+//        Parser parsing = new Parser(lexemes);
+//        Lexeme parseTree = parsing.program();
+////        parseTree.printAsParseTree();
+//
+//        // Environments
+//        Environment globalEnvironment = new Environment();
+//
+//        // Evaluation
+//        Evaluator evaluator = new Evaluator();
+//        evaluator.eval(parseTree, globalEnvironment);
+//        System.out.println(globalEnvironment);
     }
 
     // ------------ Errors ------------

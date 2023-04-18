@@ -24,6 +24,7 @@ public class Evaluator {
             case FOREACH -> evalForeach(tree, env);
             case FUNC -> evalFunctionDefinition(tree, env);
             case FUNC_CALL -> evalFunctionCall(tree, env);
+            case WHILE -> evalWhileLoop(tree, env);
 
             default -> error("Cannot evaluate " + tree, tree.getLine());
         };
@@ -60,6 +61,24 @@ public class Evaluator {
             eval(block, subEnv);
         }
         return new Lexeme(Types.NULL);
+    }
+
+    private Lexeme evalWhileLoop(Lexeme tree, Environment env) {
+        Lexeme comp = tree.getChild(0);
+        Lexeme block = tree.getChild(1);
+        while (true) {
+            Lexeme evalComp = eval(comp, env);
+            if (evalComp.getType() != TRUE && evalComp.getType() != FALSE)
+                error("While loop condition must evaluate to TRUE or FALSE", tree.getLine());
+            if (evalComp.getType() == TRUE) {
+                Environment callEnv = new Environment(env);
+                eval(block, callEnv);
+            } else {
+                break;
+            }
+        }
+
+        return new Lexeme(NULL);
     }
 
     private Lexeme toIterable(Lexeme tree, Environment env) {
