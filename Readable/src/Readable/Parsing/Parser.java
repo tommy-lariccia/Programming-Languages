@@ -51,13 +51,16 @@ public class Parser {
         for (Line line : lines) {
             if (line.getVLine() == top.getPlace()) {
                 top.addChild(line.getParsed());
-                if (line.getParsed().getType() == WHILE || line.getParsed().getType() == FOREACH || line.getParsed().getType() == IF || line.getParsed().getType() == FUNC) {
+                if (line.getParsed().getType() == WHILE || line.getParsed().getType() == FOREACH || line.getParsed().getType() == IF || line.getParsed().getType() == FUNC
+                        || line.getParsed().getType() == IF || line.getParsed().getType() == ELSE_IF) {
                     Block newBlock = new Block(line.getParsed(), top.getPlace() + 1);
                     blockStack.add(newBlock);
                     top = blockStack.get(blockStack.size() - 1);
                 } else if (line.getParsed().getType() == ELSE_IF || line.getParsed().getType() == ELSE) {
                     ArrayList<Lexeme> currLevel = top.getHead().getChildren();
-                    if (currLevel.get(currLevel.size() - 1).getType() == IF || currLevel.get(currLevel.size() - 1).getType() == ELSE_IF) {
+                    Lexeme prevLevel = currLevel.get(currLevel.size() - 1);
+                    prevLevel.printAsParseTree();
+                    if (prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == IF || prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == ELSE_IF) {
                         Block newBlock = new Block(line.getParsed(), top.getPlace() + 1);
                         blockStack.add(newBlock);
                         top = blockStack.get(blockStack.size() - 1);
@@ -77,7 +80,9 @@ public class Parser {
                     top = blockStack.get(blockStack.size() - 1);
                 } else if (line.getParsed().getType() == ELSE_IF || line.getParsed().getType() == ELSE) {
                     ArrayList<Lexeme> currLevel = top.getHead().getChildren();
-                    if (currLevel.get(currLevel.size() - 1).getType() == IF || currLevel.get(currLevel.size() - 1).getType() == ELSE_IF) {
+                    Lexeme prevLevel = currLevel.get(currLevel.size() - 1);
+                    prevLevel.printAsParseTree();
+                    if (prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == IF || prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == ELSE_IF) {
                         Block newBlock = new Block(line.getParsed(), top.getPlace() + 1);
                         blockStack.add(newBlock);
                         top = blockStack.get(blockStack.size() - 1);

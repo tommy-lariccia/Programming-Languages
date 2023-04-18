@@ -1,7 +1,3 @@
-//func sum(x, y):
-//    return x + y
-//
-//sum(2, 4)
+str the_str = "string"
 
-x = 2
-x = "test"
+str x = the_str * false

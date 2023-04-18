@@ -96,6 +96,12 @@ public class Lexeme {
             case ARR -> {
                 return getArr();
             }
+            case TRUE -> {
+                return true;
+            }
+            case FALSE -> {
+                return false;
+            }
             default -> {
                 return null;
             }
@@ -128,6 +134,10 @@ public class Lexeme {
     public int getLine() {
         if (getType() == Types.NEW_LINE) return lineNumber - 1;
         return lineNumber;
+    }
+
+    public Environment getDefiningEnv() {
+        return definingEnv;
     }
 
     public void setLine(int line) {

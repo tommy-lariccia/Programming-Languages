@@ -12,7 +12,7 @@ public enum Types {
     INTEGER, FLOAT, BOOL, STRING, NULL,
 
     // ------------ Operators ------------
-    PLUS, MINUS, TIMES, DIVIDE,
+    PLUS, MINUS, TIMES, DIVIDE, NEGATE,
 
     EQUALITY_COMP, NOT_EQUAL_COMP, GREATER_THAN_COMP,
     LESS_THAN_COMP, GREATER_OR_EQUAL_COMP,

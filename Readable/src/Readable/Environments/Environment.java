@@ -132,7 +132,6 @@ public class Environment {
     }
 
     public void addOrUpdate(Types type, Lexeme identifier, Lexeme value) {
-        System.out.println(identifier);
         if (softLookup(identifier) != null) {
             update(type, identifier, value);
         } else {

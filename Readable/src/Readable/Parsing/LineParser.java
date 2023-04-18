@@ -230,10 +230,12 @@ public class LineParser {
     }
 
     private Lexeme frontUnaryOperator() {
-        ArrayList<Types> ops = new ArrayList<>();
-        ops.addAll(List.of(new Types[]{MINUS, NOT}));
-        if (ops.contains(peek())) return consume(peek());
-        else return error("Expected '-' or '!' but did not receive either.");
+        if (peek() == NOT) {
+            return consume(peek());
+        } else if (peek() == MINUS) {
+            advance();
+            return new Lexeme(NEGATE);
+        } else return error("Expected '-' or '!' but did not receive either.");
     }
 
     private Lexeme parenExpression() {

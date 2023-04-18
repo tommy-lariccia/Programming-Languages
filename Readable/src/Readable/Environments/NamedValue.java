@@ -23,7 +23,6 @@ public class NamedValue {
         return type;
     }
 
-
     public Lexeme getName() {return name;}
 
     public Lexeme getValue() {return value;}
