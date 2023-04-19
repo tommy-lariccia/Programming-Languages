@@ -4,13 +4,13 @@ import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Types;
 
 public class Block {
-    private int place;
+    private int vLine;
     private Lexeme blockLex;
     private Lexeme statementList;
 
     public Block(Lexeme lex, int pl) {
         blockLex = lex;
-        place = pl;
+        vLine = pl;
         statementList = new Lexeme(Types.STATEMENT_LIST);
         blockLex.addChild(statementList);
     }
@@ -19,7 +19,7 @@ public class Block {
         statementList.addChild(child);
     }
 
-    public int getPlace() {return place;}
+    public int getVLine() {return vLine;}
 
     public Lexeme getHead() { return blockLex;}
 }

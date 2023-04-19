@@ -49,7 +49,6 @@ public class Readable {
         // Recognizing
         Parser parsing = new Parser(lexemes);
         Lexeme parseTree = parsing.program();
-//        parseTree.printAsParseTree();
 
         // Environments
         Environment globalEnvironment = new Environment();
@@ -71,13 +70,13 @@ public class Readable {
     }
 
     public static void runtimeError(String message, int lineNumber) {
-        syntaxErrorMessages.add("Runtime Error (line " + lineNumber + "): " + message);
+        runtimeErrorMessages.add("Runtime Error (line " + lineNumber + "): " + message);
         printErrors();
         System.exit(65);
     }
 
     public static void runtimeError(String message, Lexeme lexeme) {
-        syntaxErrorMessages.add("Runtime error at " + lexeme + ": " + message);
+        runtimeErrorMessages.add("Runtime error at " + lexeme + ": " + message);
         printErrors();
         System.exit(65);
     }

@@ -4,7 +4,7 @@ import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Types;
 
 public class TestEnvironment {
-    public static void main() {  // NOTE: You must comment out errors to reach code below.
+    public static void main(String[] args) {  // NOTE: You must comment out errors to reach code below.
         Environment globalEnv = new Environment();
         Environment env2 = new Environment(globalEnv);
 

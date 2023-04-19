@@ -3,11 +3,19 @@ package Readable.Environments;
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Types;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import Readable.Readable;
 
 public class Environment {
+    // ------------ Static Variables ------------
+    private static final Map<String, Lexeme> builtIns = new HashMap<>();
+    static {
+        BuiltInInterface c = (args, line) -> (BuiltIns.len(args, line)); builtIns.put("len", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line) -> (BuiltIns.type(args, line)); builtIns.put("type", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line) -> (BuiltIns.print(args, line)); builtIns.put("print", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+    }
+
     // ------------ Instance Variables ------------
     private final Environment parent;
     private final ArrayList<NamedValue> entries;
@@ -51,6 +59,8 @@ public class Environment {
                 return namedValue.getValue();
             }
         }
+        if (builtIns.containsKey(identifier.getStringValue()))
+            return builtIns.get(identifier.getStringValue());
         return null;
     }
 
@@ -149,11 +159,15 @@ public class Environment {
         else
             str += "\n    Parent: " + parent.hashCode();
         str += "\n    Values:";
-        str += "\n ------------";
+        str += "\n    ------------";
         for (NamedValue namedValue : entries) {
             str += "\n    " + namedValue.toString();
         }
+        for (String builtIn : builtIns.keySet()) {
+            str += "\n    " + builtIn + ": [bltIn] (BUILT_IN_FUNC)";
+        }
         str += "\n";
+
         return str;
     }
 

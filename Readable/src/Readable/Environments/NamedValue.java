@@ -32,7 +32,7 @@ public class NamedValue {
     // ------------ toString ------------
 
     public String toString() {
-        return name.getValue() + ": " + value.toValueOnlyString() + " (" + type + ")";
+        return name.printRepr() + ": " + value.printRepr() + " (" + type + ")";
     }
 
 

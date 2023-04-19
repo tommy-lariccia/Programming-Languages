@@ -29,9 +29,12 @@ public class Evaluator {
             case ARR -> evalArr(tree, env);
             case LAMBDA -> evalLambdaInitialization(tree, env);
 
-            default -> error("Cannot evaluate " + tree, tree.getLine());
+            default -> defaultEval(tree, env);
         };
     }
+
+    private Lexeme defaultEval(Lexeme tree, Environment env) {
+        error("Cannot evaluate " + tree, tree.getLine()); return new Lexeme(NULL);}
 
     private Lexeme evalStatementList(Lexeme tree, Environment env) {
         Lexeme result = new Lexeme(Types.NULL);
@@ -46,7 +49,7 @@ public class Evaluator {
         Types type = tree.getChild(0).getType();
         Lexeme name = tree.getChild(1);
         env.addOrUpdate(type, name, expr);
-        return new Lexeme(null);
+        return new Lexeme(NULL);
     }
 
     private Lexeme evalForeach(Lexeme tree, Environment env) {
@@ -146,10 +149,19 @@ public class Evaluator {
 
     private Lexeme evalFunctionCall(Lexeme tree, Environment env) {
         Lexeme functionName = tree.getChild(0);
-        Lexeme funcDefTree = env.lookup(functionName);
-        Lexeme paramList = funcDefTree.getChild(2);
         Lexeme argList = tree.getChild(1);
+        Lexeme funcDefTree = env.lookup(functionName);
         Lexeme evaluatedArgList = evalArgList(argList, env);
+        if (funcDefTree.getType() == FUNC)
+            return evalLexicalFunction(tree, env, funcDefTree, evaluatedArgList);
+        else if (funcDefTree.getType() == BUILT_IN_FUNC)
+            return funcDefTree.getBuiltInFunc().call(evaluatedArgList.getChildren(), tree.getLine());
+        error("Cannot call a lexeme of type " + funcDefTree.getType() + " as a function", tree.getLine());
+        return new Lexeme(NULL);
+    }
+
+    private Lexeme evalLexicalFunction(Lexeme tree, Environment env, Lexeme funcDefTree, Lexeme evaluatedArgList) {
+        Lexeme paramList = funcDefTree.getChild(2);
         if (evaluatedArgList.getChildren().size() != paramList.getChildren().size())
             error("Expected " + paramList.getChildren().size() + " children supplied to function call, but " +
                     "received " + evaluatedArgList.getChildren().size() + ".", tree.getLine());

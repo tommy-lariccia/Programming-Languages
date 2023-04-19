@@ -3,6 +3,8 @@
 
 package Readable.LexicalAnalysis;
 
+import Readable.Environments.BuiltInInterface;
+import Readable.Environments.BuiltIns;
 import Readable.Environments.Environment;
 
 import java.util.ArrayList;
@@ -26,9 +28,10 @@ public class Lexeme {
     // For Closures
     private Environment definingEnv;
 
+    // For Built-Ins
+    private BuiltInInterface func;
 
     // ------------ Constructors ------------
-
     public Lexeme(Types tokenType, int line) {
         type = tokenType;
         lineNumber = line;
@@ -54,54 +57,14 @@ public class Lexeme {
         stringValue = strVal;
     }
 
-
-    // ------------ Values ------------
-
-    private int getInt() {
-        return integerValue;
-    }
-
-    private double getFloat() {
-        return decValue;
-    }
-
-    private String getString() {
-        return stringValue;
+    public Lexeme(Types tokenType, int line, BuiltInInterface callFunc) {
+        this(tokenType, line);
+        func = callFunc;
     }
 
     private ArrayList<Lexeme> getArr() {
         return getChild(0).getChildren();
     }
-
-    private Object determineVal() {
-        switch (type) {
-            case INT_LIT -> {
-                return getInt();
-            }
-            case FLOAT_LIT -> {
-                return getFloat();
-            }
-            case STRING_LIT -> {
-                return "'" + getString() + "'";
-            }
-            case IDENTIFIER -> {
-                return "(name: " + getString() + ")";
-            }
-            case ARR -> {
-                return getArr();
-            }
-            case TRUE -> {
-                return true;
-            }
-            case FALSE -> {
-                return false;
-            }
-            default -> {
-                return null;
-            }
-        }
-    }
-
 
     // ------------ Getters & Setters ------------
 
@@ -118,7 +81,23 @@ public class Lexeme {
     }
 
     public Object getValue() {
-        return determineVal();
+        switch (type) {
+            case INT_LIT -> {
+                return getIntValue();
+            } case FLOAT_LIT -> {
+                return getDecValue();
+            } case STRING_LIT -> {
+                return getStringValue();
+            } case ARR -> {
+                return getChild(0).getChildren();
+            } case TRUE -> {
+                return true;
+            } case FALSE -> {
+                return false;
+            } default -> {
+                return null;
+            }
+        }
     }
 
     public Types getType() {
@@ -132,22 +111,6 @@ public class Lexeme {
 
     public Environment getDefiningEnv() {
         return definingEnv;
-    }
-
-    public void setLine(int line) {
-        lineNumber = line;
-    }
-
-    public void setValue(int num) {
-        integerValue = num;
-    }
-
-    public void setValue(double num) {
-        decValue = num;
-    }
-
-    public void setValue(String str) {
-        stringValue = str;
     }
 
     public void addChild(Lexeme lex) {
@@ -171,28 +134,65 @@ public class Lexeme {
         return copy;
     }
 
-    public String toValueOnlyString() {
-        return String.valueOf(getValue());
-    }
-
-    // ------------ Override(s) ------------
-
-    public boolean equals(Object other) {
-        return (other instanceof Lexeme) && (((Lexeme) other).getStringValue() == this.getStringValue());
-    }
+    public BuiltInInterface getBuiltInFunc() {return func;}
 
     // ------------ toString ------------
+    private String getRepr() {
+        switch (type) {
+            case INT_LIT -> {
+                return String.valueOf(getIntValue());
+            }
+            case FLOAT_LIT -> {
+                return String.valueOf(getDecValue());
+            }
+            case STRING_LIT -> {
+                return "'" + getStringValue() + "'";
+            }
+            case IDENTIFIER -> {
+                return "(name: " + getStringValue() + ")";
+            }
+            case ARR -> {
+                return String.valueOf(getArr());
+            }
+            case TRUE -> {
+                return String.valueOf(true);
+            }
+            case FALSE -> {
+                return String.valueOf(false);
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
 
     public String toString() {
-        Object value = getValue();
+        String value = getRepr();
         if (value != null) {
             return getType().toString() + ": " + value + " at line " + getLine();
         }
         return getType().toString() + " Lexeme at line " + getLine();
     }
 
-    // --------------- Printing Lexemes as Parse Trees ---------------
+    public String printRepr() {
+        if (getType() == Types.ARR) {
+            if (getChild(0).getChildren().size() >= 1) {
+                String s = "[" + getChild(0).getChild(0).printRepr();
+                for (int i = 1; i < getChild(0).getChildren().size(); i++)
+                    s += ", " + getChild(0).getChild(i).printRepr();
+                return s + "]";
+            } else {
+                return "[]";
+            }
+        } else if (getType() == Types.FUNC) {
+            return "[fnct]";
+        } else if (getType() == Types.IDENTIFIER) {
+            return getStringValue();
+        }
+        return String.valueOf(getValue());
+    }
 
+    // --------------- Printing Lexemes as Parse Trees ---------------
     public void printAsParseTree() {
         System.out.println(getPrintableTree(this, 0));
     }

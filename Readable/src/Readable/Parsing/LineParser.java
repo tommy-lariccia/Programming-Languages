@@ -372,6 +372,8 @@ public class LineParser {
         } else if (check(INT_LIT)) {
             if (checkNext(RANGE)) return range();
             else return consume(INT_LIT);
+        } else if (check(IDENTIFIER)) {
+            return consume(IDENTIFIER);
         } else {
             return error("Expected array, range, or integer but did not receive either.");
         }

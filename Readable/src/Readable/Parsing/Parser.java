@@ -1,11 +1,9 @@
 package Readable.Parsing;
 
 import Readable.LexicalAnalysis.Lexeme;
-import Readable.LexicalAnalysis.Types;
 import Readable.Readable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static Readable.LexicalAnalysis.Types.*;
 
@@ -24,8 +22,7 @@ public class Parser {
     public Lexeme program() {
         takeLines();
         for (Line line : lines) line.parse();
-        buildBlocks();
-        return parsed;
+        return (new BlockParser(lines)).getParsed();
     }
 
     // ------------ Pre-Processing ------------
@@ -40,63 +37,6 @@ public class Parser {
                 currLine.add(lex);
             }
         }
-    }
-
-    // ------------ Global Parsing ------------
-
-    private void buildBlocks() {  // TODO: This is a MESS
-        ArrayList<Block> blockStack = new ArrayList<>();
-        Block top = new Block(new Lexeme(PROG), 0);
-        blockStack.add(top);
-        for (Line line : lines) {
-            if (line.getVLine() == top.getPlace()) {
-                top.addChild(line.getParsed());
-                if (line.getParsed().getType() == WHILE || line.getParsed().getType() == FOREACH || line.getParsed().getType() == IF || line.getParsed().getType() == FUNC
-                        || line.getParsed().getType() == IF || line.getParsed().getType() == ELSE_IF) {
-                    Block newBlock = new Block(line.getParsed(), top.getPlace() + 1);
-                    blockStack.add(newBlock);
-                    top = blockStack.get(blockStack.size() - 1);
-                } else if (line.getParsed().getType() == ELSE_IF || line.getParsed().getType() == ELSE) {
-                    ArrayList<Lexeme> currLevel = top.getHead().getChildren();
-                    Lexeme prevLevel = currLevel.get(currLevel.size() - 1);
-                    prevLevel.printAsParseTree();
-                    if (prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == IF || prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == ELSE_IF) {
-                        Block newBlock = new Block(line.getParsed(), top.getPlace() + 1);
-                        blockStack.add(newBlock);
-                        top = blockStack.get(blockStack.size() - 1);
-                    } else {
-                        error("Cannot have else if or else statement(s) unless if statement above and on same level", line.getParsed());
-                    }
-                }
-            } else if (line.getVLine() > top.getPlace()) {
-                error("Cannot jump QUAD_SPACE slots without block statement.", line.getParsed());
-            } else {
-                blockStack.remove(blockStack.size() - 1);
-                top = blockStack.get(blockStack.size() - 1);
-                top.addChild(line.getParsed());
-                if (line.getParsed().getType() == WHILE || line.getParsed().getType() == FOREACH || line.getParsed().getType() == IF || line.getParsed().getType() == FUNC) {
-                    Block newBlock = new Block(line.getParsed(), top.getPlace() + 1);
-                    blockStack.add(newBlock);
-                    top = blockStack.get(blockStack.size() - 1);
-                } else if (line.getParsed().getType() == ELSE_IF || line.getParsed().getType() == ELSE) {
-                    ArrayList<Lexeme> currLevel = top.getHead().getChildren();
-                    Lexeme prevLevel = currLevel.get(currLevel.size() - 1);
-                    prevLevel.printAsParseTree();
-                    if (prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == IF || prevLevel.getChild(prevLevel.getChildren().size() - 2).getType() == ELSE_IF) {
-                        Block newBlock = new Block(line.getParsed(), top.getPlace() + 1);
-                        blockStack.add(newBlock);
-                        top = blockStack.get(blockStack.size() - 1);
-                    } else {
-                        error("Cannot have else if or else statement(s) unless if statement above and on same level", line.getParsed());
-                    }
-                }
-            }
-        }
-        while (blockStack.size() > 1) {
-            blockStack.remove(blockStack.size() - 1);
-            top = blockStack.get(blockStack.size() - 1);
-        }
-        parsed = top.getHead();
     }
 
     // ------------ Error Reporting ------------
