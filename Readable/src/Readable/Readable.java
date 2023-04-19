@@ -9,7 +9,6 @@ import Readable.Evaluating.Evaluator;
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Lexer;
 import Readable.Parsing.Parser;
-import Readable.Parsing.PreParser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -47,13 +46,8 @@ public class Readable {
         Lexer lexer = new Lexer(source);
         ArrayList<Lexeme> lexemes = lexer.lex();
 
-        // Pre-Parsing
-        PreParser preParser = new PreParser(lexemes);
-        ArrayList<Lexeme> structuredLexemes = preParser.preParse();
-
-        System.out.println(structuredLexemes);
         // Recognizing
-        Parser parsing = new Parser(structuredLexemes);
+        Parser parsing = new Parser(lexemes);
         Lexeme parseTree = parsing.program();
         parseTree.printAsParseTree();
 
