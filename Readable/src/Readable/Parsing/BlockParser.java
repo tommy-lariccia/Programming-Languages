@@ -89,12 +89,21 @@ public class BlockParser {
     }
 
     private boolean newBlockPending() {
-        return line.getParsed().getType() == WHILE || line.getParsed().getType() == FOREACH || line.getParsed().getType() == FUNC;
+        return line.getParsed().getType() == WHILE || line.getParsed().getType() == FOREACH
+                || line.getParsed().getType() == FUNC || line.getParsed().getType() == IF
+                || line.getParsed().getType() == ELSE_IF || line.getParsed().getType() == ELSE;
     }
 
     private void completeBlock() {
+        handleElifandIfs();
         popBlock();
         addToCurrBlock();
+    }
+
+    private void handleElifandIfs() {
+        if (getTop().getHead().getType() == ELSE_IF || getTop().getHead().getType() == ELSE) {
+
+        }
     }
 
     private void popBlock() {
