@@ -8,7 +8,8 @@ import Readable.Environments.TestEnvironment;
 import Readable.Evaluating.Evaluator;
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Lexer;
-import Readable.Parsing.Parser;
+import Readable.Parsing.LineParser;
+//import Readable.Parsing.Parser;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -47,16 +48,17 @@ public class Readable {
         ArrayList<Lexeme> lexemes = lexer.lex();
 
         // Recognizing
-        Parser parsing = new Parser(lexemes);
+        LineParser parsing = new LineParser(lexemes);
         Lexeme parseTree = parsing.program();
+        parseTree.printAsParseTree();
 
         // Environments
         Environment globalEnvironment = new Environment();
-
-        // Evaluation
-        Evaluator evaluator = new Evaluator();
-        evaluator.eval(parseTree, globalEnvironment);
-        System.out.println(globalEnvironment);
+//
+//        // Evaluation
+//        Evaluator evaluator = new Evaluator();
+//        evaluator.eval(parseTree, globalEnvironment);
+//        System.out.println(globalEnvironment);
     }
 
     // ------------ Errors ------------

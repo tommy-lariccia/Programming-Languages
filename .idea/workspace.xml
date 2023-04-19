@@ -3,6 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="51f7a633-c6a3-45da-98e3-2110f91d1f32" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/LexicalAnalysis/Types.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Parsing/Block.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Parsing/BlockParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Parsing/Line.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Parsing/LineParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Parsing/LineParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Parsing/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Parsing/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Readable.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
