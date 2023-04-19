@@ -131,6 +131,8 @@ public class Lexeme {
         copy.integerValue = this.integerValue;
         copy.decValue = this.decValue;
         copy.stringValue = this.stringValue;
+        copy.definingEnv = this.definingEnv;
+        copy.func = this.func;
         return copy;
     }
 

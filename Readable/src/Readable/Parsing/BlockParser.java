@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import Readable.Readable;
 
+import javax.lang.model.util.SimpleTypeVisitor14;
+
 import static Readable.LexicalAnalysis.Types.*;
 import static Readable.LexicalAnalysis.Types.ELSE_IF;
 
@@ -40,10 +42,53 @@ public class BlockParser {
             handleLine(); advance();
         }
         popLeftoverBlocks();
-        return getTop().getHead();
+        return reformCond(getTop().getHead());
     }
 
-    public void popLeftoverBlocks() {
+    private Lexeme reformCond(Lexeme root) { // Sloppy, yes. But does it work? YES.
+        if (root.getType() == STATEMENT_LIST) {
+            return reformStatementList(root);
+        } else if (root.getChildren().size() > 0) {
+            Lexeme newRoot = root.copy();
+            for (Lexeme lex : root.getChildren())
+                newRoot.addChild(reformCond(lex));
+            return newRoot;
+        }
+        return root;
+    }
+
+    private Lexeme reformStatementList(Lexeme root) {  // this is READABLE.
+        Lexeme newList = new Lexeme(STATEMENT_LIST, root.getLine());
+        for (int i = 0; i < root.getChildren().size(); i++) {
+            Lexeme lex = root.getChild(i);
+            if (lex.getType() == IF) {
+                Lexeme cond = new Lexeme(CONDITIONAL_BLOCK, root.getLine());
+                cond.addChild(reformCond(lex));
+                newList.addChild(cond);
+            } else if (lex.getType() == ELSE_IF) {
+                if (newList.getChildren().size() > 0 && newList.getChild(newList.getChildren().size() - 1).getType() == CONDITIONAL_BLOCK &&
+                        newList.getChild(newList.getChildren().size() - 1).getChildren().size() > 0
+                        && newList.getChild(newList.getChildren().size() - 1).getChild(newList.getChild(newList.getChildren().size() - 1).getChildren().size() - 1).getType() != ELSE) {
+                    newList.getChild(newList.getChildren().size() - 1).addChild(reformCond(lex));
+                } else {
+                    error("ELSE_IF block must follow an ELSE_IF or IF block.", lex);
+                }
+            } else if (lex.getType() == ELSE) {
+                if (newList.getChildren().size() > 0 && newList.getChild(newList.getChildren().size() - 1).getType() == CONDITIONAL_BLOCK &&
+                        newList.getChild(newList.getChildren().size() - 1).getChildren().size() > 0
+                        && newList.getChild(newList.getChildren().size() - 1).getChild(newList.getChild(newList.getChildren().size() - 1).getChildren().size() - 1).getType() != ELSE) {
+                    newList.getChild(newList.getChildren().size() - 1).addChild(reformCond(lex));
+                } else {
+                    error("ELSE block must follow an ELSE_IF or IF block.", lex);
+                }
+            } else {
+                newList.addChild(reformCond(lex));
+            }
+        }
+        return newList;
+    }
+
+    private void popLeftoverBlocks() {
         while (blockStack.size() > 1) {
             popBlock();
         }

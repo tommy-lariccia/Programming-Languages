@@ -38,10 +38,4 @@ public class Parser {
             }
         }
     }
-
-    // ------------ Error Reporting ------------
-    private Lexeme error(String message, Lexeme lex) {
-        Readable.syntaxError(message, lex);
-        return new Lexeme(ERROR, lex.getLine(), message);
-    }
 }
