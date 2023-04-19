@@ -56,21 +56,11 @@ public class LineParser {
 
     // ------------ Consumption Functions ------------
     public Lexeme program() {
-        Lexeme root = new Lexeme(STATEMENT_LIST);
-        while (statementPending())
-            root.addChild(progStatement());
-        return root;
-
+        if (statementPending()) return progStatement();
+        else {
             return error("A statement should be either start a block (conditional, function, loop), call a function, or " +
                     "initialize a variable or lambda function. Likely an expression.");
         }
-    }
-
-    public Lexeme statementList() {
-        Lexeme root = new Lexeme(STATEMENT_LIST);
-        while (statementPending())
-            root.addChild(progStatement());
-        return root;
     }
 
     private Lexeme progStatement() {
