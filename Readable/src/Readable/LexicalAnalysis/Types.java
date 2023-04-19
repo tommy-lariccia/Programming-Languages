@@ -33,7 +33,7 @@ public enum Types {
 
     // ------------ Parse Structures ------------
     ERROR, ELSE_IF, EMPTY_LIST, ANY_TYPE, PARAM, PARAM_LIST, ARG_LIST, FUNC_CALL, EXPR_LIST, ARR_ACC, ARR,
-    ARR_ASS, ASS, TYPING_ARR, STATEMENT_LIST, PROG, EOL, CONDITIONAL_BLOCK,
+    ARR_ASS, ASS, TYPING_ARR, STATEMENT_LIST, PROG, CONDITIONAL_BLOCK, UP, DOWN,
 
     // ------------ Interpretive Structures ------------
     BUILT_IN_FUNC

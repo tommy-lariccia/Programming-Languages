@@ -18,7 +18,6 @@ public class Lexer {
     private int startOfCurrLex = 0;
     private int currLineNumber = 1;
 
-
     private static final HashMap<String, Types> closedKeywords = new HashMap<>();
 
     static {
