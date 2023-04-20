@@ -186,24 +186,81 @@ public class LineParser {
     }
 
     private Lexeme expression() {
-        return binaryExpression();
+        return firstBinaryExpression();
     }
 
-    private Lexeme binaryExpression() {
-        Lexeme left = unaryExpression();
-        if (binaryOpPending()) {
-            Lexeme root = binaryOp();
+    private Lexeme firstBinaryExpression() {
+        Lexeme left = secondBinaryExpression();
+        if (firstBinaryOpPending()) {
+            Lexeme root = firstBinaryOp();
             root.addChild(left);
-            root.addChild(binaryExpression());
+            root.addChild(firstBinaryExpression());
             return root;
         } else {
             return left;
         }
     }
 
-    private Lexeme binaryOp() {
+    private Lexeme secondBinaryExpression() {
+        Lexeme left = thirdBinaryExpression();
+        if (secondBinaryOpPending()) {
+            Lexeme root = secondBinaryOp();
+            root.addChild(left);
+            root.addChild(secondBinaryExpression());
+            return root;
+        } else {
+            return left;
+        }
+    }
+
+    private Lexeme thirdBinaryExpression() {
+        Lexeme left = fourthBinaryExpression();
+        if (thirdBinaryOpPending()) {
+            Lexeme root = thirdBinaryOp();
+            root.addChild(left);
+            root.addChild(thirdBinaryExpression());
+            return root;
+        } else {
+            return left;
+        }
+    }
+
+    private Lexeme fourthBinaryExpression() {
+        Lexeme left = unaryExpression();
+        if (fourthBinaryOpPending()) {
+            Lexeme root = fourthBinaryOp();
+            root.addChild(left);
+            root.addChild(fourthBinaryExpression());
+            return root;
+        } else {
+            return left;
+        }
+    }
+
+    private Lexeme firstBinaryOp() {
         ArrayList<Types> binOps = new ArrayList<>();
-        binOps.addAll(List.of(new Types[]{TIMES, DIVIDE, MINUS, PLUS, AND, OR, EQUALITY_COMP, GREATER_OR_EQUAL_COMP, GREATER_THAN_COMP, LESS_THAN_COMP, LESS_OR_EQUAL_COMP}));
+        binOps.addAll(List.of(new Types[]{AND, OR, EQUALITY_COMP}));
+        if (binOps.contains(peek())) return consume(peek());
+        else return error("Expected binary operation but did not receive any.");
+    }
+
+    private Lexeme secondBinaryOp() {
+        ArrayList<Types> binOps = new ArrayList<>();
+        binOps.addAll(List.of(new Types[]{GREATER_OR_EQUAL_COMP, GREATER_THAN_COMP, LESS_THAN_COMP, LESS_OR_EQUAL_COMP}));
+        if (binOps.contains(peek())) return consume(peek());
+        else return error("Expected binary operation but did not receive any.");
+    }
+
+    private Lexeme thirdBinaryOp() {
+        ArrayList<Types> binOps = new ArrayList<>();
+        binOps.addAll(List.of(new Types[]{MINUS, PLUS}));
+        if (binOps.contains(peek())) return consume(peek());
+        else return error("Expected binary operation but did not receive any.");
+    }
+
+    private Lexeme fourthBinaryOp() {
+        ArrayList<Types> binOps = new ArrayList<>();
+        binOps.addAll(List.of(new Types[]{TIMES, DIVIDE}));
         if (binOps.contains(peek())) return consume(peek());
         else return error("Expected binary operation but did not receive any.");
     }
@@ -475,9 +532,37 @@ public class LineParser {
         return terminalExpressionPending();
     }
 
-    private boolean binaryOpPending() {
+    private boolean firstBinaryOpPending() {
         ArrayList<Types> binOps = new ArrayList<>();
-        binOps.addAll(List.of(new Types[]{TIMES, DIVIDE, MINUS, PLUS, AND, OR, EQUALITY_COMP, GREATER_OR_EQUAL_COMP, GREATER_THAN_COMP, LESS_THAN_COMP, LESS_OR_EQUAL_COMP}));
+//        binOps.addAll(List.of(new Types[]{TIMES, DIVIDE, MINUS, PLUS, AND, OR, EQUALITY_COMP, GREATER_OR_EQUAL_COMP, GREATER_THAN_COMP, LESS_THAN_COMP, LESS_OR_EQUAL_COMP}));
+        binOps.addAll(List.of(new Types[]{AND, OR, EQUALITY_COMP}));
+        for (Types t : binOps) {
+            if (check(t)) return true;
+        }
+        return false;
+    }
+
+    private boolean secondBinaryOpPending() {
+        ArrayList<Types> binOps = new ArrayList<>();
+        binOps.addAll(List.of(new Types[]{GREATER_OR_EQUAL_COMP, GREATER_THAN_COMP, LESS_THAN_COMP, LESS_OR_EQUAL_COMP}));
+        for (Types t : binOps) {
+            if (check(t)) return true;
+        }
+        return false;
+    }
+
+    private boolean thirdBinaryOpPending() {
+        ArrayList<Types> binOps = new ArrayList<>();
+        binOps.addAll(List.of(new Types[]{MINUS, PLUS}));
+        for (Types t : binOps) {
+            if (check(t)) return true;
+        }
+        return false;
+    }
+
+    private boolean fourthBinaryOpPending() {
+        ArrayList<Types> binOps = new ArrayList<>();
+        binOps.addAll(List.of(new Types[]{TIMES, DIVIDE}));
         for (Types t : binOps) {
             if (check(t)) return true;
         }
