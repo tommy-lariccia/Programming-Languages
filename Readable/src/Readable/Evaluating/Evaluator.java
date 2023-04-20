@@ -5,7 +5,11 @@ import Readable.Environments.NamedValue;
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Types;
 
+import Readable.Evaluating.Library.BuiltIns;
 import Readable.Readable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static Readable.LexicalAnalysis.Types.*;
 
@@ -21,7 +25,7 @@ public class Evaluator {
             case ASS -> evalAss(tree, env);
             case PLUS, MINUS, TIMES, DIVIDE, NEGATE, GREATER_THAN_COMP, GREATER_OR_EQUAL_COMP,
                     LESS_OR_EQUAL_COMP, LESS_THAN_COMP, EQUALITY_COMP, NOT_EQUAL_COMP, AND, OR -> evalExpr(tree, env);
-            case NOT -> CrossTypeOperations.notComp(eval(tree, env));
+            case NOT -> BuiltIns.NOT(new ArrayList<>(Arrays.asList(tree)), tree.getLine(), env);
             case FOREACH -> evalForeach(tree, env);
             case FUNC -> evalFunctionDefinition(tree, env);
             case FUNC_CALL -> evalFunctionCall(tree, env);
@@ -118,11 +122,21 @@ public class Evaluator {
 
     private Lexeme evalFunctionDefinition(Lexeme tree, Environment env) {
         Environment newEnv = getFunctionEnv(env);
-        tree.setDefiningEnv(newEnv);
+        tree.setDefiningEnv(env);
         Lexeme functionName = tree.getChild(1);
         env.add(tree.getType(), functionName, tree);
         newEnv.add(tree.getType(), functionName, tree);
         return functionName;
+    }
+
+    private Environment getFunctionEnv(Environment env) {
+        Environment newEnv = new Environment();
+        if (env.isGlobal()) {
+            for (NamedValue v : env.seeEntries()) {
+                if (v.getType() == FUNC) newEnv.add(v.getType(), v.getName().copy(), v.getValue().copy());
+            }
+        } else {newEnv = env.copy();}
+        return newEnv;
     }
 
     private Lexeme evalLambdaInitialization(Lexeme tree, Environment env) {
@@ -138,16 +152,6 @@ public class Evaluator {
         newFunc.addChild(returnStatement);
         evalFunctionDefinition(newFunc, env);
         return functionName;
-    }
-
-    private Environment getFunctionEnv(Environment env) {
-        Environment newEnv = new Environment();  // never runs into issues because every function call will define another scope under this one
-        if (env.isGlobal()) {
-            for (NamedValue v : env.seeEntries()) {
-                if (v.getType() == FUNC) newEnv.add(v.getType(), v.getName(), v.getValue());
-            }
-        } else {newEnv = env.copy();}
-        return newEnv;
     }
 
     private Lexeme getFuncTreeFromCall(Lexeme tree, Environment env) {
@@ -166,28 +170,56 @@ public class Evaluator {
 
     private Lexeme evalFunctionCall(Lexeme tree, Environment env) {
         Lexeme funcDefTree = getFuncTreeFromCall(tree, env);
-        Lexeme argList = tree.getChild(1);
-        Lexeme evaluatedArgList = evalArgList(argList, env);
-        if (funcDefTree.getType() == FUNC)
+        Lexeme argList = getArgList(tree.getChild(1), env);
+        if (funcDefTree.getType() == FUNC) {
+            Lexeme evaluatedArgList = evalArgList(argList, env);
             return evalLexicalFunction(tree, env, funcDefTree, evaluatedArgList);
-        else if (funcDefTree.getType() == BUILT_IN_FUNC)
-            return funcDefTree.getBuiltInFunc().call(evaluatedArgList.getChildren(), tree.getLine());
+        } else if (funcDefTree.getType() == BUILT_IN_FUNC)
+            return funcDefTree.getBuiltInFunc().call(argList.getChildren(), tree.getLine(), env);
         error("Cannot call a lexeme of type " + funcDefTree.getType() + " as a function", tree.getLine());
         return new Lexeme(NULL);
     }
 
+    private Lexeme getArgList(Lexeme tree, Environment env) {
+        Lexeme allArgs = new Lexeme(ARG_LIST);
+        for (Lexeme arg : tree.getChildren()) {
+            if (arg.getType() == UNPACKABLE) {
+                Lexeme child = arg.getChild(0);
+                if (child.getType() == IDENTIFIER)
+                    child = env.lookup(child);
+                if (child.getType() != ARR)
+                    error("Can only use the unpack operator (*) on arrays.", tree);
+                for (Lexeme subArg : child.getChild(0).getChildren()) allArgs.addChild(subArg);
+            } else
+                allArgs.addChild(arg);
+        }
+        return allArgs;
+    }
+
     private Lexeme evalLexicalFunction(Lexeme tree, Environment env, Lexeme funcDefTree, Lexeme evaluatedArgList) {
+        Environment callEnv = new Environment(funcDefTree.getDefiningEnv());
+        if (funcDefTree.getChild(2).getType() == ARB_PARAM_LIST) {
+            Lexeme arr = new Lexeme(ARR);
+            arr.addChild(new Lexeme(EXPR_LIST));
+            for (Lexeme lex : evaluatedArgList.getChildren()) arr.getChild(0).addChild(lex);
+            callEnv.add(ARR, funcDefTree.getChild(2).getChild(0), arr);
+        } else
+            callEnv = normalParamPopulate(tree, env, funcDefTree, evaluatedArgList);
+        Lexeme funcBody = funcDefTree.getChild(3);
+        return eval(funcBody, callEnv);
+    }
+
+    private Environment normalParamPopulate(Lexeme tree, Environment env, Lexeme funcDefTree, Lexeme evaluatedArgList) {
         Lexeme paramList = funcDefTree.getChild(2);
         if (evaluatedArgList.getChildren().size() != paramList.getChildren().size())
             error("Expected " + paramList.getChildren().size() + " children supplied to function call, but " +
                     "received " + evaluatedArgList.getChildren().size() + ".", tree.getLine());
         Environment callEnv = new Environment(funcDefTree.getDefiningEnv());
         for (int i = 0; i < paramList.getChildren().size(); i++) {
-            callEnv.localAdd(paramList.getChild(i).getChild(0).getType(), paramList.getChild(i).getChild(1),
-                    evaluatedArgList.getChild(i));
+            callEnv.localAdd(paramList.getChild(i).getChild(0).getType(), paramList.getChild(i).getChild(1).copy(),
+                    evaluatedArgList.getChild(i).copy());
         }
-        Lexeme funcBody = funcDefTree.getChild(3);
-        return eval(funcBody, callEnv);
+        return callEnv;
     }
 
     private Lexeme evalArgList(Lexeme params, Environment env) {
@@ -200,21 +232,19 @@ public class Evaluator {
 
     private Lexeme evalExpr(Lexeme tree, Environment env) {
         if (tree.getType() == NEGATE) tree.addChild(new Lexeme(INT_LIT, tree.getLine(), -1));
-        Lexeme side1 = eval(tree.getChild(0), env);
-        Lexeme side2 = eval(tree.getChild(1), env);
         switch (tree.getType()) {
-            case PLUS -> {return CrossTypeOperations.handleAddition(side1, side2);}
-            case MINUS -> {return CrossTypeOperations.handleSubtraction(side1, side2);}
-            case TIMES, NEGATE -> {return CrossTypeOperations.handleMultiplication(side1, side2);}
-            case DIVIDE -> {return CrossTypeOperations.handleDivision(side1, side2);}
-            case GREATER_THAN_COMP -> {return CrossTypeOperations.greaterThan(side1, side2);}
-            case EQUALITY_COMP -> {return CrossTypeOperations.equalityComp(side1, side2);}
-            case NOT_EQUAL_COMP -> {return CrossTypeOperations.notEqualComp(side1, side2);}
-            case LESS_THAN_COMP -> {return CrossTypeOperations.lessThanComp(side1, side2);}
-            case LESS_OR_EQUAL_COMP -> {return CrossTypeOperations.lessThanOrEqualToComp(side1, side2);}
-            case GREATER_OR_EQUAL_COMP -> {return CrossTypeOperations.greaterThanOrEqualToComp(side1, side2);}
-            case AND -> {return CrossTypeOperations.andComp(side1, side2);}
-            case OR -> {return CrossTypeOperations.orComp(side1, side2);}
+            case PLUS -> {return BuiltIns.sum(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case MINUS -> {return BuiltIns.subtract(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case TIMES, NEGATE -> {return BuiltIns.multiply(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case DIVIDE -> {return BuiltIns.divide(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case GREATER_THAN_COMP -> {return BuiltIns.greaterThan(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case EQUALITY_COMP -> {return BuiltIns.equal(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case NOT_EQUAL_COMP -> {return BuiltIns.notEqual(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case LESS_THAN_COMP -> {return BuiltIns.lessThan(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case LESS_OR_EQUAL_COMP -> {return BuiltIns.lessThanOrEqualTo(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case GREATER_OR_EQUAL_COMP -> {return BuiltIns.greaterThanOrEqualTo(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case AND -> {return BuiltIns.AND(tree.getChildren(), tree.getChild(0).getLine(), env);}
+            case OR -> {return BuiltIns.OR(tree.getChildren(), tree.getChild(0).getLine(), env);}
 
             default -> {return new Lexeme(Types.NULL);}
         }

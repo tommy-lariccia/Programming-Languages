@@ -322,7 +322,6 @@ public class LineParser {
     }
 
     // FUNCS
-
     private Lexeme functionCall() {
         Lexeme requiredFirst = oneCall();
         Lexeme root = requiredFirst;
@@ -350,12 +349,22 @@ public class LineParser {
 
     private Lexeme argList() {
         Lexeme root = new Lexeme(ARG_LIST);
-        root.addChild(expression());
+        root.addChild(argument());
         if (check(COMMA)) {
             consume(COMMA);
             root.addAllChildren(argList().getChildren());
         }
         return root;
+    }
+
+    private Lexeme argument() {
+        if (check(TIMES)) {
+            consume(TIMES);
+            Lexeme arg = new Lexeme(UNPACKABLE);
+            arg.addChild(expression());
+            return arg;
+        } else
+            return expression();
     }
 
     private Lexeme paramList() {
@@ -388,9 +397,17 @@ public class LineParser {
         else root.addChild(new Lexeme(ANY_TYPE));
         root.addChild(consume(IDENTIFIER));
         consume(OPAREN);
-        if (!check(CPAREN)) root.addChild(paramList());
+        if (check(TIMES)) root.addChild(arbParamList());
+        else if (!check(CPAREN)) root.addChild(paramList());
         else root.addChild(new Lexeme(EMPTY_LIST));
         consume(CPAREN);
+        return root;
+    }
+
+    private Lexeme arbParamList() {
+        Lexeme root = new Lexeme(ARB_PARAM_LIST);
+        consume(TIMES);
+        root.addChild(consume(IDENTIFIER));
         return root;
     }
 

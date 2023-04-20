@@ -3,8 +3,7 @@
 
 package Readable.LexicalAnalysis;
 
-import Readable.Environments.BuiltInInterface;
-import Readable.Environments.BuiltIns;
+import Readable.Evaluating.Library.BuiltInInterface;
 import Readable.Environments.Environment;
 
 import java.util.ArrayList;

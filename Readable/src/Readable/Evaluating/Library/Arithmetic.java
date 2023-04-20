@@ -1,4 +1,4 @@
-package Readable.Evaluating;
+package Readable.Evaluating.Library;
 
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Types;
@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static Readable.LexicalAnalysis.Types.*;
-import static Readable.LexicalAnalysis.Types.FLOAT_LIT;
 
-public class CrossTypeOperations {
-
-    public static Lexeme handleAddition(Lexeme s1, Lexeme s2) {
+public class Arithmetic {
+    // ----------- Summation -----------
+    public static Lexeme sum(Lexeme s1, Lexeme s2) {
         switch (s1.getType()) {
             case INT_LIT -> {
                 switch (s2.getType()) {
@@ -48,7 +47,13 @@ public class CrossTypeOperations {
         return new Lexeme(Types.NULL);
     }
 
-    public static Lexeme handleSubtraction(Lexeme s1, Lexeme s2) {
+    public static boolean checkSumUnavailable(Lexeme lex) {
+        return lex.getType() != STRING_LIT && lex.getType() != INT_LIT &&
+                lex.getType() != FLOAT_LIT && lex.getType() != ARR;
+    }
+
+    // ----------- Subtraction -----------
+    public static Lexeme subtract(Lexeme s1, Lexeme s2) {
         switch (s1.getType()) {
             case INT_LIT -> {
                 switch (s1.getType()) {
@@ -82,7 +87,13 @@ public class CrossTypeOperations {
         return new Lexeme(Types.NULL);
     }
 
-    public static Lexeme handleMultiplication(Lexeme s1, Lexeme s2) {
+    public static boolean checkSubtractionUnavailable(Lexeme lex) {
+        return lex.getType() != STRING_LIT && lex.getType() != INT_LIT &&
+                lex.getType() != FLOAT_LIT && lex.getType() != ARR;
+    }
+
+    // ----------- Multiplication -----------
+    public static Lexeme multiply(Lexeme s1, Lexeme s2) {
         Lexeme opt1 = handleMultOneSide(s1, s2);
         if (opt1.getType() != NULL) return opt1;
         Lexeme opt2 = handleMultOneSide(s2, s1);
@@ -126,7 +137,13 @@ public class CrossTypeOperations {
         return new Lexeme(NULL);
     }
 
-    public static Lexeme handleDivision(Lexeme s1, Lexeme s2) {
+    public static boolean checkMultiplicationUnavailable(Lexeme lex) {
+        return lex.getType() != STRING_LIT && lex.getType() != INT_LIT &&
+                lex.getType() != FLOAT_LIT && lex.getType() != ARR && lex.getType() != TRUE && lex.getType() != FALSE;
+    }
+
+    // ----------- Division -----------
+    public static Lexeme divide(Lexeme s1, Lexeme s2) {
         if (s1.getType() == INT_LIT && s2.getType() == FLOAT_LIT) {return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getIntValue() / s2.getDecValue());}
         if (s1.getType() == INT_LIT && s2.getType() == INT_LIT) {return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getIntValue() / ((float) s2.getDecValue()));}
         if (s1.getType() == FLOAT_LIT && s2.getType() == INT_LIT) {return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getDecValue() / s2.getIntValue());}
@@ -134,104 +151,8 @@ public class CrossTypeOperations {
         return new Lexeme(Types.NULL);
     }
 
-    private static Lexeme handleTruthiness(Lexeme root) {
-        Lexeme trueValue = new Lexeme(TRUE);
-        Lexeme falseValue = new Lexeme(FALSE);
-        return switch (root.getType()) {
-            case INT_LIT -> root.getIntValue() != 0 ? trueValue : falseValue;
-            case FLOAT_LIT -> root.getDecValue() != 0.0 ? trueValue : falseValue;
-            case STRING_LIT -> !(root.getStringValue().equals("")) ? trueValue : falseValue;
-            case ARR -> root.getChild(0).getChildren().size() > 0 ? trueValue : falseValue;
-            case BOOL -> root;
-            default -> new Lexeme(NULL);
-        };
+    public static boolean checkDivisionUnavailable(Lexeme lex) {
+        return lex.getType() != INT_LIT && lex.getType() != FLOAT_LIT;
     }
 
-    private static Lexeme helperNegate(Lexeme root) {
-        return switch (root.getType()) {
-            case TRUE -> new Lexeme(FALSE);
-            case FALSE -> new Lexeme(TRUE);
-            default -> new Lexeme(NULL);
-        };
-    }
-
-    public static Lexeme greaterThan(Lexeme s1, Lexeme s2) {
-        if (s1.getType() == INT_LIT && s2.getType() == FLOAT_LIT) {
-            if (s1.getIntValue() > s2.getDecValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == INT_LIT && s2.getType() == INT_LIT) {
-            if (s1.getIntValue() > s2.getIntValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == FLOAT_LIT && s2.getType() == INT_LIT) {
-            if (s1.getDecValue() > s2.getIntValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == FLOAT_LIT && s2.getType() == FLOAT_LIT) {
-            if (s1.getDecValue() > s2.getDecValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == STRING_LIT && s2.getType() == STRING_LIT) {
-            if (s1.getStringValue().compareTo(s2.getStringValue()) > 0)
-                return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        return new Lexeme(NULL);
-    }
-
-    public static Lexeme equalityComp(Lexeme s1, Lexeme s2) {
-        if (s1.getType() == INT_LIT && s2.getType() == FLOAT_LIT) {
-            if (s1.getIntValue() == s2.getDecValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == INT_LIT && s2.getType() == INT_LIT) {
-            if (s1.getIntValue() == s2.getIntValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == FLOAT_LIT && s2.getType() == INT_LIT) {
-            if (s1.getDecValue() == s2.getIntValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == FLOAT_LIT && s2.getType() == FLOAT_LIT) {
-            if (s1.getDecValue() == s2.getDecValue()) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        } if (s1.getType() == STRING_LIT && s2.getType() == STRING_LIT) {
-            if (s1.getStringValue().equals(s2.getStringValue())) return new Lexeme(TRUE);
-            else return new Lexeme(FALSE);
-        }
-        if (s1.getType() == TRUE && s2.getType() == TRUE) {return new Lexeme(TRUE);}
-        if (s1.getType() == FALSE && s2.getType() == FALSE) {return new Lexeme(TRUE);}
-        if (s1.getType() == TRUE && s2.getType() == FALSE) {return new Lexeme(FALSE);}
-        if (s1.getType() == FALSE && s2.getType() == TRUE) {return new Lexeme(FALSE);}
-        return new Lexeme(NULL);
-    }
-
-    public static Lexeme notEqualComp(Lexeme s1, Lexeme s2) {return helperNegate(equalityComp(s1, s2));}
-
-    public static Lexeme lessThanComp(Lexeme s1, Lexeme s2) {
-        Lexeme greaterThan = greaterThan(s1, s2);
-        Lexeme equalTo = equalityComp(s1, s2);
-        return (greaterThan.getType() == FALSE && equalTo.getType() == FALSE) ? new Lexeme(TRUE) : new Lexeme(FALSE);
-    }
-
-    public static Lexeme lessThanOrEqualToComp(Lexeme s1, Lexeme s2) {
-        return helperNegate(greaterThan(s1, s2));
-    }
-
-    public static Lexeme greaterThanOrEqualToComp(Lexeme s1, Lexeme s2) {
-        return helperNegate(lessThanComp(s1, s2));
-    }
-
-    public static Lexeme andComp(Lexeme s1, Lexeme s2) {
-        return (handleTruthiness(s1).getType() == TRUE && handleTruthiness(s2).getType() == TRUE) ? new Lexeme(TRUE) : new Lexeme(FALSE);
-    }
-
-    public static Lexeme orComp(Lexeme s1, Lexeme s2) {
-        return (handleTruthiness(s1).getType() == TRUE || handleTruthiness(s2).getType() == TRUE) ? new Lexeme(TRUE) : new Lexeme(FALSE);
-    }
-
-    public static Lexeme notComp(Lexeme root) {
-        return helperNegate(handleTruthiness(root));
-    }
 }

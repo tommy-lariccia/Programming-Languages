@@ -123,9 +123,20 @@ public class BlockParser {
     }
 
     private void optConsumeNewBlock() {
+        if (doNotDefineFunc()) {
+            error("A function can only be defined in the global scope or within another functon.", line.getParsed());
+            return;
+        }
         if (newBlockPending()) {
             pushBlock();
         }
+    }
+
+    private boolean doNotDefineFunc() {
+        return line.getParsed().getType() == FUNC &&
+                (getTop().getHead().getType() == WHILE || getTop().getHead().getType() == FOREACH ||
+                        getTop().getHead().getType() == ELSE || getTop().getHead().getType() == ELSE_IF ||
+                        getTop().getHead().getType() == IF);
     }
 
     private void pushBlock() {

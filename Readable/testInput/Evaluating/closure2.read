@@ -5,7 +5,9 @@ func foo():
         return c
     return foobar
 
+
 newFunc = foo()
+newFunc2 = foo()
 print(newFunc(3, 2))     // 7
 print(newFunc(3, 2))     // 12
-print(foo()(3, 2))       // 7
+print(newFunc2(3, 2))     // 7

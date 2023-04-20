@@ -1,0 +1,5 @@
+a = 2
+if a == 2:
+    print(a)
+    func foo():             // cannot define functions in conditional or loop blocks
+        return 2 + 4

@@ -5,17 +5,25 @@ import Readable.LexicalAnalysis.Types;
 
 import java.util.*;
 
+import Readable.Evaluating.Library.BuiltInInterface;
+import Readable.Evaluating.Library.BuiltIns;
 import Readable.Readable;
-
-import static Readable.LexicalAnalysis.Types.FUNC;
 
 public class Environment {
     // ------------ Static Variables ------------
     private static final Map<String, Lexeme> builtIns = new HashMap<>();
     static {
-        BuiltInInterface c = (args, line) -> (BuiltIns.len(args, line)); builtIns.put("len", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
-        c = (args, line) -> (BuiltIns.type(args, line)); builtIns.put("type", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
-        c = (args, line) -> (BuiltIns.print(args, line)); builtIns.put("print", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        BuiltInInterface c = (args, line, env) -> (BuiltIns.len(args, line, env)); builtIns.put("len", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.type(args, line, env)); builtIns.put("type", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.print(args, line, env)); builtIns.put("print", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.sum(args, line, env)); builtIns.put("sum", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.divide(args, line, env)); builtIns.put("divide", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.multiply(args, line, env)); builtIns.put("multiply", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.subtract(args, line, env)); builtIns.put("subtract", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.AND(args, line, env)); builtIns.put("AND", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.OR(args, line, env)); builtIns.put("OR", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.NOT(args, line, env)); builtIns.put("NOT", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
+        c = (args, line, env) -> (BuiltIns.truthy(args, line, env)); builtIns.put("truthy", new Lexeme(Types.BUILT_IN_FUNC, -1, c));
     }
 
     // ------------ Instance Variables ------------
@@ -176,7 +184,7 @@ public class Environment {
     public Environment copy() {
         Environment newEnv = new Environment(this.parent);
         for (NamedValue v : seeEntries()) {
-            newEnv.add(v.getType(), v.getName(), v.getValue());
+            newEnv.add(v.getType(), v.getName().copy(), v.getValue().copy());
         }
         return newEnv;
     }

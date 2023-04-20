@@ -48,7 +48,6 @@ public class Readable {
         // Recognizing
         Parser parsing = new Parser(lexemes);
         Lexeme parseTree = parsing.program();
-        parseTree.printAsParseTree();
 
         // Environments
         Environment globalEnvironment = new Environment();
@@ -62,10 +61,14 @@ public class Readable {
 
     public static void syntaxError(String message, int lineNumber) {
         syntaxErrorMessages.add("Syntax Error (line " + lineNumber + "): " + message);
+        printErrors();
+        System.exit(65);   // This is deliberate.
     }
 
     public static void syntaxError(String message, Lexeme lexeme) {
         syntaxErrorMessages.add("Syntax error at " + lexeme + ": " + message);
+        printErrors();
+        System.exit(65);   // This is deliberate.
     }
 
     public static void runtimeError(String message, int lineNumber) {
