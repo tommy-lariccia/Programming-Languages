@@ -8,4 +8,3 @@ func foo():
 newFunc = foo()
 print(newFunc(3, 2))  // 7
 print(newFunc(3, 2))  // 12
-print(foo()(3, 2))    // 17

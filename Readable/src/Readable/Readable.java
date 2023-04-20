@@ -48,7 +48,7 @@ public class Readable {
         // Recognizing
         Parser parsing = new Parser(lexemes);
         Lexeme parseTree = parsing.program();
-//        parseTree.printAsParseTree();
+        parseTree.printAsParseTree();
 
         // Environments
         Environment globalEnvironment = new Environment();

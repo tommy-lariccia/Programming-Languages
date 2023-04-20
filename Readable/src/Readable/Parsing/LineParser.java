@@ -324,7 +324,22 @@ public class LineParser {
     // FUNCS
 
     private Lexeme functionCall() {
-        Lexeme lex = new Lexeme(FUNC_CALL);
+        Lexeme requiredFirst = oneCall();
+        Lexeme root = requiredFirst;
+        while (check(OPAREN)) {
+            Lexeme newRoot = new Lexeme(FUNC_CALL, requiredFirst.getLine());
+            newRoot.addChild(root);
+            consume(OPAREN);
+            if (!check(CPAREN)) newRoot.addChild(argList());
+            else newRoot.addChild(new Lexeme(EMPTY_LIST));
+            consume(CPAREN);
+            root = newRoot;
+        }
+        return root;
+    }
+
+    private Lexeme oneCall() {
+        Lexeme lex = new Lexeme(FUNC_CALL, currentLexeme.getLine());
         lex.addChild(consume(IDENTIFIER));
         consume(OPAREN);
         if (!check(CPAREN)) lex.addChild(argList());

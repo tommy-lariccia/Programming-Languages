@@ -7,6 +7,8 @@ import java.util.*;
 
 import Readable.Readable;
 
+import static Readable.LexicalAnalysis.Types.FUNC;
+
 public class Environment {
     // ------------ Static Variables ------------
     private static final Map<String, Lexeme> builtIns = new HashMap<>();
@@ -169,6 +171,14 @@ public class Environment {
         str += "\n";
 
         return str;
+    }
+
+    public Environment copy() {
+        Environment newEnv = new Environment(this.parent);
+        for (NamedValue v : seeEntries()) {
+            newEnv.add(v.getType(), v.getName(), v.getValue());
+        }
+        return newEnv;
     }
 
     // ------------ Error Reporting ------------

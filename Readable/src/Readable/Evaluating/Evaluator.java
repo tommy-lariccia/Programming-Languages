@@ -146,14 +146,27 @@ public class Evaluator {
             for (NamedValue v : env.seeEntries()) {
                 if (v.getType() == FUNC) newEnv.add(v.getType(), v.getName(), v.getValue());
             }
-        } else {newEnv = env;}
+        } else {newEnv = env.copy();}
         return newEnv;
     }
 
+    private Lexeme getFuncTreeFromCall(Lexeme tree, Environment env) {
+        Lexeme firstChild = tree.getChild(0);
+        if (firstChild.getType() == IDENTIFIER)
+            return env.lookup(firstChild);
+        else if (firstChild.getType() == FUNC_CALL) {
+            Lexeme possFunc = eval(firstChild, env);
+            if (possFunc.getType() == FUNC)
+                return possFunc;
+            else
+                return error("Cannot call a lexeme of type " + possFunc.getType() + " as a function", tree.getLine());
+        }
+        return error("Cannot call a lexeme of type " + firstChild.getType() + " as a function", tree.getLine());
+    }
+
     private Lexeme evalFunctionCall(Lexeme tree, Environment env) {
-        Lexeme functionName = tree.getChild(0);
+        Lexeme funcDefTree = getFuncTreeFromCall(tree, env);
         Lexeme argList = tree.getChild(1);
-        Lexeme funcDefTree = env.lookup(functionName);
         Lexeme evaluatedArgList = evalArgList(argList, env);
         if (funcDefTree.getType() == FUNC)
             return evalLexicalFunction(tree, env, funcDefTree, evaluatedArgList);
