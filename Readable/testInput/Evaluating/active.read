@@ -1,0 +1,8 @@
+func foo():
+    c = 2
+    func foobar(a, b):
+        c = a + b + c
+        return c
+    return foobar
+
+print(foo())

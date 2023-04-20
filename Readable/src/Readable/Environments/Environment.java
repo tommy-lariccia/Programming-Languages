@@ -76,7 +76,7 @@ public class Environment {
     public Lexeme lookup(Lexeme identifier) {
         Lexeme value = scaleLookup(identifier);
         if (value == null)
-            error("'" + identifier.getValue() + "' is undefined.", identifier.getLine());
+            error("'" + identifier.getStringValue() + "' is undefined.", identifier.getLine());
         return value;
     }
 

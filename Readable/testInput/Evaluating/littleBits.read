@@ -1,0 +1,40 @@
+// Built in functions
+print(4)
+print(type(print))
+print(type([1, 2, 3]))
+
+// Dynamic and Static typing
+str a = "wnwn"
+b = 2
+
+// Order of operations is supported (plus/minus first evaluated, then mult/div, then comparators, then and/or)
+c = 28 + 2244 * 13 + 12  // 29,212
+print(c)
+
+// Negative/positive indexing and array literals
+arr = [1, 2, 3]
+print(arr[-1]) // equivalent to arr[2], or the integer 3
+
+// foreach (instead of for) loops, and range operator
+sum = 0
+foreach i in 0..10:  // equivalent to '...i in 10' or '...i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]'
+    sum = sum + i
+print(sum)  // 45
+
+// functions can only access other functions defined in the global scope, not the usual variable.
+d = 2
+func foo():
+    d = 1
+    print(d)  // 1
+foo()
+print(d)      // 2
+
+// This is not the case if the function is defined with another function. This allows closures to exist. My closures are currently broken.
+// A lambda looks like this:
+lambda z = (e, f) => e + f
+print(z(3, 5))  // 8
+
+// I plan on:
+// -- Removing static typing (b/c it's useless if it only happens at runtime, b/c type() exists, and b/c it's prone to bugs)
+//       -- Alternatively: writing a (large-ish) pre-runtime traverser to ensure correct typing prior to runtime. It seems conceptually easy.
+// -- Writing a few more built-in functions. Maybe support for imports.

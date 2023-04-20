@@ -136,7 +136,7 @@ public class Evaluator {
         newFunc.addChild(functionName);
         newFunc.addChild(paramList);
         newFunc.addChild(returnStatement);
-        evalFunctionDefinition(tree, env);
+        evalFunctionDefinition(newFunc, env);
         return functionName;
     }
 

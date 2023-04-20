@@ -140,15 +140,9 @@ public class BlockParser {
     }
 
     private void completeBlock() {
-        handleElifandIfs();
-        popBlock();
+        while (getTop().getVLine() - line.getVLine() > 0)
+            popBlock();
         addToCurrBlock();
-    }
-
-    private void handleElifandIfs() {
-        if (getTop().getHead().getType() == ELSE_IF || getTop().getHead().getType() == ELSE) {
-
-        }
     }
 
     private void popBlock() {
