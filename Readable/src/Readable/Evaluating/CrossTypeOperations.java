@@ -83,7 +83,6 @@ public class CrossTypeOperations {
     }
 
     public static Lexeme handleMultiplication(Lexeme s1, Lexeme s2) {
-        System.out.println(s1);
         Lexeme opt1 = handleMultOneSide(s1, s2);
         if (opt1.getType() != NULL) return opt1;
         Lexeme opt2 = handleMultOneSide(s2, s1);

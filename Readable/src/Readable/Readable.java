@@ -4,7 +4,6 @@
 package Readable;
 
 import Readable.Environments.Environment;
-import Readable.Environments.TestEnvironment;
 import Readable.Evaluating.Evaluator;
 import Readable.LexicalAnalysis.Lexeme;
 import Readable.LexicalAnalysis.Lexer;
@@ -51,13 +50,12 @@ public class Readable {
         Lexeme parseTree = parsing.program();
         parseTree.printAsParseTree();
 
-//        // Environments
-//        Environment globalEnvironment = new Environment();
-//
-//        // Evaluation
-//        Evaluator evaluator = new Evaluator();
-//        evaluator.eval(parseTree, globalEnvironment);
-//        System.out.println(globalEnvironment);
+        // Environments
+        Environment globalEnvironment = new Environment();
+
+        // Evaluation
+        Evaluator evaluator = new Evaluator();
+        evaluator.eval(parseTree, globalEnvironment);
     }
 
     // ------------ Errors ------------

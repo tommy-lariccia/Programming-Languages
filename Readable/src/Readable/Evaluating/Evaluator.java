@@ -28,6 +28,9 @@ public class Evaluator {
             case WHILE -> evalWhileLoop(tree, env);
             case ARR -> evalArr(tree, env);
             case LAMBDA -> evalLambdaInitialization(tree, env);
+            case CONDITIONAL_BLOCK -> evalCond(tree, env);
+            case ARR_ACC -> arrAcc(tree, env);
+            case ARR_ASS -> arrAss(tree, env);
 
             default -> defaultEval(tree, env);
         };
@@ -210,6 +213,60 @@ public class Evaluator {
         for (Lexeme expr : tree.getChild(0).getChildren()) newExprList.addChild(eval(expr, env));
         newArr.addChild(newExprList);
         return newArr;
+    }
+
+    private Lexeme evalCond(Lexeme tree, Environment env) {
+        Lexeme ifBlock = tree.getChild(0);
+        if (eval(ifBlock.getChild(0), env).getType() == TRUE) {
+            return eval(ifBlock.getChild(1), new Environment(env));
+        }
+        int i = 1;
+        while (i < tree.getChildren().size() && tree.getChild(i).getType() == ELSE_IF) {
+            Lexeme elseIfBlock = tree.getChild(i);
+            if (eval(elseIfBlock.getChild(0), env).getType() == TRUE)
+                return eval(elseIfBlock.getChild(1), new Environment(env));
+            i++;
+        }
+        if (tree.getChild(tree.getChildren().size() - 1).getType() == ELSE) {
+            Lexeme elseBlock = tree.getChild(tree.getChildren().size() - 1);
+            return eval(elseBlock.getChild(0), new Environment(env));
+        }
+        return new Lexeme(NULL);
+    }
+
+    private Lexeme arrAcc(Lexeme tree, Environment env) {
+        Lexeme arr = eval(tree.getChild(0), env);
+        if (arr.getType() != ARR)
+            error("Cannot treat lexeme of type " + arr.getType() + " as an array.", arr.getLine());
+        Lexeme index = eval(tree.getChild(1), env);
+        if (index.getType() != INT_LIT)
+            error("Cannot index into array with lexeme of type " + arr.getType() + ".", arr.getLine());
+        Lexeme items = arr.getChild(0);
+        int realIndex = index.getIntValue();
+        if (realIndex < 0)
+            realIndex = items.getChildren().size() - Math.abs(realIndex);
+        if (0 > realIndex || items.getChildren().size() <= realIndex) {
+            return error("Index " + realIndex + " out of bounds for array of length " + items.getChildren().size(), arr.getLine());
+        }
+        return arr.getChild(0).getChild(realIndex);
+    }
+
+    private Lexeme arrAss(Lexeme tree, Environment env) {
+        Lexeme arr = eval(tree.getChild(1), env);
+        if (arr.getType() != ARR)
+            error("Cannot treat lexeme of type " + arr.getType() + " as an array.", arr.getLine());
+        Lexeme index = eval(tree.getChild(2), env);
+        if (index.getType() != INT_LIT)
+            error("Cannot index into array with lexeme of type " + arr.getType() + ".", arr.getLine());
+        Lexeme items = arr.getChild(0);
+        int realIndex = index.getIntValue();
+        if (realIndex < 0)
+            realIndex = items.getChildren().size() - Math.abs(realIndex);
+        if (0 > realIndex || items.getChildren().size() <= realIndex) {
+            return error("Index " + realIndex + " out of bounds for array of length " + items.getChildren().size(), arr.getLine());
+        }
+        arr.getChild(0).getChildren().set(realIndex, tree.getChild(3));
+        return new Lexeme(NULL);
     }
 
     // ----------- Error Reporting -----------
