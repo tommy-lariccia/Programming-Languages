@@ -6,7 +6,7 @@ package Readable.LexicalAnalysis;
 public enum Types {
     // ------------ Structural Characters ------------
     COLON, OSQUARE, CSQUARE, OPAREN, CPAREN, QUAD_SPACE,
-    RARROW, NEW_LINE, COMMA, ASTERISK,
+    RARROW, NEW_LINE, COMMA,
 
     // ------------ Data Types ------------
     INTEGER, FLOAT, BOOL, STRING, NULL,
@@ -25,7 +25,6 @@ public enum Types {
     AND, OR, NOT,
 
     // ------------ LITERALS ------------
-
     STRING_LIT, INT_LIT, FLOAT_LIT, TRUE, FALSE,
 
     // ------------ Misc ------------
