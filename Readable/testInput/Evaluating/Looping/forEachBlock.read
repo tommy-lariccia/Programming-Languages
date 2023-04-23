@@ -1,0 +1,55 @@
+s = 0
+foreach i in 10:
+    s = s + i
+print(s)   // 45
+
+
+s = 0
+foreach i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
+    s = s + i
+print(s)   // 45
+
+
+z = 10
+s = 0
+foreach i in z:
+    s = s + i
+print(s)   // 45
+
+
+str = ""
+foreach i in 2..9:
+    str = str + i
+print(str)   // 2345678
+
+
+str = ""
+foreach i in 9..2:
+    str = str + i
+print(str)   // 9876543
+
+a = 0
+b = 10
+s = 0
+foreach i in a..b:
+    s = s + i
+print(s)   // 45
+
+
+s = 0
+foreach i in (0 + 1)..(10 * 1):
+    s = s + i
+print(s)   // 45
+
+
+s = 0
+foreach i in 1 + 0..10 * 1:
+    s = s + i
+print(s)   // 45
+
+
+string = "abcd"
+str = ""
+foreach i in string:
+    str = str + i
+print(str)   // abcd

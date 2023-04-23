@@ -39,13 +39,6 @@ public class Lexer {
         // Literals
         closedKeywords.put("true", TRUE);
         closedKeywords.put("false", FALSE);
-
-        // Types
-        closedKeywords.put("int", INTEGER);
-        closedKeywords.put("bool", BOOL);
-        closedKeywords.put("float", FLOAT);
-        closedKeywords.put("str", STRING);
-        closedKeywords.put("null", NULL);
     }
 
     // ------------ Constructor ------------

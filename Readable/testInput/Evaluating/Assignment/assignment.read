@@ -1,0 +1,20 @@
+a = 3      // initialize
+print(a)   // 3
+a = 4      // change value
+print(a)   // 4
+a = "string"  // change type
+print(a)    // "string"
+lambda b = () => 2
+a = b      // assign to function
+print(a)   // "[fnct]"
+a = sum    // assign to built-in
+print(a)   // "[bltIn]"
+if true:
+    a = 3  // changed in normal block
+print(a)   // 3
+
+func foo():
+    a = 4  // not changed in function block, i.e. this counts as an initialization
+    print(a)  // 4
+foo()
+print(a)   // 3

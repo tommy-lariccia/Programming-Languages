@@ -95,34 +95,6 @@ public class LineParser {
         else return error("Expected a boolean but received neither 'true' nor 'false'.");
     }
 
-    // TYPING
-
-    private Lexeme typing() {
-        if (typingArrPending()) {
-            return typingArr();
-        } else if (typingKeywordsPending()) {
-            return typingKeywords();
-        } else {
-            return error("Expected a valid type but did not receive one.");
-        }
-    }
-
-    private Lexeme typingArr() {
-        Lexeme root = new Lexeme(TYPING_ARR);
-        root.addChild(typingKeywords());
-        consume(OSQUARE);
-        consume(CSQUARE);
-        return root;
-    }
-
-    private Lexeme typingKeywords() {
-        if (check(INTEGER)) return consume(INTEGER);
-        else if (check(STRING)) return consume(STRING);
-        else if (check(BOOL)) return consume(BOOL);
-        else if (check(FLOAT)) return consume(FLOAT);
-        else return error("Expected 'int', 'float', 'bool', or 'str'");
-    }
-
     // ASSIGNS and INITS
 
     private Lexeme variableInitializationAssignment() {
@@ -137,8 +109,6 @@ public class LineParser {
 
     private Lexeme assignment() {
         Lexeme root = new Lexeme(ASS);
-        if (typingPending()) root.addChild(typing());
-        else root.addChild(new Lexeme(ANY_TYPE));
         root.addChild(consume(IDENTIFIER));
         consume(ASSIGN);
         root.addChild(expression());
@@ -147,8 +117,6 @@ public class LineParser {
 
     private Lexeme arrSlotAssign() {
         Lexeme root = new Lexeme(ARR_ASS);
-        if (typingArrPending()) root.addChild(typingArr());
-        else root.addChild(new Lexeme(ANY_TYPE));
         root.addAllChildren(arrAccess().getChildren());
         consume(ASSIGN);
         root.addChild(expression());
@@ -379,8 +347,6 @@ public class LineParser {
 
     private Lexeme parameter() {
         Lexeme root = new Lexeme(PARAM);
-        if (typingPending()) root.addChild(typing());
-        else root.addChild(new Lexeme(ANY_TYPE));
         root.addChild(consume(IDENTIFIER));
         return root;
     }
@@ -393,8 +359,6 @@ public class LineParser {
 
     private Lexeme functionDefinition() {
         Lexeme root = consume(FUNC);
-        if (typingPending()) root.addChild(typing());
-        else root.addChild(new Lexeme(ANY_TYPE));
         root.addChild(consume(IDENTIFIER));
         consume(OPAREN);
         if (check(TIMES)) root.addChild(arbParamList());
@@ -444,11 +408,6 @@ public class LineParser {
 
     private Lexeme forEachLoop() {
         Lexeme root = consume(FOREACH);
-        if (typingPending()) {
-            root.addChild(typing());
-        } else {
-            root.addChild(new Lexeme(ANY_TYPE));
-        }
         root.addChild(consume(IDENTIFIER));
         consume(IN);
         root.addChild(iterable());
@@ -458,21 +417,21 @@ public class LineParser {
     private Lexeme iterable() {
         if (arrPending()) {
             return arr();
-        } else if (check(INT_LIT)) {
-            if (checkNext(RANGE)) return range();
-            else return consume(INT_LIT);
-        } else if (check(IDENTIFIER)) {
-            return consume(IDENTIFIER);
+        } else if (check(INT_LIT) || check(IDENTIFIER)) {
+            if (checkNext(COLON)) return consume(peek());
+            else return range();
+        } else if (expressionPending()) {
+            return range();
         } else {
             return error("Expected array, range, or integer but did not receive either.");
         }
     }
 
     private Lexeme range() {
-        Lexeme op1 = consume(INT_LIT);
+        Lexeme op1 = expression();
         Lexeme root = consume(RANGE);
         root.addChild(op1);
-        root.addChild(consume(INT_LIT));
+        root.addChild(expression());
         return root;
     }
 
@@ -534,26 +493,12 @@ public class LineParser {
         return check(LAMBDA);
     }
 
-    private boolean typingKeywordsPending() {
-        return check(INTEGER) || check(FLOAT) || check(STRING) || check(BOOL);
-    }
-
-    private boolean typingArrPending() {
-        return typingKeywordsPending() && checkNext(OSQUARE);
-    }
-
     private boolean assignmentPending() {
-        return (typingPending()) || (check(IDENTIFIER) && checkNext(ASSIGN));
+        return check(IDENTIFIER) && checkNext(ASSIGN);
     }
 
-    private boolean typingPending() {
-        return typingKeywordsPending();
-    }
-
-    private boolean arrSlotAssignPending() {  // only necessarily ugly function
-        return (check(IDENTIFIER) && checkNext(OSQUARE) && !checkNextNext(CSQUARE)) ||
-                (typingArrPending() && checkNextNext(CSQUARE) && lexemes.get(nextLexemeIndex + 2).getType() == IDENTIFIER
-                        && lexemes.get(nextLexemeIndex + 3).getType() == OSQUARE && lexemes.get(nextLexemeIndex + 4).getType() != CSQUARE);
+    private boolean arrSlotAssignPending() {
+        return (check(IDENTIFIER) && checkNext(OSQUARE) && !checkNextNext(CSQUARE));
     }
 
     private boolean exprListPending() {

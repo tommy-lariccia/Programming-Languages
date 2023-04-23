@@ -31,7 +31,7 @@ public class Arithmetic {
             case STRING_LIT -> {
                 switch (s2.getType()) {
                     case STRING_LIT -> {return new Lexeme(Types.STRING_LIT, -1, s1.getStringValue() + s2.getStringValue());}
-                    case FLOAT_LIT, INT_LIT -> {return new Lexeme(Types.STRING_LIT, -1, s1.getStringValue() + String.valueOf(s2.getStringValue()));}
+                    case FLOAT_LIT, INT_LIT -> {return new Lexeme(Types.STRING_LIT, -1, s1.getStringValue() + String.valueOf(s2.getValue()));}
                     default -> {return new Lexeme(Types.NULL);}
                 }
             }

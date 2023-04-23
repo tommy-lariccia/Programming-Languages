@@ -1,0 +1,15 @@
+a = false
+while a:
+    print(a)   // does not run
+
+a = 1
+while a:
+    print(a)   // '1' once
+    a = 0
+
+a = 9
+s = 0
+while a > 0 and true:
+    s = s + a
+    a = a - 1
+print(s)  // 45

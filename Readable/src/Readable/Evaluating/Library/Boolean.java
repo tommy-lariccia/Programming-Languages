@@ -23,7 +23,6 @@ public class Boolean {
             case FLOAT_LIT -> root.getDecValue() != 0.0 ? trueValue : falseValue;
             case STRING_LIT -> !(root.getStringValue().equals("")) ? trueValue : falseValue;
             case ARR -> root.getChild(0).getChildren().size() > 0 ? trueValue : falseValue;
-            case BOOL -> root;
             case TRUE -> trueValue;
             case FALSE -> falseValue;
             default -> new Lexeme(NULL);

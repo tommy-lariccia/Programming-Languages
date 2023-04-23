@@ -7,4 +7,13 @@ else:
     return true
 y = x + 3
 
-// Relevant possible errors handled in functions.read
+// -----
+
+else:
+    return true
+else if x < 2:
+    a[2] = [3, 4]
+if x > 3:
+    x = 2
+    y0 = 4 + 3
+y = x + 3

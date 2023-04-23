@@ -8,9 +8,6 @@ public enum Types {
     COLON, OSQUARE, CSQUARE, OPAREN, CPAREN, QUAD_SPACE,
     RARROW, NEW_LINE, COMMA,
 
-    // ------------ Data Types ------------
-    INTEGER, FLOAT, BOOL, STRING, NULL,
-
     // ------------ Operators ------------
     PLUS, MINUS, TIMES, DIVIDE, NEGATE,
 
@@ -28,7 +25,7 @@ public enum Types {
     STRING_LIT, INT_LIT, FLOAT_LIT, TRUE, FALSE,
 
     // ------------ Misc ------------
-    ASSIGN, RANGE, IDENTIFIER, EOF,
+    ASSIGN, RANGE, IDENTIFIER, EOF, NULL,
 
     // ------------ Parse Structures ------------
     ERROR, ELSE_IF, EMPTY_LIST, ANY_TYPE, PARAM, PARAM_LIST, ARB_PARAM_LIST, ARG_LIST, FUNC_CALL, EXPR_LIST, ARR_ACC,

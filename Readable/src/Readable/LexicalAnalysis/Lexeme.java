@@ -187,6 +187,8 @@ public class Lexeme {
             }
         } else if (getType() == Types.FUNC) {
             return "[fnct]";
+        } else if (getType() == Types.BUILT_IN_FUNC) {
+            return "[bltIn]";
         } else if (getType() == Types.IDENTIFIER) {
             return getStringValue();
         }

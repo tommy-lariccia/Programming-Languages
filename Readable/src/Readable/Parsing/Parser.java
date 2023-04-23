@@ -31,7 +31,7 @@ public class Parser {
         ArrayList<Lexeme> currLine = new ArrayList<>();
         for (Lexeme lex : lexemes) {
             if (lex.getType() == NEW_LINE || lex.getType() == EOF) {
-                if (currLine.size() > 0) {currLine.add(new Lexeme(EOL)); lines.add(new Line(currLine));}
+                if (currLine.size() > 0) {currLine.add(new Lexeme(EOL, lex.getLine())); lines.add(new Line(currLine));}
                 currLine = new ArrayList<>();
             } else {
                 currLine.add(lex);

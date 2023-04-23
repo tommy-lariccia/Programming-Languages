@@ -14,6 +14,9 @@ import java.util.Arrays;
 import static Readable.LexicalAnalysis.Types.*;
 
 public class Evaluator {
+    // ----------- Instance Variables -----------
+    boolean returnDone = false;
+
     // ----------- Evaluating -----------
     public Lexeme eval(Lexeme tree, Environment env) {
         if (tree == null) return new Lexeme(Types.NULL);
@@ -46,27 +49,31 @@ public class Evaluator {
     private Lexeme evalStatementList(Lexeme tree, Environment env) {
         Lexeme result = new Lexeme(Types.NULL);
         for (Lexeme statement : tree.getChildren()) {
+            if (statement.getType() == RETURN) {
+                returnDone = true;
+                return eval(statement, env);
+            }
             result = eval(statement, env);
+            if (returnDone)
+                return result;   // propagates upwards; it's sort of clever for such a poorly-planned system (on my part)
         }
         return result;
     }
 
     private Lexeme evalAss(Lexeme tree, Environment env) {
-        Lexeme expr = eval(tree.getChild(2), env);
-        Types type = tree.getChild(0).getType();
-        Lexeme name = tree.getChild(1);
-        env.addOrUpdate(type, name, expr);
+        Lexeme name = tree.getChild(0);
+        Lexeme expr = eval(tree.getChild(1), env);
+        env.addOrUpdate( name, expr);
         return new Lexeme(NULL);
     }
 
     private Lexeme evalForeach(Lexeme tree, Environment env) {
-        Lexeme type = tree.getChild(0);
-        Lexeme iden = tree.getChild(1);
-        Lexeme iter = tree.getChild(2);
-        Lexeme block = tree.getChild(3);
+        Lexeme iden = tree.getChild(0);
+        Lexeme iter = tree.getChild(1);
+        Lexeme block = tree.getChild(2);
         for (Lexeme lex : toIterable(iter, env).getChildren()) {
             Environment subEnv = new Environment(env);
-            subEnv.add(type.getType(), iden, lex);
+            subEnv.add(iden, lex);
             eval(block, subEnv);
         }
         return new Lexeme(Types.NULL);
@@ -76,7 +83,9 @@ public class Evaluator {
         Lexeme comp = tree.getChild(0);
         Lexeme block = tree.getChild(1);
         while (true) {
-            Lexeme evalComp = eval(comp, env);
+            ArrayList<Lexeme> terms = new ArrayList<>();
+            terms.add(comp);
+            Lexeme evalComp = BuiltIns.truthy(terms, tree.getLine(), env);
             if (evalComp.getType() != TRUE && evalComp.getType() != FALSE)
                 error("While loop condition must evaluate to TRUE or FALSE", tree.getLine());
             if (evalComp.getType() == TRUE) {
@@ -86,7 +95,6 @@ public class Evaluator {
                 break;
             }
         }
-
         return new Lexeme(NULL);
     }
 
@@ -111,21 +119,33 @@ public class Evaluator {
             }
             return arr;
         } else if (tree.getType() == Types.RANGE) {
-            Lexeme arr = new Lexeme(Types.ARR);
-            for (int i = tree.getChild(0).getIntValue(); i < tree.getChild(1).getIntValue(); i++) {
-                arr.addChild(new Lexeme(Types.INT_LIT, -1, i));
-            }
-            return arr;
+            return rangeToArr(tree, env);
         }
         return new Lexeme(Types.NULL);
     }
 
+    private Lexeme rangeToArr(Lexeme tree, Environment env) {
+        Lexeme first = eval(tree.getChild(0), env);
+        Lexeme second = eval(tree.getChild(1), env);
+        Lexeme arr = new Lexeme(Types.ARR);
+        if (first.getType() != INT_LIT)
+            error("RANGE operands must be integers.", first);
+        if (second.getType() != INT_LIT)
+            error("RANGE operands must be integers.", second);
+        if (first.getIntValue() < second.getIntValue()) {
+            for (int i = first.getIntValue(); i < second.getIntValue(); i++) arr.addChild(new Lexeme(Types.INT_LIT, -1, i));
+        } else {
+            for (int i = first.getIntValue(); i > second.getIntValue(); i--) arr.addChild(new Lexeme(Types.INT_LIT, -1, i));
+        }
+        return arr;
+    }
+
     private Lexeme evalFunctionDefinition(Lexeme tree, Environment env) {
         Environment newEnv = getFunctionEnv(env);
-        tree.setDefiningEnv(env);
-        Lexeme functionName = tree.getChild(1);
-        env.add(tree.getType(), functionName, tree);
-        newEnv.add(tree.getType(), functionName, tree);
+        tree.setDefiningEnv(newEnv);
+        Lexeme functionName = tree.getChild(0);
+        env.add(functionName, tree);
+        newEnv.add(functionName, tree);
         return functionName;
     }
 
@@ -133,7 +153,7 @@ public class Evaluator {
         Environment newEnv = new Environment();
         if (env.isGlobal()) {
             for (NamedValue v : env.seeEntries()) {
-                if (v.getType() == FUNC) newEnv.add(v.getType(), v.getName().copy(), v.getValue().copy());
+                if (v.getValue().getType() == FUNC) {newEnv.add(v.getName().copy(), v.getValue().copy());}
             }
         } else {newEnv = env.copy();}
         return newEnv;
@@ -146,7 +166,6 @@ public class Evaluator {
         Lexeme newFunc = new Lexeme(FUNC);
         Lexeme returnStatement = new Lexeme(RETURN);
         returnStatement.addChild(returnExpr);
-        newFunc.addChild(new Lexeme(ANY_TYPE));
         newFunc.addChild(functionName);
         newFunc.addChild(paramList);
         newFunc.addChild(returnStatement);
@@ -174,8 +193,9 @@ public class Evaluator {
         if (funcDefTree.getType() == FUNC) {
             Lexeme evaluatedArgList = evalArgList(argList, env);
             return evalLexicalFunction(tree, env, funcDefTree, evaluatedArgList);
-        } else if (funcDefTree.getType() == BUILT_IN_FUNC)
+        } else if (funcDefTree.getType() == BUILT_IN_FUNC) {
             return funcDefTree.getBuiltInFunc().call(argList.getChildren(), tree.getLine(), env);
+        }
         error("Cannot call a lexeme of type " + funcDefTree.getType() + " as a function", tree.getLine());
         return new Lexeme(NULL);
     }
@@ -198,26 +218,27 @@ public class Evaluator {
 
     private Lexeme evalLexicalFunction(Lexeme tree, Environment env, Lexeme funcDefTree, Lexeme evaluatedArgList) {
         Environment callEnv = new Environment(funcDefTree.getDefiningEnv());
-        if (funcDefTree.getChild(2).getType() == ARB_PARAM_LIST) {
+        if (funcDefTree.getChild(1).getType() == ARB_PARAM_LIST) {
             Lexeme arr = new Lexeme(ARR);
             arr.addChild(new Lexeme(EXPR_LIST));
             for (Lexeme lex : evaluatedArgList.getChildren()) arr.getChild(0).addChild(lex);
-            callEnv.add(ARR, funcDefTree.getChild(2).getChild(0), arr);
+            callEnv.add(funcDefTree.getChild(1).getChild(0), arr);
         } else
             callEnv = normalParamPopulate(tree, env, funcDefTree, evaluatedArgList);
-        Lexeme funcBody = funcDefTree.getChild(3);
-        return eval(funcBody, callEnv);
+        Lexeme funcBody = funcDefTree.getChild(2);
+        Lexeme evaluated = eval(funcBody, callEnv);
+        returnDone = false;
+        return evaluated;
     }
 
     private Environment normalParamPopulate(Lexeme tree, Environment env, Lexeme funcDefTree, Lexeme evaluatedArgList) {
-        Lexeme paramList = funcDefTree.getChild(2);
+        Lexeme paramList = funcDefTree.getChild(1);
         if (evaluatedArgList.getChildren().size() != paramList.getChildren().size())
             error("Expected " + paramList.getChildren().size() + " children supplied to function call, but " +
                     "received " + evaluatedArgList.getChildren().size() + ".", tree.getLine());
         Environment callEnv = new Environment(funcDefTree.getDefiningEnv());
         for (int i = 0; i < paramList.getChildren().size(); i++) {
-            callEnv.localAdd(paramList.getChild(i).getChild(0).getType(), paramList.getChild(i).getChild(1).copy(),
-                    evaluatedArgList.getChild(i).copy());
+            callEnv.localAdd(paramList.getChild(i).getChild(0).copy(), evaluatedArgList.getChild(i).copy());
         }
         return callEnv;
     }
