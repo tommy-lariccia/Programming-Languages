@@ -1,0 +1,60 @@
+func foo():
+    return 3
+
+// --------- Integers ---------
+print(sum(1, 2))      // 3
+print(sum(1, 2.3))    // 3.3
+//print(sum(1, [1, 2])) // errors
+print(sum(1, "sum"))  // 1sum
+//print(sum(1, true))   // errors
+//print(sum(1, foo))    // errors
+
+print("")
+
+// --------- Floats ---------
+print(sum(1.3, 2))      // 3.3
+print(sum(1.3, 2.3))    // 3.6
+//print(sum(1.3, [1, 2])) // errors
+print(sum(1.3, "sum"))  // 1.3sum
+//print(sum(1.3, true))   // errors
+//print(sum(1.3, foo))    // errors
+
+print("")
+
+// --------- Arrays ---------
+print(sum([1, 2], 2))      // [1, 2, 2]
+print(sum([1, 2], 2.3))    // [1, 2, 2.3]
+print(sum([1, 2], [1, 2])) // [1, 2, 1, 2]
+print(sum([1, 2], "sum"))  // [1, 2, sum]
+print(sum([1, 2], true))   // [1, 2, true]
+print(sum([1, 2], foo))    // [1, 2, [fnct]]  (last item is a func primitive)
+
+print("")
+
+// --------- Strings ---------
+print(sum("sum", 2))      // sum2
+print(sum("sum", 2.3))    // sum2.3
+//print(sum("sum", [1, 2])) // errors
+print(sum("sum", "sum"))  // sumsum
+//print(sum("sum", true))   // errors
+//print(sum("sum", foo))    // errors
+
+print("")
+
+// --------- Booleans ---------
+//print(sum(true, 2))      // errors
+//print(sum(true, 2.3))    // errors
+//print(sum(true, [1, 2])) // errors
+//print(sum(true, "sum"))  // errors
+//print(sum(true, true))   // errors
+//print(sum(true, foo))    // errors
+
+print("")
+
+// --------- Booleans ---------
+//print(sum(foo, 2))      // errors
+//print(sum(foo, 2.3))    // errors
+//print(sum(foo, [1, 2])) // errors
+//print(sum(foo, "sum"))  // errors
+//print(sum(foo, true))   // errors
+//print(sum(foo, foo))    // errors

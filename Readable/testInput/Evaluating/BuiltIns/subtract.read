@@ -1,0 +1,60 @@
+func foo():
+    return 3
+
+// --------- Integers ---------
+print(subtract(1, 2))      // -1
+print(subtract(1, 2.3))    // -1.3
+//print(subtract(1, [1, 2])) // errors
+//print(subtract(1, "sum"))  // errors
+//print(subtract(1, true))   // errors
+//print(subtract(1, foo))    // errors
+
+print("")
+
+// --------- Floats ---------
+print(subtract(1.3, 2))      // -0.7
+print(subtract(1.3, 2.3))    // -1.0
+//print(subtract(1.3, [1, 2])) // errors
+//print(subtract(1.3, "sum"))  // errors
+//print(subtract(1.3, true))   // errors
+//print(subtract(1.3, foo))    // errors
+
+print("")
+
+// --------- Arrays ---------
+print(subtract([1, 2], 1))      // [1]
+//print(subtract([1, 2], 2.3))    // errors
+//print(subtract([1, 2], [1, 2])) // errors
+//print(subtract([1, 2], "sum"))  // errors
+//print(subtract([1, 2], true))   // errors
+//print(subtract([1, 2], foo))    // errors
+
+print("")
+
+// --------- Strings ---------
+print(subtract("sum", 2))      // s
+//print(subtract("sum", 2.3))    // errors
+//print(subtract("sum", [1, 2])) // errors
+//print(sum("sum", "sum"))  // errors
+//print(subtract("sum", true))   // errors
+//print(subtract("sum", foo))    // errors
+
+print("")
+
+// --------- Booleans ---------
+//print(subtract(true, 2))      // errors
+//print(subtract(true, 2.3))    // errors
+//print(subtract(true, [1, 2])) // errors
+//print(subtract(true, "sum"))  // errors
+//print(subtract(true, true))   // errors
+//print(subtract(true, foo))    // errors
+
+print("")
+
+// --------- Booleans ---------
+//print(subtract(foo, 2))      // errors
+//print(subtract(foo, 2.3))    // errors
+//print(subtract(foo, [1, 2])) // errors
+//print(subtract(foo, "sum"))  // errors
+//print(subtract(foo, true))   // errors
+//print(subtract(foo, foo))    // errors

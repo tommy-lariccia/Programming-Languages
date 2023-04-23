@@ -1,0 +1,31 @@
+a = 3
+if a == 3:
+    print(a + 3)   // 6
+else if a == 2:
+    print(2)   // doesn't happen
+else if a == 3:
+    print(1)   // doesn't happen
+else:
+    print(4)   // doesn't happen
+
+
+a = 4
+if a == 3:
+    print(a + 3)   // doesn't happen
+else if a == 2:
+    print(2)   // doesn't happen
+else if a == 3:
+    print(1)   // doesn't happen
+else:
+    print(4)   // 4
+
+
+a = 2
+if a == 3:
+    print(a + 3)   // doesn't happen
+else if a == 2:
+    print(2)   // 2
+else if a == 3:
+    print(1)   // doesn't happen
+else:
+    print(4)   // doesn't happen

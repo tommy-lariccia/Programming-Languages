@@ -42,6 +42,7 @@ public class Arithmetic {
                 } else {
                     s1.getChild(0).addChild(s2);
                 }
+                return s1;
             }
         }
         return new Lexeme(Types.NULL);
@@ -56,13 +57,13 @@ public class Arithmetic {
     public static Lexeme subtract(Lexeme s1, Lexeme s2) {
         switch (s1.getType()) {
             case INT_LIT -> {
-                switch (s1.getType()) {
+                switch (s2.getType()) {
                     case INT_LIT -> {return new Lexeme(Types.INT_LIT, -1, s1.getIntValue() - s2.getIntValue());}
                     case FLOAT_LIT -> {return new Lexeme(Types.FLOAT_LIT, -1, s1.getIntValue() - s2.getDecValue());}
                 }
             }
             case FLOAT_LIT -> {
-                switch (s1.getType()) {
+                switch (s2.getType()) {
                     case INT_LIT -> {return new Lexeme(Types.FLOAT_LIT, -1, s1.getDecValue() - s2.getIntValue());}
                     case FLOAT_LIT -> {return new Lexeme(Types.FLOAT_LIT, -1, s1.getDecValue() - s2.getDecValue());}
                 }
@@ -118,7 +119,7 @@ public class Arithmetic {
         } else if (s1.getType() == INT_LIT && s2.getType() == ARR) {
             Lexeme newArr = new Lexeme(ARR, s1.getLine());
             Lexeme newList = new Lexeme(EXPR_LIST, s1.getLine());
-            ArrayList<Lexeme> arr = (ArrayList<Lexeme>) s1.getChild(0).getChildren().clone();
+            ArrayList<Lexeme> arr = (ArrayList<Lexeme>) s2.getChild(0).getChildren().clone();
             if (s2.getIntValue() < 0) {
                 Collections.reverse(arr);
             }

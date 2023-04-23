@@ -15,7 +15,7 @@ import Readable.Evaluating.Evaluator;
 
 import static Readable.LexicalAnalysis.Types.*;
 
-public class BuiltIns {  // TODO: Break into files
+public class BuiltIns {
     // ----------- Static Functions -----------
     // ----------- General -----------
     public static Lexeme print(ArrayList<Lexeme> args, int line, Environment env) {
@@ -73,7 +73,7 @@ public class BuiltIns {  // TODO: Break into files
         } else if (tree.getType() == ARR) {
             return new Lexeme(INT_LIT, tree.getLine(), tree.getChild(0).getChildren().size());
         } else {
-            error("Cannot evaluate built-in 'lex' on value of type " + tree.getType().toString(),
+            error("Cannot evaluate built-in 'len' on value of type " + tree.getType().toString(),
                     tree.getLine());
         }
         return new Lexeme(NULL);
@@ -88,12 +88,14 @@ public class BuiltIns {  // TODO: Break into files
             return error("Cannot perform addition with lexeme of type " + args.get(0).getType(), line);
         }
         Lexeme sum_ = args.get(0);
+        Types oldType = sum_.getType();
         for (int i = 1; i < args.size(); i++) {
             sum_ = Arithmetic.sum(sum_, args.get(i));
-            if (sum_ == null) {
+            if (sum_.getType() == NULL) {
                 if (Arithmetic.checkSumUnavailable(args.get(i))) return error("Cannot perform addition with lexeme of type " + args.get(i).getType(), line);
-                else return error("Cannot perform addition between lexeme of type " + sum_.getType() + " and lexeme of type " + args.get(i).getType(), line);
+                else return error("Cannot perform addition between lexeme of type " + oldType + " and lexeme of type " + args.get(i).getType(), line);
             }
+            oldType = sum_.getType();
         }
         return sum_;
     }
@@ -108,7 +110,7 @@ public class BuiltIns {  // TODO: Break into files
             return error("Cannot perform subtraction with lexeme of type " + args.get(1).getType(), line);
         }
         Lexeme result = Arithmetic.subtract(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == NULL)
             return error("Cannot perform subtraction between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }
@@ -121,12 +123,14 @@ public class BuiltIns {  // TODO: Break into files
             return error("Cannot perform multiplication with lexeme of type " + args.get(0).getType(), line);
         }
         Lexeme product = args.get(0);
+        Types oldType = product.getType();
         for (int i = 1; i < args.size(); i++) {
             product = Arithmetic.multiply(product, args.get(i));
-            if (product == null) {
+            if (product.getType() == NULL) {
                 if (Arithmetic.checkMultiplicationUnavailable(args.get(i))) return error("Cannot perform multiplication with lexeme of type " + args.get(i).getType(), line);
-                else return error("Cannot perform multiplication between lexeme of type " + product.getType() + " and lexeme of type " + args.get(i).getType(), line);
+                else return error("Cannot perform multiplication between lexeme of type " + oldType + " and lexeme of type " + args.get(i).getType(), line);
             }
+            oldType = product.getType();
         }
         return product;
     }
@@ -141,7 +145,7 @@ public class BuiltIns {  // TODO: Break into files
             return error("Cannot perform division with lexeme of type " + args.get(1).getType(), line);
         }
         Lexeme result = Arithmetic.divide(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == NULL)
             return error("Cannot perform division between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }

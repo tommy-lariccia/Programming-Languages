@@ -1,0 +1,17 @@
+print(2)                       // 2
+print(2.2)                     // 2.2
+print("string")                // "string"
+print(true)                    // true
+print(false)                   // false
+print([1, 2])                  // [1, 2]
+
+func foo():
+    return 2
+
+print(foo)                     // [fnct]
+
+lambda foobar = () => 2
+
+print(foobar)                  // [fnct]
+
+print(print)                   // [bltIn]

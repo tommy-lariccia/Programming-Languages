@@ -1,0 +1,17 @@
+print(type(2))                 // int
+print(type(2.2))               // float
+print(type("string"))          // str
+print(type(true))              // bool
+print(type(false))             // bool
+print(type([1, 2]))            // arr
+
+func foo():
+    return 2
+
+print(type(foo))               // func
+
+lambda foobar = () => 2
+
+print(type(foobar))            // func
+
+print(type(print))             // bltIn

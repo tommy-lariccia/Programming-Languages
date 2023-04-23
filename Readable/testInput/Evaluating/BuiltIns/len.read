@@ -1,0 +1,4 @@
+print(len("fart"))   // 4
+print(len([1, 2]))   // 2
+print(len(""))       // 0
+print(len([]))       // 0

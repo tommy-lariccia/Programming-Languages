@@ -1,0 +1,60 @@
+func foo():
+    return 3
+
+// --------- Integers ---------
+print(multiply(2, 2))      // 4
+print(multiply(2, 2.3))    // 4.6
+print(multiply(2, [2, 3])) // [2, 3, 2, 3]
+print(multiply(2, "sum"))  // sumsum
+print(multiply(1, false))   // 0
+//print(multiply(1, foo))    // errors
+
+print("")
+
+// --------- Floats ---------
+print(multiply(1.3, 2))      // 2.6
+print(multiply(1.5, 2.3))    // 3.45
+//print(multiply(1.3, [1, 2])) // errors
+//print(multiply(1.3, "sum"))  // errors
+//print(multiply(1.3, true))   // errors
+//print(multiply(1.3, foo))    // errors
+
+print("")
+
+// --------- Arrays ---------
+print(multiply([1, 2], 2))      // [1, 2, 1, 2]
+//print(multiply([1, 2], 2.3))    // errors
+print(multiply([1, 2], [1, 2])) // errors
+print(multiply([1, 2], "sum"))  // errors
+print(multiply([1, 2], true))   // errors
+print(multiply([1, 2], foo))    // errors
+
+print("")
+
+// --------- Strings ---------
+print(multiply("sum", 2))      // s
+print(multiply("sum", 2.3))    // errors
+print(multiply("sum", [1, 2])) // errors
+print(multiply("sum", "sum"))  // errors
+print(multiply("sum", true))   // errors
+print(multiply("sum", foo))    // errors
+
+print("")
+
+// --------- Booleans ---------
+print(multiply(true, 2))      // errors
+print(multiply(true, 2.3))    // errors
+print(multiply(true, [1, 2])) // errors
+print(multiply(true, "sum"))  // errors
+print(multiply(true, true))   // errors
+print(multiply(true, foo))    // errors
+
+print("")
+
+// --------- Booleans ---------
+print(multiply(foo, 2))      // errors
+print(multiply(foo, 2.3))    // errors
+print(multiply(foo, [1, 2])) // errors
+print(multiply(foo, "sum"))  // errors
+print(multiply(foo, true))   // errors
+print(multiply(foo, foo))    // errors
