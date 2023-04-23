@@ -16,4 +16,4 @@ print(truthy([1, 2]))  // true
 print(truthy(false))  // false
 print(truthy(true))  // true
 
-print(truthy(foo))   // errors
+//print(truthy(foo))   // errors

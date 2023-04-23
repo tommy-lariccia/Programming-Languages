@@ -1,0 +1,14 @@
+// Other tests generally validate the whole type-checking apparatus, but I still try some errors
+
+print(2 < 3)  // true
+print(2 > 3)  // false
+print(3 >= 3) // true
+print(3 <= 3) // true
+print(3 == 3) // true
+print(0 < 0.3) // true
+print(0.0 < 0.3) // true
+print(1.2 > 1) // true
+print("apple" > "cat") // true
+
+//print("apple" > 9) // errors
+//print(true > [1, 2]) // errors

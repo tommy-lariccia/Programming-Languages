@@ -2,23 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f7a633-c6a3-45da-98e3-2110f91d1f32" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/len.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/lenError.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/multiply.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/print.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/subtract.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/sum.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/type.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Conditionals/conditionals.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/boolean.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/comparators.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/divide.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/truthy.read" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Environments/TestEnvironment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Environments/TestEnvironment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/Arithmetic.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/Arithmetic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/BuiltIns.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/BuiltIns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/testInput/Evaluating/Functions/functions.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Functions/functions.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/Comparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/Comparator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/multiply.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/BuiltIns/multiply.read" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/testInput/Evaluating/active.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/active.read" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Environments/TestEnvironment.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Environments/TestEnvironment.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Library/Arithmetic.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Library/Arithmetic.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Library/BuiltIns.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Library/BuiltIns.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Library/Comparator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Library/Comparator.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

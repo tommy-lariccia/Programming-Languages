@@ -156,7 +156,7 @@ public class BuiltIns {
         if (args.size() != 2)
             return error("Built-in 'greater_than' operator takes exactly two arguments.", line);
         Lexeme result = Comparator.greaterThan(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == null)
             return error("Cannot compare between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }
@@ -166,7 +166,7 @@ public class BuiltIns {
         if (args.size() != 2)
             return error("Built-in 'greater_than_or_equal_to' operator takes exactly two arguments.", line);
         Lexeme result = Comparator.greaterThanOrEqualToComp(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == null)
             return error("Cannot compare between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }
@@ -177,7 +177,7 @@ public class BuiltIns {
         if (args.size() != 2)
             return error("Built-in 'less_than' operator takes exactly two arguments.", line);
         Lexeme result = Comparator.lessThanComp(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == null)
             return error("Cannot compare between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }
@@ -187,7 +187,7 @@ public class BuiltIns {
         if (args.size() != 2)
             return error("Built-in 'less_than_or_equal_to' operator takes exactly two arguments.", line);
         Lexeme result = Comparator.lessThanOrEqualToComp(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == null)
             return error("Cannot compare between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }
@@ -197,7 +197,7 @@ public class BuiltIns {
         if (args.size() != 2)
             return error("Built-in 'equal_to' operator takes exactly two arguments.", line);
         Lexeme result = Comparator.equalityComp(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == null)
             return error("Cannot compare between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }
@@ -207,7 +207,7 @@ public class BuiltIns {
         if (args.size() != 2)
             return error("Built-in 'not_equal_to' operator takes exactly two arguments.", line);
         Lexeme result = Comparator.notEqualComp(args.get(0), args.get(1));
-        if (result == null)
+        if (result.getType() == null)
             return error("Cannot compare between lexeme of type " + args.get(0).getType() + " and lexeme of type " + args.get(1).getType(), line);
         return result;
     }
@@ -217,28 +217,42 @@ public class BuiltIns {
         args = evaluateArgs(args, env);
         if (args.size() != 2)
             return error("Built-in 'AND' operator takes exactly two arguments.", line);
-        return Boolean.andComp(args.get(0), args.get(1));
+        Lexeme v = Boolean.andComp(args.get(0), args.get(1));
+        if (v.getType() == NULL)
+            error("Cannot perform built-in 'AND' operation with lexemes of type " + args.get(0).getType()
+                    + " and " + args.get(1).getType(), line);
+        return v;
     }
 
     public static Lexeme OR(ArrayList<Lexeme> args, int line, Environment env) {
         args = evaluateArgs(args, env);
         if (args.size() != 2)
             return error("Built-in 'OR' operator takes exactly two arguments.", line);
-        return Boolean.orComp(args.get(0), args.get(1));
+        Lexeme v = Boolean.orComp(args.get(0), args.get(1));
+        if (v.getType() == NULL)
+            error("Cannot perform built-in 'OR' operation with lexemes of type " + args.get(0).getType()
+                    + " and " + args.get(1).getType(), line);
+        return v;
     }
 
     public static Lexeme NOT(ArrayList<Lexeme> args, int line, Environment env) {
         args = evaluateArgs(args, env);
         if (args.size() != 1)
             return error("Built-in 'NOT' operator takes exactly one argument.", line);
-        return Boolean.notComp(args.get(0));
+        Lexeme v = Boolean.notComp(args.get(0));
+        if (v.getType() == NULL)
+            error("Cannot perform built-in 'NOT' operation with lexeme of type " + args.get(0).getType(), line);
+        return v;
     }
 
     public static Lexeme truthy(ArrayList<Lexeme> args, int line, Environment env) {
         args = evaluateArgs(args, env);
         if (args.size() != 1)
             return error("Built-in 'truthy' function takes exactly one argument.", line);
-        return Boolean.truthy(args.get(0));
+        Lexeme v = Boolean.truthy(args.get(0));
+        if (v.getType() == NULL)
+            error("Cannot perform built-in 'NOT' operation with lexeme of type " + args.get(0).getType(), line);
+        return v;
     }
 
     // ----------- Helper(s) -----------

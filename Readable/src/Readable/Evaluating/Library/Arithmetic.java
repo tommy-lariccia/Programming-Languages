@@ -134,7 +134,8 @@ public class Arithmetic {
             newArr.addChild(new Lexeme(EXPR_LIST, s1.getLine()));
             return newArr;
         }
-        else if (s1.getType() == TRUE) return s2;
+        else if (s1.getType() == TRUE && (s2.getType() == INT_LIT || s2.getType() == FLOAT_LIT || s2.getType() == STRING_LIT
+        || s2.getType() == ARR)) return s2;
         return new Lexeme(NULL);
     }
 
@@ -146,7 +147,8 @@ public class Arithmetic {
     // ----------- Division -----------
     public static Lexeme divide(Lexeme s1, Lexeme s2) {
         if (s1.getType() == INT_LIT && s2.getType() == FLOAT_LIT) {return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getIntValue() / s2.getDecValue());}
-        if (s1.getType() == INT_LIT && s2.getType() == INT_LIT) {return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getIntValue() / ((float) s2.getDecValue()));}
+        if (s1.getType() == INT_LIT && s2.getType() == INT_LIT) {
+            return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getIntValue() / ((float) s2.getIntValue()));}
         if (s1.getType() == FLOAT_LIT && s2.getType() == INT_LIT) {return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getDecValue() / s2.getIntValue());}
         if (s1.getType() == FLOAT_LIT && s2.getType() == FLOAT_LIT) {return new Lexeme(FLOAT_LIT, s1.getLine(), s1.getDecValue() / s2.getDecValue());}
         return new Lexeme(Types.NULL);

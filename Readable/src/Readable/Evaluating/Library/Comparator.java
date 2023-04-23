@@ -33,7 +33,7 @@ public class Comparator {
             else return new Lexeme(FALSE);
         }
         if (s1.getType() == STRING_LIT && s2.getType() == STRING_LIT) {
-            if (s1.getStringValue().compareTo(s2.getStringValue()) > 0)
+            if (s1.getStringValue().compareTo(s2.getStringValue()) < 0)
                 return new Lexeme(TRUE);
             else return new Lexeme(FALSE);
         }
