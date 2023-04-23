@@ -35,25 +35,12 @@ comment ::= "//" (!"\n")*  // anything but newline character
 
 commentBlock ::= "/*" (!"*\\")* "*\\"
 
-
-// TYPES
-booleanOpts ::= "true" | "false"
-
-typing ::= typingArr | typingKeywords
-
-typingArr ::= typingKeywords"[]"
-
-typingKeywords ::= "int" | "str" | "bool" | "float"
-
-
 // VARIABLES
 variableInitializationAssignment ::= assignment | arrSlotAssign
 
-assignment ::= assignmentPrefix? IDENTIFIER "=" expression
+assignment ::= IDENTIFIER "=" expression
 
-assignmentPrefix ::= "local" | typing  // mutually exclusive, local only for dynamic variables
-
-arrSlotAssign ::= typingArr? arrAccess "=" expression
+arrSlotAssign ::= arrAccess "=" expression
 
 arr ::= "[" exprList? "]"
 
@@ -92,18 +79,21 @@ blockSpace ::= QUADSPACE blockStatement
 
 // FUNCTIONS
 functionCall ::= IDENTIFIER "(" argList? ")"
+               | functionCall "(" argList? ")"  // left-recursion, but surprisingly easy to handle in this case
 
-argList ::= expression
-          | expression "," argList
+argList ::= argument
+          | argument "," argList
 
 paramList ::= parameter
             | parameter "," paramList
 
-parameter ::= typing? IDENTIFIER
+parameter ::= ('*')? IDENTIFIER
+
+argument ::= ('*')? expression
 
 returnStatement ::= "return" expression
 
-functionDefinition ::= "func" typing? IDENTIFIER "(" paramList? ")" block
+functionDefinition ::= "func" IDENTIFIER "(" paramList? ")" block
 
 lambdaInitialization ::= "lambda" IDENTIFIER "=" "(" paramList? ")" "=>" expression
 
@@ -115,9 +105,9 @@ whileLoop ::= "while" expression block
 
 forEachLoop ::= "foreach" IDENTIFIER "in" iterable block
 
-iterable ::= arr | INT_LIT | range
+iterable ::= arr | INT_LIT | range | STRING_LIT
 
-range ::= INT_LIT".."INT_LIT
+range ::= expression".."expression
 
 
 // CONDITIONALS
