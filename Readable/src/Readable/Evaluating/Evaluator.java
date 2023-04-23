@@ -304,32 +304,32 @@ public class Evaluator {
             error("Cannot treat lexeme of type " + arr.getType() + " as an array.", arr.getLine());
         Lexeme index = eval(tree.getChild(1), env);
         if (index.getType() != INT_LIT)
-            error("Cannot index into array with lexeme of type " + arr.getType() + ".", arr.getLine());
+            error("Cannot index into array with lexeme of type " + index.getType() + ".", arr.getLine());
         Lexeme items = arr.getChild(0);
         int realIndex = index.getIntValue();
         if (realIndex < 0)
             realIndex = items.getChildren().size() - Math.abs(realIndex);
         if (0 > realIndex || items.getChildren().size() <= realIndex) {
-            return error("Index " + realIndex + " out of bounds for array of length " + items.getChildren().size(), arr.getLine());
+            return error("Index " + index.getIntValue() + " out of bounds for array of length " + items.getChildren().size(), arr.getLine());
         }
         return arr.getChild(0).getChild(realIndex);
     }
 
     private Lexeme arrAss(Lexeme tree, Environment env) {
-        Lexeme arr = eval(tree.getChild(1), env);
+        Lexeme arr = eval(tree.getChild(0), env);
         if (arr.getType() != ARR)
             error("Cannot treat lexeme of type " + arr.getType() + " as an array.", arr.getLine());
-        Lexeme index = eval(tree.getChild(2), env);
+        Lexeme index = eval(tree.getChild(1), env);
         if (index.getType() != INT_LIT)
-            error("Cannot index into array with lexeme of type " + arr.getType() + ".", arr.getLine());
+            error("Cannot index into array with lexeme of type " + index.getType() + ".", arr.getLine());
         Lexeme items = arr.getChild(0);
         int realIndex = index.getIntValue();
         if (realIndex < 0)
             realIndex = items.getChildren().size() - Math.abs(realIndex);
         if (0 > realIndex || items.getChildren().size() <= realIndex) {
-            return error("Index " + realIndex + " out of bounds for array of length " + items.getChildren().size(), arr.getLine());
+            error("Index " + index.getIntValue() + " out of bounds for array of length " + items.getChildren().size(), arr.getLine());
         }
-        arr.getChild(0).getChildren().set(realIndex, tree.getChild(3));
+        arr.getChild(0).getChildren().set(realIndex, tree.getChild(2));
         return new Lexeme(NULL);
     }
 

@@ -1,0 +1,3 @@
+a = "string"
+
+print(a(2))   // calling string as a function

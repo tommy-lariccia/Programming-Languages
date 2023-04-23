@@ -1,0 +1,4 @@
+func do(a, b):
+    return a + b
+
+print(do(3))  // insufficient parameters

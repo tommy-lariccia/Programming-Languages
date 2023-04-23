@@ -1,0 +1,2 @@
+foreach i in 1.2..1:     // range operator only takes integer params
+    print(i)
