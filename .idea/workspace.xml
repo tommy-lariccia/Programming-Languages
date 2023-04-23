@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="51f7a633-c6a3-45da-98e3-2110f91d1f32" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Array/arrayError1.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Array/arrayError2.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Array/arrayError3.read" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Looping/forEachBlockError1.read" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Expressions/expressions.read" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Evaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readable/testInput/Evaluating/Array/array.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/Array/array.read" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/BuiltIns.java" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/src/Readable/Evaluating/Library/BuiltIns.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Readable/testInput/Evaluating/active.read" beforeDir="false" afterPath="$PROJECT_DIR$/Readable/testInput/Evaluating/active.read" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Evaluator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Programming-Languages/Readable/Evaluating/Evaluator.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

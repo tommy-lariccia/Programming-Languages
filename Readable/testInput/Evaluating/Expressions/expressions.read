@@ -1,0 +1,20 @@
+c = 28 + 2244 * 13 + 12  // order of operations
+print(c)  // 29,212
+
+c = c + 3
+print(c)  //  29,215
+
+d = true and (false or true)
+print(d)  // true
+
+d = true and !false
+print(d)  // true
+
+d = !(true and false)
+print(d)  // true
+
+func foo(a, b):
+    return a + b
+
+d = foo(2, 3) * 7
+print(d)    // 35

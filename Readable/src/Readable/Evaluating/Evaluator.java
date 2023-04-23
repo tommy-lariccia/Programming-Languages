@@ -28,7 +28,7 @@ public class Evaluator {
             case ASS -> evalAss(tree, env);
             case PLUS, MINUS, TIMES, DIVIDE, NEGATE, GREATER_THAN_COMP, GREATER_OR_EQUAL_COMP,
                     LESS_OR_EQUAL_COMP, LESS_THAN_COMP, EQUALITY_COMP, NOT_EQUAL_COMP, AND, OR -> evalExpr(tree, env);
-            case NOT -> BuiltIns.NOT(new ArrayList<>(Arrays.asList(tree)), tree.getLine(), env);
+            case NOT -> BuiltIns.NOT(tree.getChildren(), tree.getLine(), env);
             case FOREACH -> evalForeach(tree, env);
             case FUNC -> evalFunctionDefinition(tree, env);
             case FUNC_CALL -> evalFunctionCall(tree, env);
